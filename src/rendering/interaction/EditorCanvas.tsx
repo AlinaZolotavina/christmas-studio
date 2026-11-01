@@ -270,14 +270,13 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
         {issueElements.map(issue => <g key={issue.kind} data-element-issue={issue.kind} data-severity={issue.severity} transform={`translate(${issue.box.x} ${issue.box.y - 3})`}><title>{issue.message}</title><circle r={7 / scale} fill={issue.severity === 'error' ? '#c64343' : '#c59b43'} /><text textAnchor="middle" dy={3.5 / scale} fill="white" fontSize={11 / scale}>!</text></g>)}
       </svg>
       {box && !editing && selection.kind === 'decoration' && <div className="element-actions" style={{ left: (box.x + box.width) * scale + 8, top: box.y * scale - 8 }} onPointerDown={event => event.stopPropagation()}>
-        {selection.kind === 'decoration' && <button aria-label="Удалить декорацию" onClick={remove}><Trash2 size={15} /></button>}
+        <button aria-label="Удалить декорацию" onClick={remove}><Trash2 size={15} /></button>
       </div>}
       {editing && <textarea ref={textarea} className="inline-text-editor" aria-label="Текст на холсте" value={textValue} maxLength={MAX_TEXT_LENGTH} style={{ left: card.text.x * scale, top: card.text.y * scale, width: card.text.width * scale, height: Math.max(card.text.height * scale, 44), fontFamily: FONT_FAMILIES[card.text.fontId], fontSize: ptToMm(card.text.fontSize) * scale, fontWeight: card.text.weight, fontStyle: card.text.italic ? 'italic' : 'normal', textAlign: card.text.align, color: card.text.color, lineHeight: 1.22 } as CSSProperties} onChange={event => { setTextValue(event.target.value); onCommit({ type: 'update-text', cardId: card.id, patch: { content: event.target.value } }); }} onBlur={finishEditing} onKeyDown={event => {
         event.stopPropagation();
         if (event.key === 'Escape' || (event.key === 'Enter' && (event.ctrlKey || event.metaKey))) { event.preventDefault(); finishEditing(); }
       }} onPaste={event => { event.preventDefault(); const input = event.currentTarget; const value = event.clipboardData.getData('text/plain').replace(/\r\n?/g, '\n'); const start = input.selectionStart, end = input.selectionEnd; const limit = MAX_TEXT_LENGTH - (textValue.length - (end - start)); const inserted = value.slice(0, Math.max(0, limit)); const content = textValue.slice(0, start) + inserted + textValue.slice(end); setTextValue(content); onCommit({ type: 'update-text', cardId: card.id, patch: { content } }); requestAnimationFrame(() => input.setSelectionRange(start + inserted.length, start + inserted.length)); }} />}
     </div>
-
   </div>;
 }
 

@@ -35,6 +35,18 @@ test('home keeps the tag collections and gives future products real coming-soon 
   await expect(page.getByRole('heading', { name: 'Хвойная сказка', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Зимние истории', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Винтажный праздник', exact: true })).toBeVisible();
+  for (let template = 0; template < 3; template++) {
+    await page.locator('.template-card').nth(template).click();
+    const examples = [];
+    for (const [index, number] of [1, 12, 24].entries()) {
+      await page.getByRole('button', { name: `Пример ${index + 1}`, exact: true }).click();
+      await expect(page.locator('.template-preview__tag').getByRole('img', { name: `Карточка ${number}`, exact: true })).toBeVisible();
+      examples.push(await page.locator('.template-preview__tag image').getAttribute('href'));
+    }
+    expect(examples.every(Boolean)).toBe(true);
+    expect(new Set(examples).size).toBe(3);
+    await page.getByRole('button', { name: 'Закрыть окно', exact: true }).click();
+  }
 });
 
 test('desktop keeps cards and export in their separate panels and moves status to the header right', async ({ page }) => {
@@ -47,7 +59,16 @@ test('desktop keeps cards and export in their separate panels and moves status t
   await expect(page.getByRole('dialog')).toHaveCount(0);
   const bounds = await page.locator('.save-status').boundingBox();
   expect(bounds!.x).toBeGreaterThan(1100);
-  await expect(page.locator('.studio-header__project .project-state')).toBeVisible();
+  await expect(page.locator('.studio-header__status .project-state')).toBeVisible();
+  const header = await page.locator('.studio-header').boundingBox();
+  const logo = await page.locator('.studio-home').boundingBox();
+  const sidebar = await page.locator('.studio-nav').boundingBox();
+  expect(logo!.width).toBeCloseTo(sidebar!.width, 1);
+  expect(logo!.height).toBeCloseTo(header!.height, 1);
+  const issues = await page.locator('.project-state').boundingBox();
+  const divider = await page.locator('.studio-header__status .header-divider').boundingBox();
+  expect(issues!.x + issues!.width).toBeLessThan(divider!.x);
+  expect(divider!.x).toBeLessThan(bounds!.x);
   await expect(page.locator('.workspace-card-info')).toContainText('Карточка 1 из 24');
   await expect(page.locator('.workspace__caption,.workspace__hint,.nav-sprig')).toHaveCount(0);
   await page.setViewportSize({ width: 1024, height: 768 });
@@ -168,4 +189,79 @@ test('tour keeps its size on every step and leaves the explained interface sharp
   expect(await restored.locator('svg').count()).toBe(1);
   const bounds = await restored.boundingBox();
   expect(bounds!.y).toBeLessThan(150); expect(bounds!.width).toBeLessThan(450); expect(bounds!.x).toBeGreaterThan(900);
+});
+
+test('Shift preserves a decoration ratio at corners and edges, and all 25 decorations survive reload', async ({ page }) => {
+  await project(page);
+  await page.getByRole('tab', { name: 'Фон', exact: true }).click();
+  const add = page.locator('.decoration-options').getByRole('button', { name: 'Круг', exact: true });
+  await add.click();
+  await page.locator('.decoration-list').getByRole('button', { name: 'Круг 1', exact: true }).click();
+  for (const [label, value] of [['По горизонтали', '1'], ['По вертикали', '2'], ['Ширина', '1.6'], ['Высота', '0.8']]) {
+    await page.getByLabel(label, { exact: true }).fill(value);
+    await page.getByLabel(label, { exact: true }).press('Tab');
+  }
+  const first = async () => (await documentData(page)).cards[0].decorations[0];
+  await expect.poll(first).toMatchObject({ width: 16, height: 8 });
+  async function resize(handle: string, dx: number, dy: number, shift = true) {
+    const bounds = await page.locator(`.resize-handle--${handle}`).boundingBox();
+    await page.mouse.move(bounds!.x + bounds!.width / 2, bounds!.y + bounds!.height / 2);
+    if (shift) await page.keyboard.down('Shift');
+    await page.mouse.down();
+    await page.mouse.move(bounds!.x + bounds!.width / 2 + dx, bounds!.y + bounds!.height / 2 + dy, { steps: 6 });
+    await page.mouse.up();
+    if (shift) await page.keyboard.up('Shift');
+  }
+  await resize('se', 100, 80);
+  await expect.poll(async () => (await first()).width).toBeCloseTo(20, 4);
+  expect((await first()).width / (await first()).height).toBeCloseTo(2, 6);
+  await resize('e', -30, 0);
+  await expect.poll(async () => (await first()).width).toBeLessThan(20);
+  expect((await first()).width / (await first()).height).toBeCloseTo(2, 6);
+  const beforeFree = await first();
+  await resize('s', 0, 20, false);
+  await expect.poll(async () => (await first()).height).toBeGreaterThan(beforeFree.height);
+  expect((await first()).width).toBeCloseTo(beforeFree.width, 6);
+  for (let index = 1; index < 25; index++) await add.click();
+  await expect(page.locator('.count-badge')).toHaveText('25/25');
+  await expect(add).toBeDisabled();
+  await expect.poll(async () => (await documentData(page)).cards[0].decorations.length).toBe(25);
+  await page.reload();
+  await expect(page.locator('.studio')).toBeVisible();
+  await page.getByRole('tab', { name: 'Фон', exact: true }).click();
+  await expect(page.locator('.count-badge')).toHaveText('25/25');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+});
+
+test('portrait tablets use the dock and burger, and templates and the home logo keep distinct destinations', async ({ page }) => {
+  await project(page);
+  const saved = await documentData(page);
+  for (const viewport of [{ width: 1150, height: 1400 }, { width: 1024, height: 1366 }, { width: 390, height: 844 }]) {
+    await page.setViewportSize(viewport);
+    await expect(page.locator('.mobile-dock')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Открыть меню', exact: true })).toBeVisible();
+    await expect(page.locator('.thumbnail-strip')).toHaveCount(0);
+    await expect(page.locator('.inspector')).not.toBeVisible();
+    await page.locator('.mobile-dock').getByRole('button', { name: 'Карточки', exact: true }).click();
+    await page.getByRole('button', { name: 'Карточка 24 из 24', exact: true }).click();
+    await page.getByRole('button', { name: 'Закрыть панель', exact: true }).click();
+    await expect(page.locator('.workspace-card-info')).toContainText('Карточка 24 из 24');
+    expect(await page.locator('.editor-canvas').evaluate(element => !element.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true })))).toBe(true);
+    await expect(page.getByRole('menu')).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Действия с элементом', exact: true })).toHaveCount(0);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
+  }
+  await page.getByRole('button', { name: 'Открыть меню', exact: true }).click();
+  await page.locator('.mobile-navigation').getByRole('button', { name: 'Шаблоны', exact: true }).click();
+  await expect(page).toHaveURL(/#tags$/);
+  await page.getByRole('button', { name: 'Вернуться к проекту', exact: false }).click();
+  await page.locator('.studio-home').click();
+  await expect(page).toHaveURL(/#home$/);
+  expect((await documentData(page)).id).toBe(saved.id);
+  await page.setViewportSize({ width: 1151, height: 1400 });
+  await page.locator('.public-header nav').getByRole('link', { name: 'Редактор', exact: true }).click();
+  await expect(page.locator('.thumbnail-strip')).toBeVisible();
+  await expect(page.locator('.mobile-dock')).not.toBeVisible();
+  await page.locator('.studio-nav').getByRole('button', { name: 'Шаблоны', exact: true }).click();
+  await expect(page).toHaveURL(/#tags$/);
 });

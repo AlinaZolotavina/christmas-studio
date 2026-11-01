@@ -72,7 +72,7 @@ test('blank-card dragging stays fixed and text issues appear before leaving the 
   await page.getByLabel('Текст на карточке', { exact: true }).fill('Хо');
   const old = await documentData(page);
   await page.getByRole('button', { name: 'Всему набору', exact: true }).click();
-  await page.getByRole('button', { name: 'Уменьшить поле до текста', exact: true }).click();
+  await page.getByRole('button', { name: 'Подогнать поле под текст', exact: true }).click();
   await expect.poll(async () => (await documentData(page))?.cards[0].text.width).toBeLessThan(old.cards[0].text.width);
   const fitted = await documentData(page);
   expect(fitted.cards[0].text.fontSize).toBe(old.cards[0].text.fontSize);

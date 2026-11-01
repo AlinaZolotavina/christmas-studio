@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 
 const storageKey = 'advent-tag-studio:project';
 async function create(page: Page, count: 24 | 31 = 24) {
-  await page.goto('/');
+  await page.goto('/#tags');
   await page.locator('.template-card').first().click();
   await page.getByRole('button', { name: 'Выбрать шаблон' }).click();
   await page.locator('.count-picker__options button').filter({ hasText: String(count) }).click();
@@ -87,7 +87,7 @@ test('phone: sheets keep canvas inactive and all cards remain reachable', async 
   await page.locator('.bottom-sheet').getByRole('button', { name: 'Карточка 31 из 31', exact: true }).click();
   await expect(page.locator('.bottom-sheet')).toBeVisible();
   await page.getByRole('button', { name: 'Закрыть панель', exact: true }).click();
-  await expect(page.locator('.studio-header__card')).toContainText('31');
+  await expect(page.locator('.workspace-card-info')).toContainText('31');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: 'artifacts/final-phone.png' });
 });
@@ -103,7 +103,7 @@ test('damaged local data stays downloadable and is not silently replaced', async
   expect((await download).suggestedFilename()).toBe('Advent-Tags-recovery.json');
 });
 
-test('image library searches both languages and combines taxonomy and background filters', async ({ page }) => {
+test('image library searches both languages and combines taxonomy filters', async ({ page }) => {
   await create(page);
   await page.getByRole('tab', { name: 'Изображение', exact: true }).click();
   const query = page.getByRole('textbox', { name: 'Поиск иллюстраций' });
@@ -114,9 +114,9 @@ test('image library searches both languages and combines taxonomy and background
   await expect(page.locator('.image-library button')).toHaveCount(1);
   await page.getByLabel('Категория иллюстраций', { exact: true }).selectOption('botanical');
   await page.getByLabel('Подкатегория иллюстраций', { exact: true }).selectOption('botanical-branches');
-  await page.getByLabel('Фон иллюстрации', { exact: true }).selectOption('transparent');
+  await expect(page.getByLabel('Фон иллюстрации', { exact: true })).toHaveCount(0);
   await expect(page.locator('.image-library button')).toHaveCount(1);
-  await page.getByLabel('Фон иллюстрации', { exact: true }).selectOption('ivory');
+  await query.fill('definitelymissingterm');
   await expect(page.locator('.image-library button')).toHaveCount(0);
   await expect(page.getByText('Пока ничего не нашлось')).toBeVisible();
 });

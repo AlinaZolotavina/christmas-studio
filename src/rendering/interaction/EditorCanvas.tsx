@@ -4,6 +4,7 @@ import type { Command } from '../../domain/commands';
 import type { Box, Card, Selection } from '../../domain/types';
 import { MAX_TEXT_LENGTH, ptToMm } from '../../domain/types';
 import { holeDiameter, isHoleInside, rotatePoint } from '../../domain/geometry';
+import { validateCard } from '../../domain/validation';
 import { FONT_FAMILIES, layoutText } from '../text';
 import { CardSvg } from '../CardSvg';
 import './canvas.css';
@@ -16,13 +17,12 @@ interface Props {
   fitKey?: string | number;
 }
 interface Drag {
-  mode: 'move' | 'resize' | 'pan' | 'rotate';
+  mode: 'move' | 'resize' | 'rotate';
   selection: Selection;
   handle?: string;
   startX: number;
   startY: number;
   original: Card;
-  pan: { x: number; y: number };
   moved: boolean;
   cycleOnClick: boolean;
 }
@@ -58,23 +58,28 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
   const artboard = useRef<HTMLDivElement>(null);
   const drag = useRef<Drag | null>(null);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
-  const pinch = useRef<{ distance: number; scale: number; center: { x: number; y: number }; pan: { x: number; y: number } } | null>(null);
+  const pinch = useRef<{ distance: number; scale: number } | null>(null);
   const draftRef = useRef<Card | null>(null);
   const [draft, setDraft] = useState<Card | null>(null);
   const [scale, setScale] = useState(5);
-  const [pan, setPan] = useState({ x: 0, y: 0 });
   const [guides, setGuides] = useState<{ x?: number; y?: number }>({});
   const [editing, setEditing] = useState(false);
   const [textValue, setTextValue] = useState('');
   const [context, setContext] = useState<{ x: number; y: number } | null>(null);
   const textarea = useRef<HTMLTextAreaElement>(null);
   const displayed = draft?.id === card.id ? draft : card;
+  const liveIssues = validateCard(displayed, { textOverflow: layoutText(displayed.text).overflow });
+  const issueElements = (['text', 'illustration', 'decoration'] as const).flatMap(kind => {
+    const issues = liveIssues.filter(issue => issue.element === kind);
+    if (!issues.length) return [];
+    const issueBox = kind === 'text' ? displayed.text : kind === 'illustration' ? displayed.illustration : displayed.decorations.find(item => item.id === selection.decorationId) ?? displayed.decorations[0];
+    return issueBox ? [{ kind, box: issueBox, severity: issues.some(issue => issue.severity === 'error') ? 'error' : 'warning', message: issues.map(issue => issue.message).join(' ') }] : [];
+  });
   const box = selectedBox(displayed, selection);
   const rotation = selection.kind === 'illustration' ? displayed.illustration.rotation : 0;
   const fit = useCallback(() => {
     const rect = surface.current?.getBoundingClientRect();
     if (rect) setScale(clampScale(Math.min((rect.width - 110) / card.width, (rect.height - 94) / card.height)));
-    setPan({ x: 0, y: 0 });
   }, [card.width, card.height]);
 
   useEffect(() => { fit(); setDraft(null); draftRef.current = null; setEditing(false); setContext(null); }, [card.id, fitKey, fit]);
@@ -119,7 +124,7 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
     event.currentTarget.setPointerCapture(event.pointerId);
     if (pointers.current.size === 2) {
       const [a, b] = [...pointers.current.values()];
-      pinch.current = { distance: Math.hypot(a.x - b.x, a.y - b.y), scale, center: { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }, pan };
+      pinch.current = { distance: Math.hypot(a.x - b.x, a.y - b.y), scale };
       drag.current = null; updateDraft(null); return;
     }
     const handle = (event.target as HTMLElement).closest('[data-handle]')?.getAttribute('data-handle') ?? undefined;
@@ -135,7 +140,8 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
       if (index >= 0) chosen = selection;
       onSelectionChange(chosen);
     }
-    drag.current = { mode: handle === 'rotate' ? 'rotate' : handle ? 'resize' : chosen.kind === 'card' ? 'pan' : 'move', selection: chosen, handle, startX: event.clientX, startY: event.clientY, original: structuredClone(card), pan, moved: false, cycleOnClick };
+    if (chosen.kind === 'card') { drag.current = null; return; }
+    drag.current = { mode: handle === 'rotate' ? 'rotate' : handle ? 'resize' : 'move', selection: chosen, handle, startX: event.clientX, startY: event.clientY, original: structuredClone(card), moved: false, cycleOnClick };
   };
 
   const move = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -144,7 +150,6 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
       const [a, b] = [...pointers.current.values()];
       const initial = pinch.current;
       setScale(clampScale(initial.scale * Math.hypot(a.x - b.x, a.y - b.y) / Math.max(1, initial.distance)));
-      setPan({ x: initial.pan.x + (a.x + b.x) / 2 - initial.center.x, y: initial.pan.y + (a.y + b.y) / 2 - initial.center.y });
       return;
     }
     const operation = drag.current;
@@ -153,7 +158,6 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
     const deltaY = event.clientY - operation.startY;
     if (Math.hypot(deltaX, deltaY) < 3 && !operation.moved) return;
     operation.moved = true;
-    if (operation.mode === 'pan') { setPan({ x: operation.pan.x + deltaX, y: operation.pan.y + deltaY }); return; }
     const next = structuredClone(operation.original);
     const target = selectedBox(next, operation.selection);
     const origin = selectedBox(operation.original, operation.selection);
@@ -257,7 +261,7 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
     }
   }}>
     <div className="canvas-zoom" onPointerDown={event => event.stopPropagation()}><span>{Math.round(scale / (96 / 25.4) * 100)}%</span><button type="button" aria-label="Приблизить" onClick={() => zoom(1.15)}><Plus size={19} /></button><button type="button" aria-label="Отдалить" onClick={() => zoom(1 / 1.15)}><Minus size={19} /></button><button type="button" aria-label="Вписать карточку" onClick={fit}><Expand size={17} /></button></div>
-    <div ref={artboard} className="canvas-artboard" style={{ width: card.width * scale, height: card.height * scale, transform: `translate(-50%, -50%) translate(${pan.x}px, ${pan.y}px)` }}>
+    <div ref={artboard} className="canvas-artboard" style={{ width: card.width * scale, height: card.height * scale, transform: 'translate(-50%, -50%)' }}>
       <CardSvg card={displayed} idPrefix="editable" />
       <svg className="selection-overlay" viewBox={`0 0 ${card.width} ${card.height}`} aria-hidden="true">
         {guides.x !== undefined && <line x1={guides.x} x2={guides.x} y1={-4} y2={card.height + 4} className="snap-guide" strokeWidth={1 / scale} />}
@@ -267,7 +271,7 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
           {selection.kind !== 'hole' && handles.map(renderHandle)}
           {selection.kind === 'illustration' && <><line x1={box.x + box.width / 2} x2={box.x + box.width / 2} y1={box.y} y2={box.y - 22 / scale} stroke="#315c4c" strokeWidth={1 / scale} /><circle data-handle="rotate" className="rotation-handle" cx={box.x + box.width / 2} cy={box.y - 22 / scale} r={4 / scale} strokeWidth={1.2 / scale} /></>}
         </g>}
-        {!editing && layoutText(displayed.text).overflow && <g transform={`translate(${displayed.text.x} ${displayed.text.y - 3})`}><circle r={7 / scale} fill="#c64343" /><text textAnchor="middle" dy={3.5 / scale} fill="white" fontSize={11 / scale}>!</text></g>}
+        {issueElements.map(issue => <g key={issue.kind} data-element-issue={issue.kind} data-severity={issue.severity} transform={`translate(${issue.box.x} ${issue.box.y - 3})`}><title>{issue.message}</title><circle r={7 / scale} fill={issue.severity === 'error' ? '#c64343' : '#c59b43'} /><text textAnchor="middle" dy={3.5 / scale} fill="white" fontSize={11 / scale}>!</text></g>)}
       </svg>
       {box && !editing && <div className="element-actions" style={{ left: (box.x + box.width) * scale + 8, top: box.y * scale - 8 }} onPointerDown={event => event.stopPropagation()}>
         {selection.kind === 'decoration' && <button aria-label="Удалить декорацию" onClick={remove}><Trash2 size={15} /></button>}

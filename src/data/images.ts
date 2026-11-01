@@ -44,6 +44,7 @@ export const subcategories: ImageSubcategory[] = [
   { id: 'botanical-trees', category: 'botanical', name: { ru: 'Ёлки', en: 'Christmas trees' } },
   { id: 'characters-father-frost', category: 'characters', name: { ru: 'Дед Мороз', en: 'Father Frost' } },
   { id: 'characters-snow-maiden', category: 'characters', name: { ru: 'Снегурочка', en: 'Snow Maiden' } },
+  { id: 'characters-woodland', category: 'characters', name: { ru: 'Лесные зверята', en: 'Woodland animals' } },
   { id: 'ornaments-stars', category: 'ornaments', name: { ru: 'Звёзды', en: 'Stars' } },
   { id: 'ornaments-baubles', category: 'ornaments', name: { ru: 'Шары и игрушки', en: 'Baubles and toys' } },
   { id: 'ornaments-bells', category: 'ornaments', name: { ru: 'Колокольчики', en: 'Bells' } },
@@ -327,6 +328,11 @@ export const images: ImageMetadata[] = [
     id: 'mistletoe-burgundy-bow', src: 'art/mistletoe-burgundy-bow.png', source: 'assets/сhristmas-mistletoe-with-a-burgundy-bow.png',
     name: { ru: 'Омела с бордовым бантом', en: 'Mistletoe with burgundy bow' }, category: 'botanical', subcategory: 'botanical-branches',
     tags: ['омела', 'белые ягоды', 'бордовый бант', 'зелёные листья', 'ветка', 'рождество'], tagsEn: ['mistletoe', 'white berries', 'burgundy bow', 'green leaves', 'branch', 'christmas'], aliases: ['веточка омелы', 'mistletoe sprig', 'kissing bough'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'woodland-fox-in-red-scarf', src: 'art/woodland-fox-in-red-scarf.png', source: 'assets/woodland-fox-in-red-scarf.png',
+    name: { ru: 'Лисичка в красном шарфе', en: 'Woodland fox in a red scarf' }, category: 'characters', subcategory: 'characters-woodland',
+    tags: ['лиса', 'лисичка', 'рыжий', 'красный шарф', 'лес', 'зима', 'зверята', 'пушистый хвост'], tagsEn: ['fox', 'red fox', 'woodland', 'red scarf', 'winter', 'animal', 'fluffy tail'], aliases: ['лисенок', 'little fox', 'fox cub'], style: 'vintage-watercolor', background: 'transparent',
   },
 ];
 

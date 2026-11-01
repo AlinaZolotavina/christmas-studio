@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf';
-import type { Background, Card, FontDefinition, FontId, ProjectDocument, TextElement, ValidationIssue } from '../../domain/types';
+import type { AssetDefinition, Background, Card, FontDefinition, FontId, ProjectDocument, TextElement, ValidationIssue } from '../../domain/types';
 import { ptToMm } from '../../domain/types';
 import { containBox, ellipsePath, holeDiameter, outlinePath, starPoints, type PathOperation } from '../../domain/geometry';
 import { assetUrl, assets, getAsset } from '../../content/assets';
@@ -11,6 +11,9 @@ import { fontFile, fontStyle, layoutText } from '../../rendering/text';
 interface FontResource { id: FontId; family: string; style: ReturnType<typeof fontStyle>; file: string; bytes: Uint8Array }
 export interface PreparedPrint { project: ProjectDocument; layout: PrintLayout; issues: ValidationIssue[]; fonts: FontResource[] }
 const byteCache = new Map<string, Promise<Uint8Array>>();
+const fontFaces = new Map<string, Promise<void>>();
+const printImageCache = new Map<string, Promise<Uint8Array>>();
+export const PRINT_IMAGE_DPI = 300;
 
 async function loadBytes(path: string): Promise<Uint8Array> {
   if (!byteCache.has(path)) {
@@ -31,6 +34,45 @@ function binaryString(bytes: Uint8Array): string {
 
 function fontFamilyId(id: FontId) { return `studio-${id}`; }
 
+export function printImageSize(asset: AssetDefinition, cards: Card[]): { width: number; height: number } {
+  let scale = 0;
+  for (const card of cards) {
+    const actual = containBox(card.illustration, asset.width, asset.height);
+    scale = Math.max(scale, actual.width / 25.4 * PRINT_IMAGE_DPI / asset.width, actual.height / 25.4 * PRINT_IMAGE_DPI / asset.height);
+  }
+  scale = Math.min(1, Math.max(0.001, scale));
+  return { width: Math.ceil(asset.width * scale), height: Math.ceil(asset.height * scale) };
+}
+
+async function printImage(asset: AssetDefinition, cards: Card[]): Promise<Uint8Array> {
+  const size = printImageSize(asset, cards);
+  const key = `${asset.id}:${size.width}:${size.height}`;
+  if (printImageCache.has(key)) return printImageCache.get(key)!;
+  const request = (async () => {
+    const bytes = await loadBytes(asset.print);
+    if (typeof document === 'undefined' || size.width >= asset.width && size.height >= asset.height) return bytes;
+    const imageBlob = new Blob([bytes.slice().buffer], { type: 'image/png' });
+    let objectUrl: string | undefined;
+    const bitmap: ImageBitmap | HTMLImageElement = typeof createImageBitmap === 'function' ? await createImageBitmap(imageBlob) : await new Promise<HTMLImageElement>((resolve, reject) => {
+      const image = new Image(); objectUrl = URL.createObjectURL(imageBlob);
+      image.onload = () => resolve(image); image.onerror = () => { if (objectUrl) URL.revokeObjectURL(objectUrl); reject(new Error('Не удалось декодировать иллюстрацию для PDF.')); }; image.src = objectUrl;
+    });
+    try {
+      const canvas = document.createElement('canvas'); canvas.width = size.width; canvas.height = size.height;
+      const context = canvas.getContext('2d');
+      if (!context) return bytes;
+      context.imageSmoothingEnabled = true; context.imageSmoothingQuality = 'high';
+      context.drawImage(bitmap, 0, 0, size.width, size.height);
+      const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Не удалось подготовить иллюстрацию для PDF.')), 'image/png'));
+      return new Uint8Array(await blob.arrayBuffer());
+    } finally { if ('close' in bitmap) bitmap.close(); if (objectUrl) URL.revokeObjectURL(objectUrl); byteCache.delete(asset.print); }
+  })().catch(error => { printImageCache.delete(key); throw error; });
+  printImageCache.set(key, request);
+  // Keep at most one practical set of optimized print resources between exports.
+  if (printImageCache.size > 64) printImageCache.delete(printImageCache.keys().next().value!);
+  return request;
+}
+
 async function loadPrintFont(text: TextElement): Promise<{ resource: FontResource; text: TextElement; replaced: boolean }> {
   const requestedFont = fonts.find(font => font.id === text.fontId) as FontDefinition | undefined;
   let font = requestedFont || getFont('sans');
@@ -48,8 +90,13 @@ async function loadPrintFont(text: TextElement): Promise<{ resource: FontResourc
   }
   const resolvedText: TextElement = { ...text, fontId: font.id, weight: style === 'bold' || style === 'bolditalic' ? 'bold' : 'normal', italic: style === 'italic' || style === 'bolditalic' };
   if (typeof document !== 'undefined' && typeof FontFace !== 'undefined') {
-    const face = new FontFace(font.family, bytes.slice().buffer, { weight: resolvedText.weight === 'bold' ? '700' : '400', style: resolvedText.italic ? 'italic' : 'normal' });
-    await face.load(); document.fonts.add(face);
+    const key = `${font.id}:${style}:${file}`;
+    if (!fontFaces.has(key)) {
+      const face = new FontFace(font.family, bytes.slice().buffer, { weight: resolvedText.weight === 'bold' ? '700' : '400', style: resolvedText.italic ? 'italic' : 'normal' });
+      const loaded = face.load().then(value => { document.fonts.add(value); }).catch(error => { fontFaces.delete(key); throw error; });
+      fontFaces.set(key, loaded);
+    }
+    await fontFaces.get(key);
     await document.fonts.ready;
   }
   return { resource: { id: font.id, family: font.family, style, file, bytes }, text: resolvedText, replaced };
@@ -103,10 +150,13 @@ function drawBackground(doc: jsPDF, background: Background, x: number, y: number
     }
   } else {
     const a = background.angle * Math.PI / 180;
-    const vx = width * Math.cos(a); const vy = height * Math.sin(a);
-    const length = Math.hypot(vx, vy);
-    const ux = vx / length; const uy = vy / length;
-    const sx = x + width / 2 - vx / 2; const sy = y + height / 2 - vy / 2;
+    // SVG objectBoundingBox gradients use normalized axes; the native normal
+    // therefore needs reciprocal dimensions on non-square cards.
+    const nx = Math.cos(a) / width; const ny = Math.sin(a) / height;
+    const normalLength = Math.hypot(nx, ny);
+    const length = 1 / normalLength;
+    const ux = nx / normalLength; const uy = ny / normalLength;
+    const sx = x + width / 2 - ux * length / 2; const sy = y + height / 2 - uy * length / 2;
     const extent = Math.hypot(width, height) * 2;
     doc.setFillColor(...rgb(background.colors[0])); doc.rect(x, y, width, height, 'F');
     for (let step = 0; step < steps; step++) {
@@ -172,8 +222,14 @@ export async function generatePdf(project: ProjectDocument, prepared?: PreparedP
   doc.setProperties({ title: 'Advent Tags', subject: 'Печатные бирки для адвент-календаря', creator: 'Advent Tag Studio' });
   for (const font of print.fonts) { const file = `${font.id}-${font.style}.ttf`; doc.addFileToVFS(file, binaryString(font.bytes)); doc.addFont(file, fontFamilyId(font.id), font.style); }
   const images = new Map<string, Uint8Array>();
-  await Promise.all([...new Set(print.project.cards.map(card => card.illustration.assetId))].map(async id => {
-    const asset = getAsset(id); if (!asset) throw new Error('Иллюстрация для PDF недоступна.'); images.set(id, await loadBytes(asset.print));
+  const ids = [...new Set(print.project.cards.map(card => card.illustration.assetId))];
+  let nextImage = 0;
+  await Promise.all(Array.from({ length: Math.min(3, ids.length) }, async () => {
+    while (nextImage < ids.length) {
+      const id = ids[nextImage++]; const asset = getAsset(id);
+      if (!asset) throw new Error('Иллюстрация для PDF недоступна.');
+      images.set(id, await printImage(asset, print.project.cards.filter(card => card.illustration.assetId === id)));
+    }
   }));
   print.layout.pages.forEach((page, pageIndex) => {
     if (pageIndex) doc.addPage('a4', 'portrait');

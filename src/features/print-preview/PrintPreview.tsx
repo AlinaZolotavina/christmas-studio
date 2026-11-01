@@ -6,6 +6,7 @@ import type { PreparedPrint } from '../../infrastructure/pdf/generatePdf';
 import CardSvg from '../../rendering/CardSvg';
 import { Modal } from '../../shared/ui/Modal';
 import { Button, IconButton } from '../../shared/ui/Controls';
+import { clampPrintZoom, fitPageZoom, MAX_PRINT_ZOOM, MIN_PRINT_ZOOM, pageSizeAtZoom } from './zoom';
 import './print-preview.css';
 
 export interface PrintPreviewProps { project: ProjectDocument; revision: number; onClose: () => void; onFix: (cardId: string, element?: ElementKind) => void }
@@ -36,7 +37,7 @@ export function PrintPreview({ project, revision, onClose, onFix }: PrintPreview
   const [retry, setRetry] = useState(0);
   const [pageIndex, setPageIndex] = useState(0);
   const [zoom, setZoom] = useState(100);
-  const [baseWidth, setBaseWidth] = useState(420);
+  const fitMode = useRef(true);
   const stage = useRef<HTMLDivElement>(null);
   const generation = useRef(0);
   useEffect(() => {
@@ -55,7 +56,9 @@ export function PrintPreview({ project, revision, onClose, onFix }: PrintPreview
   }, [project, revision, retry]);
   useEffect(() => {
     if (!stage.current) return;
-    const observer = new ResizeObserver(([entry]) => setBaseWidth(Math.max(120, Math.min(440, entry.contentRect.width - 48, (entry.contentRect.height - 48) * 210 / 297))));
+    const observer = new ResizeObserver(() => {
+      if (fitMode.current && stage.current) setZoom(fitPageZoom(stage.current.clientWidth, stage.current.clientHeight));
+    });
     observer.observe(stage.current);
     return () => observer.disconnect();
   }, [prepared]);
@@ -64,6 +67,14 @@ export function PrintPreview({ project, revision, onClose, onFix }: PrintPreview
   const warnings = issues.filter(issue => issue.severity !== 'error');
   const pages = prepared?.layout.pages || [];
   const page = pages[pageIndex];
+  const paperSize = pageSizeAtZoom(zoom);
+  const changeZoom = (change: number) => { fitMode.current = false; setZoom(value => clampPrintZoom(value + change)); };
+  const fitPage = () => {
+    if (!stage.current) return;
+    fitMode.current = true;
+    setZoom(fitPageZoom(stage.current.clientWidth, stage.current.clientHeight));
+    stage.current.scrollTo({ left: 0, top: 0 });
+  };
   const exportPdf = async () => {
     if (!prepared || loading || exporting || errors.length) return;
     const token = generation.current;
@@ -83,7 +94,6 @@ export function PrintPreview({ project, revision, onClose, onFix }: PrintPreview
     <Button variant="secondary" onClick={onClose}>К редактору</Button>
     <Button onClick={() => void exportPdf()} disabled={loading || exporting || !prepared || errors.length > 0}>{exporting ? <LoaderCircle className="print-spinner" size={17} /> : <Download size={17} />}{exporting ? 'Создаём PDF…' : 'Скачать PDF'}</Button>
   </>}>
-    <div className="print-preview-intro"><div><p className="eyebrow">ПОСЛЕДНИЙ ШТРИХ</p><p>Всё готово к маленьким чудесам</p></div><span className="print-size-chip">A4 · 210 × 297 мм</span></div>
     <p className="print-instruction">Для сохранения размеров карточек печатайте в масштабе <strong>100%</strong> и отключите «Подогнать под страницу».</p>
     {loading ? <div className="print-loading" role="status"><LoaderCircle className="print-spinner" size={28} /><strong>Обновляем предпросмотр…</strong><p>Проверяем раскладку, размеры и шрифты</p></div> : null}
     {error && <div className="print-error" role="alert"><AlertCircle size={20} /><p>{error}</p><Button variant="secondary" onClick={() => setRetry(value => value + 1)} disabled={loading || exporting}><RotateCcw size={15} />Повторить</Button></div>}
@@ -100,8 +110,8 @@ export function PrintPreview({ project, revision, onClose, onFix }: PrintPreview
           return <button type="button" key={index} className={`print-page-thumb ${index === pageIndex ? 'is-selected' : ''} ${severity ? `has-${severity}` : ''}`} aria-label={`Страница ${index + 1}${severity === 'error' ? ', есть ошибки' : severity ? ', есть предупреждения' : ''}`} aria-pressed={index === pageIndex} onClick={() => setPageIndex(index)}><span className="print-page-thumb__paper"><PageSvg page={item} project={prepared.project} prefix={`print-thumb-${index}`} /></span><span>{index + 1}</span></button>;
         })}</aside>
         <section className="print-document">
-          <div className="print-document-toolbar"><div className="print-page-nav"><IconButton label="Предыдущая страница" disabled={pageIndex === 0} onClick={() => setPageIndex(index => index - 1)}><ChevronLeft size={18} /></IconButton><span>Страница {pageIndex + 1} из {pages.length}</span><IconButton label="Следующая страница" disabled={pageIndex >= pages.length - 1} onClick={() => setPageIndex(index => index + 1)}><ChevronRight size={18} /></IconButton></div><div className="print-zoom-controls"><IconButton label="Уменьшить страницу" disabled={zoom <= 50} onClick={() => setZoom(value => Math.max(50, value - 25))}><Minus size={16} /></IconButton><span>{zoom}%</span><IconButton label="Увеличить страницу" disabled={zoom >= 200} onClick={() => setZoom(value => Math.min(200, value + 25))}><Plus size={16} /></IconButton><IconButton label="Вписать страницу" onClick={() => setZoom(100)}><Scan size={16} /></IconButton></div></div>
-          <div className="print-document-stage" ref={stage}>{page && <div className="print-page-paper" style={{ width: baseWidth * zoom / 100, height: baseWidth * zoom / 100 * 297 / 210 }}><PageSvg page={page} project={prepared.project} prefix={`print-page-${pageIndex}`} /></div>}</div>
+          <div className="print-document-toolbar"><div className="print-page-nav"><IconButton label="Предыдущая страница" disabled={pageIndex === 0} onClick={() => setPageIndex(index => index - 1)}><ChevronLeft size={18} /></IconButton><span>Страница {pageIndex + 1} из {pages.length}</span><IconButton label="Следующая страница" disabled={pageIndex >= pages.length - 1} onClick={() => setPageIndex(index => index + 1)}><ChevronRight size={18} /></IconButton></div><div className="print-zoom-controls"><IconButton label="Уменьшить страницу" disabled={zoom <= MIN_PRINT_ZOOM} onClick={() => changeZoom(-10)}><Minus size={16} /></IconButton><button type="button" className="print-zoom-value" aria-label="Масштаб 100%" title="Показать в масштабе 100%" onClick={() => { fitMode.current = false; setZoom(100); }}>{zoom}%</button><IconButton label="Увеличить страницу" disabled={zoom >= MAX_PRINT_ZOOM} onClick={() => changeZoom(10)}><Plus size={16} /></IconButton><IconButton label="Вписать страницу" onClick={fitPage}><Scan size={16} /></IconButton></div></div>
+          <div className="print-document-stage" ref={stage}><div className="print-scroll-content">{page && <div className="print-page-paper" style={paperSize}><PageSvg page={page} project={prepared.project} prefix={`print-page-${pageIndex}`} /></div>}</div></div>
         </section>
       </div>
       {issues.length > 0 && <details className="print-issues" open={errors.length > 0}><summary>Проверка макета · {errors.length} ошибок, {warnings.length} предупреждений</summary><div>{issues.map((issue, index) => <Issue key={`${issue.code}-${issue.cardId || issue.pageIndex}-${index}`} issue={issue} onFix={fix} onPage={setPageIndex} />)}</div></details>}

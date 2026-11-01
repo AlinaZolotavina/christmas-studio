@@ -1,17 +1,11 @@
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useRef, useState, type CSSProperties } from 'react';
 import { ArrowRight, Check, Sparkles } from 'lucide-react';
 import { Button } from '../../shared/ui/Controls';
 import { Modal } from '../../shared/ui/Modal';
 import { markTourOffered } from './preferences';
+import { tourSteps } from './steps';
+import { positionTourPanel } from './position';
 import './tour.css';
-
-const steps = [
-  { target: '.workspace', eyebrow: 'ВАША ТВОРЧЕСКАЯ ПЛОЩАДКА', title: 'Начните с маленькой истории', text: 'Выберите текст или иллюстрацию на карточке. Перемещайте элемент и меняйте его размер круглыми ручками. Двойной клик по выбранному тексту открывает ввод; Esc завершает его с сохранением.' },
-  { target: '.inspector-tabs, .mobile-dock', eyebrow: 'СЛОВА, КРАСКИ И ДЕТАЛИ', title: 'Настроение — в ваших руках', text: 'Справа находятся вкладки «Текст», «Изображение» и «Фон». Ищите иллюстрации на русском или английском, выбирайте фон и добавляйте круги или звёзды. На телефоне настройки открываются кнопками внизу.' },
-  { target: '.thumbnail-strip, .mobile-dock', eyebrow: 'ДЕНЬ ЗА ДНЁМ', title: 'У каждого дня своя карточка', text: 'Переключайтесь между карточками в нижней ленте. На телефоне её открывает кнопка «Карточки». Режим «Всему набору» применяет оформление за одно действие; индивидуальные тексты и их положение сохраняются.' },
-  { target: '.history-controls', eyebrow: 'МОЖНО СМЕЛО ПРОБОВАТЬ', title: 'Каждую идею можно переиграть', text: 'Кнопки со стрелками отменяют и повторяют до 15 действий. Работают Ctrl/⌘+Z и Ctrl/⌘+Shift+Z вне поля ввода. Проект сохраняется в этом браузере автоматически; после перезагрузки история начинается заново.' },
-  { target: '.inspector-footer, .mobile-dock', eyebrow: 'ПОСЛЕДНИЙ ШТРИХ', title: 'Превратите идею в подарок', text: 'Откройте предпросмотр PDF и проверьте все страницы A4. Красные ошибки нужно исправить, оранжевые предупреждения не мешают скачиванию. Печатайте при 100%, отключив «Подогнать под страницу», и вырезайте по пунктиру.' },
-];
 
 export function TourOffer({ onStart, onSkip }: { onStart: () => void; onSkip: () => void }) {
   const skip = () => { markTourOffered(); onSkip(); };
@@ -23,21 +17,28 @@ export function TourOffer({ onStart, onSkip }: { onStart: () => void; onSkip: ()
 export function TourDialog({ onClose }: { onClose: () => void }) {
   const [index, setIndex] = useState(0);
   const [target, setTarget] = useState<DOMRect | null>(null);
+  const [viewport, setViewport] = useState(() => ({ width: window.innerWidth, height: window.innerHeight }));
+  const content = useRef<HTMLDivElement>(null);
   const progressId = useId();
-  const step = steps[index];
+  const step = tourSteps[index];
   useEffect(() => {
     const update = () => {
-      const visible = [...document.querySelectorAll<HTMLElement>(step.target)].find(element => {
+      const visible = step.target.split(',').flatMap(selector => [...document.querySelectorAll<HTMLElement>(selector.trim())]).find(element => {
         const rect = element.getBoundingClientRect();
         return rect.width > 0 && rect.height > 0 && rect.bottom > 0 && rect.top < window.innerHeight && getComputedStyle(element).display !== 'none';
       });
       setTarget(visible?.getBoundingClientRect() ?? null);
+      setViewport({ width: window.innerWidth, height: window.innerHeight });
     };
     update();
     window.addEventListener('resize', update);
     window.addEventListener('scroll', update, true);
-    return () => { window.removeEventListener('resize', update); window.removeEventListener('scroll', update, true); };
+    window.visualViewport?.addEventListener('resize', update);
+    return () => { window.removeEventListener('resize', update); window.removeEventListener('scroll', update, true); window.visualViewport?.removeEventListener('resize', update); };
   }, [step]);
+  useEffect(() => { content.current?.parentElement?.scrollTo({ top: 0 }); }, [index]);
+  const position = positionTourPanel(target, viewport);
+  const style = { '--tour-left': `${position.left}px`, '--tour-top': `${position.top}px`, '--tour-width': `${position.width}px`, '--tour-height': `${position.height}px` } as CSSProperties;
 
-  return <>{target && <div aria-hidden="true" className="onboarding-highlight" style={{ left: target.left + 3, top: target.top + 3, width: Math.max(0, target.width - 6), height: Math.max(0, target.height - 6) }} />}<Modal className="onboarding-tour" title={step.title} onClose={onClose} footer={<><Button variant="quiet" disabled={index === 0} onClick={() => setIndex(value => value - 1)}>Назад</Button><Button onClick={() => { if (index === steps.length - 1) onClose(); else setIndex(value => value + 1); }}>{index === steps.length - 1 ? <>Будем творить <Check size={16} /></> : <>Дальше <ArrowRight size={16} /></>}</Button></>}><div className="onboarding-tour__step" aria-live="polite"><span className="eyebrow">{step.eyebrow}</span><p className="onboarding-tour__description">{step.text}</p><span id={progressId} className="onboarding-tour__count">Шаг {index + 1} из {steps.length}</span><div className="tour-progress" role="progressbar" aria-labelledby={progressId} aria-valuemin={1} aria-valuemax={steps.length} aria-valuenow={index + 1}>{steps.map((_, item) => <span key={item} className={item <= index ? 'is-done' : ''} />)}</div></div></Modal></>;
+  return <div className="onboarding-tour-root" style={style}>{target && <div aria-hidden="true" className="onboarding-highlight" style={{ left: target.left + 3, top: target.top + 3, width: Math.max(0, target.width - 6), height: Math.max(0, target.height - 6) }} />}<Modal overlayClassName="tour-overlay" className="onboarding-tour" title={step.title} onClose={onClose} footer={<><Button variant="quiet" disabled={index === 0} onClick={() => setIndex(value => value - 1)}>Назад</Button><Button onClick={() => { if (index === tourSteps.length - 1) onClose(); else setIndex(value => value + 1); }}>{index === tourSteps.length - 1 ? <>Будем творить <Check size={16} /></> : <>Дальше <ArrowRight size={16} /></>}</Button></>}><div className="onboarding-tour__step" aria-live="polite" ref={content}><div className="onboarding-tour__paragraphs">{step.paragraphs.map(paragraph => <p key={paragraph}>{paragraph.split(/(\*\*.+?\*\*)/g).map((part, partIndex) => part.startsWith('**') ? <strong key={partIndex}>{part.slice(2, -2)}</strong> : part)}</p>)}</div><div className="onboarding-tour__progress"><span id={progressId} className="onboarding-tour__count">Шаг {index + 1} из {tourSteps.length}</span><div className="tour-progress" role="progressbar" aria-labelledby={progressId} aria-valuemin={1} aria-valuemax={tourSteps.length} aria-valuenow={index + 1}>{tourSteps.map((_, item) => <span key={item} className={item <= index ? 'is-done' : ''} />)}</div></div></div></Modal></div>;
 }

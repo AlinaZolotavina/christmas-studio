@@ -51,11 +51,11 @@ describe('real client PDF adapter', () => {
     expect(print.issues.some(issue => issue.code === 'text-overflow')).toBe(true);
     await expect(generatePdf(project, print)).rejects.toThrow('Исправьте ошибки');
   });
-  it('exports a complete 31-card set with unique art and ten decorations each', async () => {
+  it('exports a complete 31-card set with unique art and 25 decorations each', async () => {
     installLocalFetch();
     const project = createProject('woodland', 31, () => 0.42);
     project.cards.forEach(card => {
-      card.decorations = Array.from({ length: 10 }, (_, i) => ({ id: `decoration-${i}`, type: i % 2 ? 'star' : 'circle', x: 5 + i % 5 * 8, y: 20 + Math.floor(i / 5) * 8, width: 4, height: 4, fill: '#b58d52', stroke: '#315c4c', strokeWidth: 0.5, points: 5 }));
+      card.decorations = Array.from({ length: 25 }, (_, i) => ({ id: `decoration-${i}`, type: i % 2 ? 'star' : 'circle', x: 5 + i % 5 * 8, y: 20 + Math.floor(i / 5) * 8, width: 4, height: 4, fill: '#b58d52', stroke: '#315c4c', strokeWidth: 0.5, points: 5 }));
     });
     const started = performance.now();
     const print = await preparePrint(project);

@@ -197,11 +197,17 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
       const signY = handle.includes('n') ? -1 : handle.includes('s') ? 1 : 0;
       let width = Math.max(1, origin.width + localDx * signX);
       let height = Math.max(1, origin.height + localDy * signY);
-      if (operation.selection.kind === 'illustration') {
+      const decoration = operation.selection.kind === 'decoration';
+      if (operation.selection.kind === 'illustration' || (decoration && event.shiftKey)) {
         const ratio = origin.width / origin.height;
         if (signX) height = width / ratio; else width = height * ratio;
+        if (decoration) {
+          const sizeScale = Math.min(1, 20 / width, 20 / height);
+          width *= sizeScale; height *= sizeScale;
+        }
+      } else if (decoration) {
+        width = Math.min(20, width); height = Math.min(20, height);
       }
-      if (operation.selection.kind === 'decoration') { width = Math.min(20, width); height = Math.min(20, height); }
       const centerDx = signX * (width - origin.width) / 2;
       const centerDy = signY * (height - origin.height) / 2;
       const [shiftX, shiftY] = rotatePoint(centerDx, centerDy, 0, 0, angle);

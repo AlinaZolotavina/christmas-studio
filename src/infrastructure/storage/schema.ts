@@ -63,7 +63,7 @@ export function validateProject(value: unknown): ProjectDocument {
     assert(Array.isArray(background.colors) && background.colors.length >= 1 && background.colors.length <= 3 && background.colors.every(isColor), `${label}: некорректные цвета фона.`);
     assert(finite(background.angle) && finite(background.centerX) && finite(background.centerY) && background.centerX >= 0 && background.centerX <= 1 && background.centerY >= 0 && background.centerY <= 1, `${label}: некорректная геометрия градиента.`);
 
-    assert(Array.isArray(card.decorations) && card.decorations.length <= MAX_DECORATIONS, `${label}: может содержать не более 10 декораций.`);
+    assert(Array.isArray(card.decorations) && card.decorations.length <= MAX_DECORATIONS, `${label}: может содержать не более ${MAX_DECORATIONS} декораций.`);
     const decorationIds = new Set<string>();
     for (const decoration of card.decorations) {
       assert(isRecord(decoration) && id(decoration.id) && !decorationIds.has(decoration.id), `${label}: некорректный идентификатор декорации.`);

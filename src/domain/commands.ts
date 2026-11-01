@@ -138,7 +138,7 @@ export function executeCommand(project: ProjectDocument, command: Command): Comm
     result.changed = next.name !== project.name || next.holeEnabled !== project.holeEnabled || result.changedCardIds.length > 0;
     if (result.skippedCardIds.length) {
       const numbers = project.cards.filter(card => result.skippedCardIds.includes(card.id)).map(card => card.number).join(', ');
-      result.warnings.push(`Карточки ${numbers} пропущены: на каждой уже 10 декораций.`);
+      result.warnings.push(`Карточки ${numbers} пропущены: на каждой уже ${MAX_DECORATIONS} декораций.`);
     }
     return { project: result.changed ? next : project, result };
   } catch (error) {

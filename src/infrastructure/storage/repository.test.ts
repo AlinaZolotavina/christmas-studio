@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createProject } from '../../domain/project';
+import { executeCommand } from '../../domain/commands';
 import { decodeProject, validateProject } from './schema';
 import { ProjectRepository, STORAGE_KEYS } from './repository';
 import type { StorageAdapter } from './repository';
@@ -17,6 +18,17 @@ describe('persisted project validation', () => {
   it('round-trips a real catalog project', () => {
     const project = fixture();
     expect(decodeProject(JSON.stringify(project))).toEqual(project);
+  });
+
+  it('restores all 25 decorations and rejects a saved card above the new limit', () => {
+    let project = fixture();
+    for (let index = 0; index < 25; index += 1) {
+      project = executeCommand(project, { type: 'add-decoration', cardId: project.cards[0].id, patch: { type: 'star' } }).project;
+    }
+    expect(project.cards[0].decorations).toHaveLength(25);
+    expect(decodeProject(JSON.stringify(project))).toEqual(project);
+    project.cards[0].decorations.push({ ...project.cards[0].decorations[0], id: 'decoration-26' });
+    expect(() => validateProject(project)).toThrow('не более 25');
   });
 
   it('rejects deeply nested non-finite values, invalid leaves and missing catalog references', () => {

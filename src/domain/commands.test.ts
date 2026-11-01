@@ -32,12 +32,12 @@ describe('atomic document commands', () => {
   it('reports full cards and adds a decoration at relative positions to all others', () => {
     let project = fixture();
     const firstId = project.cards[0].id;
-    for (let index = 0; index < 10; index += 1) project = executeCommand(project, { type: 'add-decoration', cardId: firstId, patch: { type: 'star' } }).project;
+    for (let index = 0; index < 25; index += 1) project = executeCommand(project, { type: 'add-decoration', cardId: firstId, patch: { type: 'star' } }).project;
     project.cards[1].width = 100;
     const outcome = executeCommand(project, { type: 'add-decoration', cardId: firstId, scope: 'all', patch: { type: 'circle', x: 10, y: 20 } });
     expect(outcome.result.skippedCardIds).toEqual([firstId]);
-    expect(outcome.result.warnings[0]).toContain('1');
-    expect(outcome.project.cards[0].decorations).toHaveLength(10);
+    expect(outcome.result.warnings[0]).toContain('25 декораций');
+    expect(outcome.project.cards[0].decorations).toHaveLength(25);
     expect(outcome.project.cards[1].decorations[0]).toMatchObject({ x: 20, y: 20, width: 10 });
     expect(outcome.result.changedCardIds).toHaveLength(23);
   });
@@ -109,7 +109,7 @@ describe('atomic document commands', () => {
 
   it('rolls back invalid global decoration creation even after skipped full cards', () => {
     let project = fixture();
-    for (let index = 0; index < 10; index += 1) project = executeCommand(project, { type: 'add-decoration', cardId: project.cards[0].id, patch: { type: 'circle' } }).project;
+    for (let index = 0; index < 25; index += 1) project = executeCommand(project, { type: 'add-decoration', cardId: project.cards[0].id, patch: { type: 'circle' } }).project;
     const before = structuredClone(project);
     const outcome = executeCommand(project, { type: 'add-decoration', cardId: project.cards[0].id, scope: 'all', patch: { type: 'circle', width: 21 } });
     expect(outcome.result.error).toContain('2 см');

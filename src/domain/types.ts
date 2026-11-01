@@ -89,7 +89,7 @@ export interface FontDefinition {
   boldItalic?: string;
 }
 export const SCHEMA_VERSION = 1;
-export const MAX_DECORATIONS = 10;
+export const MAX_DECORATIONS = 25;
 export const HISTORY_LIMIT = 15;
 export const MAX_TEXT_LENGTH = 6000;
 export const mmToPt = (mm: number) => mm * 72 / 25.4;

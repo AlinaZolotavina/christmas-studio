@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
-import { Expand, Minus, MoreHorizontal, Plus, Trash2 } from 'lucide-react';
+import { Expand, Minus, Plus, Trash2 } from 'lucide-react';
 import type { Command } from '../../domain/commands';
 import type { Box, Card, Selection } from '../../domain/types';
 import { MAX_TEXT_LENGTH, ptToMm } from '../../domain/types';
@@ -65,7 +65,6 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
   const [guides, setGuides] = useState<{ x?: number; y?: number }>({});
   const [editing, setEditing] = useState(false);
   const [textValue, setTextValue] = useState('');
-  const [context, setContext] = useState<{ x: number; y: number } | null>(null);
   const textarea = useRef<HTMLTextAreaElement>(null);
   const displayed = draft?.id === card.id ? draft : card;
   const liveIssues = validateCard(displayed, { textOverflow: layoutText(displayed.text).overflow });
@@ -82,7 +81,7 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
     if (rect) setScale(clampScale(Math.min((rect.width - 110) / card.width, (rect.height - 94) / card.height)));
   }, [card.width, card.height]);
 
-  useEffect(() => { fit(); setDraft(null); draftRef.current = null; setEditing(false); setContext(null); }, [card.id, fitKey, fit]);
+  useEffect(() => { fit(); setDraft(null); draftRef.current = null; setEditing(false); }, [card.id, fitKey, fit]);
   useEffect(() => {
     const observer = new ResizeObserver(() => {
       // Initial mount can happen before the grid has its final size.
@@ -116,9 +115,8 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
   };
 
   const start = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (event.button !== 0 || (event.target as HTMLElement).closest('button,textarea,input,[role="menu"]')) return;
+    if (event.button !== 0 || (event.target as HTMLElement).closest('button,textarea,input')) return;
     if (editing) { finishEditing(); return; }
-    setContext(null);
     surface.current?.focus({ preventScroll: true });
     pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -237,9 +235,8 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
   };
   const remove = () => {
     if (selection.kind === 'decoration' && selection.decorationId) { onCommit({ type: 'remove-decoration', cardId: card.id, decorationId: selection.decorationId }); onSelectionChange({ kind: 'card' }); }
-    setContext(null);
   };
-  const zoom = (factor: number) => { setScale(value => clampScale(value * factor)); setContext(null); };
+  const zoom = (factor: number) => { setScale(value => clampScale(value * factor)); };
   const renderHandle = (handle: string) => {
     const x = handle.includes('w') ? box!.x : handle.includes('e') ? box!.x + box!.width : box!.x + box!.width / 2;
     const y = handle.includes('n') ? box!.y : handle.includes('s') ? box!.y + box!.height : box!.y + box!.height / 2;
@@ -249,16 +246,9 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
   return <div ref={surface} className="editor-canvas" tabIndex={0} aria-label="Редактор карточки. Выберите элемент для перемещения и изменения размера" onPointerDown={start} onPointerMove={move} onPointerUp={event => end(event)} onPointerCancel={event => end(event, true)} onDoubleClick={event => {
     const point = localPoint(event.clientX, event.clientY);
     if (hitSelections(card, point.x, point.y).some(item => item.kind === 'text')) { onSelectionChange({ kind: 'text' }); setTextValue(card.text.content); setEditing(true); }
-  }} onContextMenu={event => {
-    event.preventDefault();
-    const point = localPoint(event.clientX, event.clientY);
-    const hits = hitSelections(card, point.x, point.y);
-    if (hits.length && !hits.some(item => same(item, selection))) onSelectionChange(hits[0]);
-    const rect = surface.current!.getBoundingClientRect();
-    setContext({ x: Math.max(8, Math.min(rect.width - 230, event.clientX - rect.left)), y: Math.max(8, Math.min(rect.height - 150, event.clientY - rect.top)) });
-  }} onKeyDown={event => {
+  }} onContextMenu={event => event.preventDefault()} onKeyDown={event => {
     if ((event.target as HTMLElement).matches('textarea,input')) return;
-    if (event.key === 'Escape') { drag.current = null; pointers.current.clear(); pinch.current = null; updateDraft(null); setGuides({}); setContext(null); }
+    if (event.key === 'Escape') { drag.current = null; pointers.current.clear(); pinch.current = null; updateDraft(null); setGuides({}); }
     if (event.key === 'Delete' || event.key === 'Backspace') { event.preventDefault(); remove(); }
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key) && selection.kind !== 'card') {
       event.preventDefault();
@@ -279,22 +269,15 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
         </g>}
         {issueElements.map(issue => <g key={issue.kind} data-element-issue={issue.kind} data-severity={issue.severity} transform={`translate(${issue.box.x} ${issue.box.y - 3})`}><title>{issue.message}</title><circle r={7 / scale} fill={issue.severity === 'error' ? '#c64343' : '#c59b43'} /><text textAnchor="middle" dy={3.5 / scale} fill="white" fontSize={11 / scale}>!</text></g>)}
       </svg>
-      {box && !editing && <div className="element-actions" style={{ left: (box.x + box.width) * scale + 8, top: box.y * scale - 8 }} onPointerDown={event => event.stopPropagation()}>
+      {box && !editing && selection.kind === 'decoration' && <div className="element-actions" style={{ left: (box.x + box.width) * scale + 8, top: box.y * scale - 8 }} onPointerDown={event => event.stopPropagation()}>
         {selection.kind === 'decoration' && <button aria-label="Удалить декорацию" onClick={remove}><Trash2 size={15} /></button>}
-        <button aria-label="Действия с элементом" onClick={() => { const rect = surface.current!.getBoundingClientRect(); setContext({ x: Math.min(rect.width - 230, Math.max(8, rect.width / 2)), y: Math.min(rect.height - 150, Math.max(8, rect.height / 2)) }); }}><MoreHorizontal size={16} /></button>
       </div>}
       {editing && <textarea ref={textarea} className="inline-text-editor" aria-label="Текст на холсте" value={textValue} maxLength={MAX_TEXT_LENGTH} style={{ left: card.text.x * scale, top: card.text.y * scale, width: card.text.width * scale, height: Math.max(card.text.height * scale, 44), fontFamily: FONT_FAMILIES[card.text.fontId], fontSize: ptToMm(card.text.fontSize) * scale, fontWeight: card.text.weight, fontStyle: card.text.italic ? 'italic' : 'normal', textAlign: card.text.align, color: card.text.color, lineHeight: 1.22 } as CSSProperties} onChange={event => { setTextValue(event.target.value); onCommit({ type: 'update-text', cardId: card.id, patch: { content: event.target.value } }); }} onBlur={finishEditing} onKeyDown={event => {
         event.stopPropagation();
         if (event.key === 'Escape' || (event.key === 'Enter' && (event.ctrlKey || event.metaKey))) { event.preventDefault(); finishEditing(); }
       }} onPaste={event => { event.preventDefault(); const input = event.currentTarget; const value = event.clipboardData.getData('text/plain').replace(/\r\n?/g, '\n'); const start = input.selectionStart, end = input.selectionEnd; const limit = MAX_TEXT_LENGTH - (textValue.length - (end - start)); const inserted = value.slice(0, Math.max(0, limit)); const content = textValue.slice(0, start) + inserted + textValue.slice(end); setTextValue(content); onCommit({ type: 'update-text', cardId: card.id, patch: { content } }); requestAnimationFrame(() => input.setSelectionRange(start + inserted.length, start + inserted.length)); }} />}
     </div>
-    {context && <><button className="canvas-menu-dismiss" aria-label="Закрыть контекстное меню" onClick={() => setContext(null)} /><div className="canvas-context-menu" role="menu" style={{ left: context.x, top: context.y }} onPointerDown={event => event.stopPropagation()}>
-      <strong>{({ text: 'Текст', illustration: 'Иллюстрация', decoration: 'Декорация', hole: 'Отверстие', card: 'Карточка' })[selection.kind]}</strong>
-      {selection.kind === 'text' && <button role="menuitem" onClick={() => { setContext(null); setTextValue(card.text.content); setEditing(true); }}>Редактировать текст</button>}
-      <button role="menuitem" onClick={() => { setContext(null); fit(); }}>Вписать карточку</button>
-      {selection.kind === 'decoration' && <button role="menuitem" className="danger-text" onClick={remove}>Удалить декорацию</button>}
-      <button role="menuitem" onClick={() => { onSelectionChange({ kind: 'card' }); setContext(null); }}>Снять выделение</button>
-    </div></>}
+
   </div>;
 }
 

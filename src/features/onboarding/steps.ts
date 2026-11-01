@@ -19,7 +19,7 @@ export const tourSteps: TourStep[] = [
     ],
   },
   {
-    target: '.thumbnail-strip, .inspector-tabs button:nth-child(4), .mobile-dock',
+    target: '.thumbnail-strip, .inspector-tabs [data-tab="cards"], .mobile-dock',
     title: 'Работайте со всеми карточками проекта',
     paragraphs: [
       'Переключайтесь между карточками в нижней ленте на компьютере. На телефоне нажмите иконку «Карточки» на нижней панели — откроется список карточек.',
@@ -35,7 +35,7 @@ export const tourSteps: TourStep[] = [
     ],
   },
   {
-    target: '.inspector-footer, .mobile-dock',
+    target: '.inspector-footer, .inspector-tabs [data-tab="export"], .mobile-dock',
     title: 'Скачивайте и печатайте карточки',
     paragraphs: [
       'Когда оформление будет готово, на компьютере нажмите кнопку экспорта, на планшете или телефоне — откройте вкладку «Экспорт» и перейдите к предпросмотру PDF. Проверьте расположение всех карточек на страницах A4.',

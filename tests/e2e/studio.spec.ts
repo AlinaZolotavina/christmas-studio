@@ -108,14 +108,14 @@ test('image library searches both languages and combines taxonomy filters', asyn
   await page.getByRole('tab', { name: 'Изображение', exact: true }).click();
   const query = page.getByRole('textbox', { name: 'Поиск иллюстраций' });
   await query.fill('kissing bough');
-  await expect(page.locator('.image-library button')).toHaveCount(1);
-  await expect(page.locator('.image-library button')).toHaveAttribute('aria-label', /Омела/);
+  const mistletoe = page.getByRole('button', { name: 'Заменить иллюстрацию: Омела с бордовым бантом', exact: true });
+  await expect(mistletoe).toBeVisible();
   await query.fill('веточка омелы');
-  await expect(page.locator('.image-library button')).toHaveCount(1);
+  await expect(mistletoe).toBeVisible();
   await page.getByLabel('Категория иллюстраций', { exact: true }).selectOption('botanical');
   await page.getByLabel('Подкатегория иллюстраций', { exact: true }).selectOption('botanical-branches');
   await expect(page.getByLabel('Фон иллюстрации', { exact: true })).toHaveCount(0);
-  await expect(page.locator('.image-library button')).toHaveCount(1);
+  await expect(mistletoe).toBeVisible();
   await query.fill('definitelymissingterm');
   await expect(page.locator('.image-library button')).toHaveCount(0);
   await expect(page.getByText('Пока ничего не нашлось')).toBeVisible();

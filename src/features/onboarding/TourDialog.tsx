@@ -30,11 +30,18 @@ export function TourDialog({ onClose }: { onClose: () => void }) {
       setTarget(visible?.getBoundingClientRect() ?? null);
       setViewport({ width: window.innerWidth, height: window.innerHeight });
     };
+    let frame = 0;
+    const scheduleUpdate = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update); };
+    // Breakpoint changes replace the strip/footer with tabs after the resize event.
+    // Re-read selectors after that render so the highlight follows the new control.
+    const observer = new MutationObserver(scheduleUpdate);
+    const studio = document.querySelector('.studio');
+    if (studio) observer.observe(studio, { childList: true, subtree: true });
     update();
-    window.addEventListener('resize', update);
-    window.addEventListener('scroll', update, true);
-    window.visualViewport?.addEventListener('resize', update);
-    return () => { window.removeEventListener('resize', update); window.removeEventListener('scroll', update, true); window.visualViewport?.removeEventListener('resize', update); };
+    window.addEventListener('resize', scheduleUpdate);
+    window.addEventListener('scroll', scheduleUpdate, true);
+    window.visualViewport?.addEventListener('resize', scheduleUpdate);
+    return () => { cancelAnimationFrame(frame); observer.disconnect(); window.removeEventListener('resize', scheduleUpdate); window.removeEventListener('scroll', scheduleUpdate, true); window.visualViewport?.removeEventListener('resize', scheduleUpdate); };
   }, [step]);
   useEffect(() => { content.current?.parentElement?.scrollTo({ top: 0 }); }, [index]);
   const position = positionTourPanel(target, viewport);

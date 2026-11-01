@@ -348,7 +348,8 @@ export function searchImages(query = '', filters: ImageFilters = {}): ImageMetad
       image.subcategory, labels(subcategory?.name), ...image.tags, ...image.tagsEn,
       ...image.aliases, ...Object.values(image.tagsByLocale ?? {}).flat(), image.style ?? '', image.background,
     ].join(' '));
-    return words.every(word => haystack.includes(word)) && tagWords.every(tag => haystack.includes(tag));
+    const explicitTags = [...image.tags, ...image.tagsEn, ...Object.values(image.tagsByLocale ?? {}).flat()].map(normalize);
+    return words.every(word => haystack.includes(word)) && tagWords.every(tag => explicitTags.some(value => value.includes(tag)));
   });
 }
 

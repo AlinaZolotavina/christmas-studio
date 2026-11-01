@@ -5,6 +5,8 @@ import type { Command } from '../domain/commands';
 import { validateProject } from '../application/export/validation';
 import { useProjectStore } from '../application/useProjectStore';
 import { TemplateGallery } from '../features/gallery/TemplateGallery';
+import { TourDialog, TourOffer } from '../features/onboarding/TourDialog';
+import { wasTourOffered } from '../features/onboarding/preferences';
 import { StudioShell } from '../features/editor/StudioShell';
 import { EditorCanvas } from '../rendering/interaction/EditorCanvas';
 import { Button, IconButton } from '../shared/ui/Controls';
@@ -16,6 +18,8 @@ export default function App() {
   const store = useProjectStore();
   const [view, setView] = useState<'gallery' | 'editor'>(() => store.project ? 'editor' : 'gallery');
   const [preview, setPreview] = useState(false);
+  const [tourOffer, setTourOffer] = useState(false);
+  const [tourActive, setTourActive] = useState(false);
   const [pendingCreate, setPendingCreate] = useState<{ templateId: string; count: 24 | 31 } | null>(null);
   const [recoveryHidden, setRecoveryHidden] = useState(false);
   const [fontVersion, updateFonts] = useReducer((value) => value + 1, 0);
@@ -55,6 +59,7 @@ export default function App() {
     const result = store.create(templateId, count);
     if (result.error) { setToast(result.error); return; }
     setPendingCreate(null); setView('editor');
+    if (!wasTourOffered()) setTourOffer(true);
 
   };
   const downloadRaw = () => {
@@ -65,7 +70,9 @@ export default function App() {
   };
   const displayedNotice = toast ?? store.notice;
   return <>
-    {view === 'editor' && store.project ? <StudioShell key={store.project.id} project={store.project} onCommand={execute} onHome={() => { store.flush(); setView('gallery'); }} saveStatus={store.saveStatus} canUndo={store.canUndo} canRedo={store.canRedo} onUndo={store.undo} onRedo={store.redo} onExport={() => setPreview(true)} focusTarget={focusTarget} recentColors={store.recentColors} onRecentColor={store.addRecentColor} issues={issues} canvas={(card, selection, onSelectionChange) => <EditorCanvas card={card} selection={selection} onSelectionChange={onSelectionChange} onCommit={execute} fitKey={card.id} />} /> : <TemplateGallery onCreate={(templateId, count) => { if (store.project) setPendingCreate({ templateId, count }); else create(templateId, count); }} onContinue={store.project ? () => setView('editor') : undefined} />}
+    {view === 'editor' && store.project ? <StudioShell key={store.project.id} project={store.project} onCommand={execute} onHome={() => { store.flush(); setView('gallery'); }} saveStatus={store.saveStatus} canUndo={store.canUndo} canRedo={store.canRedo} onUndo={store.undo} onRedo={store.redo} onExport={() => setPreview(true)} onStartTour={() => { setTourOffer(false); setTourActive(true); }} focusTarget={focusTarget} recentColors={store.recentColors} onRecentColor={store.addRecentColor} issues={issues} canvas={(card, selection, onSelectionChange) => <EditorCanvas card={card} selection={selection} onSelectionChange={onSelectionChange} onCommit={execute} fitKey={card.id} />} /> : <TemplateGallery onCreate={(templateId, count) => { if (store.project) setPendingCreate({ templateId, count }); else create(templateId, count); }} onContinue={store.project ? () => setView('editor') : undefined} />}
+    {tourOffer && store.project && <TourOffer onStart={() => { setTourOffer(false); setTourActive(true); }} onSkip={() => setTourOffer(false)} />}
+    {tourActive && store.project && <TourDialog onClose={() => setTourActive(false)} />}
     {preview && store.project && <Suspense fallback={<Modal title="Готовим предпросмотр" onClose={() => setPreview(false)}><p className="muted">Обновляем предпросмотр…</p></Modal>}><PrintPreview project={store.project} revision={store.revision} onClose={() => setPreview(false)} onFix={(cardId: string, element?: ElementKind) => { setFocusTarget({ cardId, element, requestId: Date.now() }); setPreview(false); setView('editor'); }} /></Suspense>}
     {pendingCreate && <Modal title="Начнём новую историю?" onClose={() => setPendingCreate(null)} footer={<><Button variant="secondary" onClick={() => setPendingCreate(null)}>Оставить текущий</Button><Button onClick={() => create(pendingCreate.templateId, pendingCreate.count)}>Создать новый</Button></>}><p className="muted">В браузере хранится один проект. Новый набор заменит текущий. Если хотите сохранить готовые бирки, сначала скачайте PDF.</p></Modal>}
 

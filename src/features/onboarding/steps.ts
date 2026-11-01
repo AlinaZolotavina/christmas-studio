@@ -1,6 +1,6 @@
 export interface TourStep { target: string; title: string; paragraphs: string[] }
 
-/** Copy follows requirements/tour.md; two UI wording changes were approved on 2 November. */
+/** Approved reference copy is stored in tests/fixtures/tour-reference.md. */
 export const tourSteps: TourStep[] = [
   {
     target: '.inspector-tabs, .mobile-dock',

@@ -36,7 +36,7 @@ npm run dev
 
 ## Пополнение изображений
 
-Добавьте PNG в `assets/`, вручную опишите его в [`src/data/images.ts`](./src/data/images.ts), выполните `npm run assets:prepare`. Полная инструкция — [`requirements/image-catalog.md`](./requirements/image-catalog.md).
+Добавьте PNG в `assets/`, вручную опишите его в [`src/data/images.ts`](./src/data/images.ts), выполните `npm run assets:prepare`. Для каждого исходника нужна отдельная запись с уникальным kebab-case ID, путями `source` и `src`, категорией, подкатегорией, названиями, русскими и английскими тегами, синонимами и типом фона. Подготовленные файлы из `public/art/` и `src/content/image-dimensions.json` включайте в тот же коммит.
 
 Категории, подкатегории, теги, синонимы и фон никогда не вычисляются из имени файла. Генератор проверяет связи и уникальность, создаёт WebP-превью и измеряет размеры. Начальная загрузка использует превью; полноразмерные PNG загружаются для PDF. При экспорте растровые изображения подготавливаются к 300 dpi фактического размера с сохранением прозрачности, оригиналы не меняются.
 
@@ -68,9 +68,5 @@ npm run build
 
 ## Документация
 
-- [`requirements/implementation-plan.md`](./requirements/implementation-plan.md) — пакеты T00–T10 и роли.
-- [`requirements/technical-decisions.md`](./requirements/technical-decisions.md) — технические решения.
-- [`requirements/implementation-report.md`](./requirements/implementation-report.md) — результаты реализации и проверки.
-- [`requirements/update-report-2026-11-02.md`](./requirements/update-report-2026-11-02.md) — главная страница, исправления интерфейса и актуальная приёмка.
-- [`requirements/editor-refinements-2026-11-02.md`](./requirements/editor-refinements-2026-11-02.md) — последующие правки панелей, навигации, декора и примеров шаблонов.
+- Локальные требования, макеты и отчёты находятся в `requirements/`. Эта папка исключена из Git; приложение, сборка и тесты от неё не зависят.
 - Лицензии локальных шрифтов и их источники находятся в `public/fonts/`.

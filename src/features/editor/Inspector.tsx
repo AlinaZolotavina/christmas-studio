@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AlignCenter, AlignLeft, AlignRight, Bold, Check, Circle, ImagePlus, Italic, Plus, Search, Shapes, Star, Trash2, X } from 'lucide-react';
 import type { Background, Box, Card, Decoration, ProjectDocument, Scope, Selection, Shape, TextElement } from '../../domain/types';
 import { MAX_TEXT_LENGTH } from '../../domain/types';
@@ -31,15 +31,18 @@ const baseColors = ['#315C4C', '#923C42', '#C99C56', '#E8D8BE', '#D9E7EC', '#FFF
 export function NumberField({ label, value, onCommit, unit, min, max, step = 0.1 }: { label: string; value: number; onCommit: (value: number) => void; unit?: string; min?: number; max?: number; step?: number }) {
   const display = (number: number) => Number(number.toFixed(2)).toString();
   const [draft, setDraft] = useState(display(value));
-  useEffect(() => setDraft(display(value)), [value]);
+  const edited = useRef(false);
+  useEffect(() => { setDraft(display(value)); edited.current = false; }, [value]);
   const commit = () => {
+    if (!edited.current) return;
+    edited.current = false;
     const parsed = Number(draft.replace(',', '.'));
     if (!draft.trim() || !Number.isFinite(parsed)) { setDraft(display(value)); return; }
     const next = Math.max(min ?? -Infinity, Math.min(max ?? Infinity, parsed));
     setDraft(display(next));
     if (next !== value) onCommit(next);
   };
-  return <Field label={label}><div className="input-unit"><input type="text" inputMode="decimal" aria-label={label} value={draft} onChange={(event) => setDraft(event.target.value)} onBlur={commit} onKeyDown={(event) => { if (event.key === 'Enter') event.currentTarget.blur(); if (event.key === 'Escape') { setDraft(display(value)); event.stopPropagation(); } if (event.key === 'ArrowUp' || event.key === 'ArrowDown') { event.preventDefault(); const next = Math.max(min ?? -Infinity, Math.min(max ?? Infinity, value + (event.key === 'ArrowUp' ? step : -step))); onCommit(Number(next.toFixed(2))); } }} />{unit && <span>{unit}</span>}</div></Field>;
+  return <Field label={label}><div className="input-unit"><input type="text" inputMode="decimal" aria-label={label} value={draft} onChange={(event) => { edited.current = true; setDraft(event.target.value); }} onBlur={commit} onKeyDown={(event) => { if (event.key === 'Enter') event.currentTarget.blur(); if (event.key === 'Escape') { edited.current = false; setDraft(display(value)); event.stopPropagation(); } if (event.key === 'ArrowUp' || event.key === 'ArrowDown') { event.preventDefault(); edited.current = false; const next = Math.max(min ?? -Infinity, Math.min(max ?? Infinity, value + (event.key === 'ArrowUp' ? step : -step))); onCommit(Number(next.toFixed(2))); } }} />{unit && <span>{unit}</span>}</div></Field>;
 }
 
 function BoxFields({ box, onChange, lockRatio = false, max }: { box: Box; onChange: (patch: Partial<Box>) => void; lockRatio?: boolean; max?: number }) {

@@ -137,4 +137,59 @@ describe('project command pipeline and autosave', () => {
     expect(store.isDirty()).toBe(false);
     cleanup();
   });
+
+  it('coalesces five typed characters into one undo step while keeping every revision', () => {
+    vi.useFakeTimers();
+    const { store, storage, cardId } = setup();
+    const initialRevision = store.getSnapshot().revision;
+    for (const content of ['С', 'Сн', 'Сне', 'Снег', 'Снега']) {
+      store.dispatch({ type: 'update-text', cardId, patch: { content } });
+      vi.advanceTimersByTime(100);
+    }
+    expect(store.getSnapshot().revision).toBe(initialRevision + 5);
+    vi.advanceTimersByTime(400);
+    expect(decodeProject(storage.getItem(STORAGE_KEYS.project)!).cards[0].text.content).toBe('Снега');
+    store.undo();
+    expect(store.getSnapshot().project!.cards[0].text.content).toBe('1');
+    expect(store.getSnapshot().canUndo).toBe(false);
+    store.redo();
+    expect(store.getSnapshot().project!.cards[0].text.content).toBe('Снега');
+    store.flush();
+  });
+
+  it('separates typing sessions by a pause and by another command', () => {
+    vi.useFakeTimers();
+    const { store, cardId } = setup();
+    store.dispatch({ type: 'update-text', cardId, patch: { content: 'Первая' } });
+    vi.advanceTimersByTime(801);
+    store.dispatch({ type: 'update-text', cardId, patch: { content: 'Вторая' } });
+    store.dispatch({ type: 'update-text', cardId, patch: { fontSize: 20 } });
+    store.dispatch({ type: 'update-text', cardId, patch: { content: 'Третья' } });
+    store.undo();
+    expect(store.getSnapshot().project!.cards[0].text).toMatchObject({ content: 'Вторая', fontSize: 20 });
+    store.undo();
+    expect(store.getSnapshot().project!.cards[0].text).toMatchObject({ content: 'Вторая', fontSize: 28 });
+    store.undo();
+    expect(store.getSnapshot().project!.cards[0].text.content).toBe('Первая');
+    store.undo();
+    expect(store.getSnapshot().project!.cards[0].text.content).toBe('1');
+    store.flush();
+  });
+
+  it('ends typing groups on blur and removes lifecycle listeners on cleanup', () => {
+    vi.useFakeTimers();
+    const { store, cardId } = setup();
+    const targetWindow = new EventTarget();
+    const targetDocument = Object.assign(new EventTarget(), { visibilityState: 'visible' });
+    const cleanup = store.attachBrowserLifecycle(targetWindow as unknown as Window, targetDocument as unknown as Document);
+    store.dispatch({ type: 'update-text', cardId, patch: { content: 'Сессия 1' } });
+    targetDocument.dispatchEvent(new Event('focusout'));
+    store.dispatch({ type: 'update-text', cardId, patch: { content: 'Сессия 2' } });
+    store.undo();
+    expect(store.getSnapshot().project!.cards[0].text.content).toBe('Сессия 1');
+    cleanup();
+    targetWindow.dispatchEvent(new Event('pagehide'));
+    expect(store.isDirty()).toBe(true);
+    store.flush();
+  });
 });

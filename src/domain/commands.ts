@@ -2,6 +2,9 @@ import type { Background, Card, Decoration, Hole, Illustration, ProjectDocument,
 import { MAX_DECORATIONS, MAX_TEXT_LENGTH } from './types';
 import { makeId } from './project';
 import { defaultHole, isHoleInside } from './geometry';
+import { assets } from '../content/assets';
+
+const knownAssetIds = new Set(assets.map(asset => asset.id));
 
 interface Target { cardId: string; scope?: Scope }
 type DecorationStyle = Pick<Decoration, 'fill' | 'stroke' | 'strokeWidth' | 'points'>;
@@ -76,7 +79,8 @@ export function executeCommand(project: ProjectDocument, command: Command): Comm
           case 'update-illustration':
             card.illustration = { ...card.illustration, ...command.patch };
             assertBox(card.illustration);
-            if (!validNumber(card.illustration.rotation) || !card.illustration.assetId) throw new Error('Некорректная иллюстрация.');
+            if (!validNumber(card.illustration.rotation)) throw new Error('Некорректный угол иллюстрации.');
+            if (!knownAssetIds.has(card.illustration.assetId)) throw new Error('Иллюстрация не найдена в библиотеке.');
             break;
           case 'update-background': {
             card.background = { ...card.background, ...command.patch, colors: [...(command.patch.colors ?? card.background.colors)] };

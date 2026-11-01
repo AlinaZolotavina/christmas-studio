@@ -75,4 +75,46 @@ describe('atomic document commands', () => {
     const removed = executeCommand(project, { type: 'set-project-hole', enabled: false });
     expect(removed.project.cards.every(card => card.hole === null)).toBe(true);
   });
+
+  it('rejects unknown illustration IDs in the domain itself', () => {
+    const project = fixture();
+    const outcome = executeCommand(project, { type: 'update-illustration', cardId: project.cards[0].id, patch: { assetId: 'unknown' } });
+    expect(outcome.project).toBe(project);
+    expect(outcome.result.error).toContain('не найдена');
+  });
+
+  it('rolls back every card when a mass resize fails on a later decoration', () => {
+    let project = fixture();
+    project = executeCommand(project, { type: 'add-decoration', cardId: project.cards[0].id, scope: 'all', patch: { type: 'circle' } }).project;
+    project.cards[1].decorations[0].width = 15;
+    const before = structuredClone(project);
+    const outcome = executeCommand(project, { type: 'resize-card', cardId: project.cards[0].id, scope: 'all', patch: { width: 100, height: 160 } });
+    expect(outcome.result.error).toContain('2 см');
+    expect(outcome.result.changedCardIds).toEqual([]);
+    expect(outcome.project).toBe(project);
+    expect(project).toEqual(before);
+  });
+
+  it('rolls back a global hole operation when one card cannot fit a hole', () => {
+    const project = fixture();
+    project.cards[0].hole = null;
+    project.cards[1].hole = null;
+    project.cards[1].height = 1;
+    const before = structuredClone(project);
+    const outcome = executeCommand(project, { type: 'set-project-hole', enabled: true });
+    expect(outcome.result.error).toContain('мала');
+    expect(outcome.project).toBe(project);
+    expect(project).toEqual(before);
+  });
+
+  it('rolls back invalid global decoration creation even after skipped full cards', () => {
+    let project = fixture();
+    for (let index = 0; index < 10; index += 1) project = executeCommand(project, { type: 'add-decoration', cardId: project.cards[0].id, patch: { type: 'circle' } }).project;
+    const before = structuredClone(project);
+    const outcome = executeCommand(project, { type: 'add-decoration', cardId: project.cards[0].id, scope: 'all', patch: { type: 'circle', width: 21 } });
+    expect(outcome.result.error).toContain('2 см');
+    expect(outcome.result.skippedCardIds).toEqual([]);
+    expect(outcome.project).toBe(project);
+    expect(project).toEqual(before);
+  });
 });

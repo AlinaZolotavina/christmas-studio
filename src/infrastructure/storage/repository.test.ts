@@ -84,4 +84,29 @@ describe('recovery without loss of the original', () => {
     expect(restored.project).toBeNull();
     expect(restored.error).toContain('недоступно');
   });
+
+  it('does not overwrite an existing document that could not be read during startup', () => {
+    const storage = new MemoryStorage();
+    const raw = JSON.stringify(fixture());
+    storage.values.set(STORAGE_KEYS.project, raw);
+    const adapter: StorageAdapter = { getItem: () => { throw new Error('temporarily denied'); }, setItem: storage.setItem.bind(storage), removeItem: storage.removeItem.bind(storage) };
+    const repository = new ProjectRepository(adapter);
+    expect(repository.load().error).toContain('denied');
+    adapter.getItem = storage.getItem.bind(storage);
+    expect(() => repository.save(fixture())).toThrow('другие данные');
+    expect(storage.getItem(STORAGE_KEYS.project)).toBe(raw);
+  });
+
+  it('detects another tab changing the saved document before a write or discard', () => {
+    const storage = new MemoryStorage();
+    const raw = JSON.stringify(fixture());
+    storage.values.set(STORAGE_KEYS.project, raw);
+    const repository = new ProjectRepository(storage);
+    repository.load();
+    const foreign = JSON.stringify({ ...fixture(), name: 'Из другой вкладки' });
+    storage.values.set(STORAGE_KEYS.project, foreign);
+    expect(() => repository.save(fixture())).toThrow('другие данные');
+    expect(() => repository.discard()).toThrow('изменился');
+    expect(storage.getItem(STORAGE_KEYS.project)).toBe(foreign);
+  });
 });

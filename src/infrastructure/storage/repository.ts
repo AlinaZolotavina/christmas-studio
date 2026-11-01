@@ -20,13 +20,15 @@ export interface RestoreResult {
   repaired: boolean;
 }
 const message = (error: unknown) => error instanceof Error ? error.message : 'Хранилище браузера недоступно.';
+export class StorageConflictError extends Error {}
 
 export class ProjectRepository {
+  private expectedRaw: string | null | undefined;
   constructor(private storage: StorageAdapter | null) {}
 
   load(): RestoreResult {
     let raw: string | null;
-    try { raw = this.requiredStorage().getItem(STORAGE_KEYS.project); }
+    try { raw = this.requiredStorage().getItem(STORAGE_KEYS.project); this.expectedRaw = raw; }
     catch (error) { return { project: null, recovery: null, error: message(error), repaired: false }; }
     if (raw === null) return { project: null, recovery: null, error: null, repaired: false };
     try { return { project: decodeProject(raw), recovery: null, error: null, repaired: false }; }
@@ -51,8 +53,21 @@ export class ProjectRepository {
     }
   }
 
-  save(project: ProjectDocument) { this.requiredStorage().setItem(STORAGE_KEYS.project, JSON.stringify(project)); }
-  discard() { this.requiredStorage().removeItem(STORAGE_KEYS.project); }
+  save(project: ProjectDocument) {
+    const storage = this.requiredStorage();
+    const currentRaw = storage.getItem(STORAGE_KEYS.project);
+    // A previously unread project, or a change from another tab, must never be overwritten.
+    if (this.expectedRaw === undefined && currentRaw !== null || this.expectedRaw !== undefined && currentRaw !== this.expectedRaw) throw new StorageConflictError('В браузере уже сохранены другие данные проекта. Скачайте текущий PDF и обновите страницу, чтобы восстановить сохранённый проект.');
+    const serialized = JSON.stringify(project);
+    storage.setItem(STORAGE_KEYS.project, serialized);
+    this.expectedRaw = serialized;
+  }
+  discard() {
+    const storage = this.requiredStorage();
+    if (storage.getItem(STORAGE_KEYS.project) !== this.expectedRaw) throw new StorageConflictError('Сохранённый проект изменился. Обновите страницу перед удалением данных.');
+    storage.removeItem(STORAGE_KEYS.project);
+    this.expectedRaw = null;
+  }
 
   readRecentColors(): string[] {
     try {

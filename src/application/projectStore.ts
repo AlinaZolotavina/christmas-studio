@@ -3,7 +3,7 @@ import type { Command, OperationResult } from '../domain/commands';
 import { createProject } from '../domain/project';
 import type { ProjectDocument } from '../domain/types';
 import { ProjectHistory } from './history';
-import { ProjectRepository } from '../infrastructure/storage/repository';
+import { ProjectRepository, StorageConflictError } from '../infrastructure/storage/repository';
 import type { Recovery, StorageAdapter } from '../infrastructure/storage/repository';
 import { isColor, validateProject } from '../infrastructure/storage/schema';
 
@@ -32,6 +32,7 @@ export class ProjectStore {
   private savedRevision = 0;
   private initialized = false;
   private storageFailed = false;
+  private textGroup: { cardId: string; lastAt: number } | null = null;
 
   constructor(storage: StorageAdapter | null) { this.repository = new ProjectRepository(storage); }
   getSnapshot = () => this.state;
@@ -48,6 +49,10 @@ export class ProjectStore {
   };
 
   dispatch = (command: Command): OperationResult => {
+    const typing = command.type === 'update-text' && command.scope !== 'all' && Object.keys(command.patch).length === 1 && typeof command.patch.content === 'string';
+    const now = Date.now();
+    const coalesced = typing && this.textGroup?.cardId === command.cardId && now >= this.textGroup.lastAt && now - this.textGroup.lastAt <= 800;
+    if (!typing) this.textGroup = null;
     if (!this.state.project) return this.reportFailure('Сначала создайте или восстановите проект.');
     const outcome = executeCommand(this.state.project, command);
     if (outcome.result.error) return this.reportFailure(outcome.result.error);
@@ -57,12 +62,15 @@ export class ProjectStore {
     }
     try { validateProject(outcome.project); }
     catch (error) { return this.reportFailure(error instanceof Error ? error.message : 'Некорректные данные проекта.'); }
-    this.history.record(this.state.project);
+    if (!coalesced) this.history.record(this.state.project);
+    this.textGroup = typing ? { cardId: command.cardId, lastAt: now } : null;
     this.commit(outcome.project, outcome.result.warnings.join(' ') || null);
     return outcome.result;
   };
 
   create = (templateId: string, count: 24 | 31): OperationResult => {
+    this.textGroup = null;
+    this.initialize();
     if (this.state.recovery) return this.reportFailure('Сначала сохраните повреждённые данные и явно удалите их или повторите восстановление.');
     try {
       const project = validateProject(createProject(templateId, count));
@@ -73,11 +81,13 @@ export class ProjectStore {
   };
 
   undo = () => {
+    this.textGroup = null;
     if (!this.state.project) return;
     const project = this.history.undo(this.state.project);
     if (project) this.commit(project);
   };
   redo = () => {
+    this.textGroup = null;
     if (!this.state.project) return;
     const project = this.history.redo(this.state.project);
     if (project) this.commit(project);
@@ -93,14 +103,15 @@ export class ProjectStore {
       this.storageFailed = false;
       this.setState({ saveStatus: 'saved', notice: this.state.notice?.replace(SAVE_WARNING, '').trim() || null });
       return true;
-    } catch {
+    } catch (error) {
       this.storageFailed = true;
-      this.setState({ saveStatus: 'error', notice: SAVE_WARNING });
+      this.setState({ saveStatus: 'error', notice: error instanceof StorageConflictError ? `${SAVE_WARNING}. ${error.message}` : SAVE_WARNING });
       return false;
     }
   };
 
   retryRecovery = () => {
+    this.textGroup = null;
     const recovery = this.state.recovery;
     if (!recovery) { this.flush(); return; }
     const restored = this.repository.recover(recovery.raw, recovery.error);
@@ -112,6 +123,7 @@ export class ProjectStore {
   };
 
   discardRecovery = () => {
+    this.textGroup = null;
     if (!this.state.recovery) return;
     try {
       this.repository.discard();
@@ -136,18 +148,22 @@ export class ProjectStore {
   isDirty = () => Boolean(this.state.project) && this.savedRevision !== this.state.revision;
 
   attachBrowserLifecycle = (targetWindow: Window, targetDocument: Document) => {
-    const visibility = () => { if (targetDocument.visibilityState === 'hidden') this.flush(); };
-    const pagehide = () => { this.flush(); };
+    const breakTextGroup = () => { this.textGroup = null; };
+    const visibility = () => { if (targetDocument.visibilityState === 'hidden') { breakTextGroup(); this.flush(); } };
+    const pagehide = () => { breakTextGroup(); this.flush(); };
     const beforeunload = (event: BeforeUnloadEvent) => {
+      breakTextGroup();
       if (!this.isDirty() || this.flush()) return;
       event.preventDefault();
       event.returnValue = '';
     };
     targetDocument.addEventListener('visibilitychange', visibility);
+    targetDocument.addEventListener('focusout', breakTextGroup);
     targetWindow.addEventListener('pagehide', pagehide);
     targetWindow.addEventListener('beforeunload', beforeunload);
     return () => {
       targetDocument.removeEventListener('visibilitychange', visibility);
+      targetDocument.removeEventListener('focusout', breakTextGroup);
       targetWindow.removeEventListener('pagehide', pagehide);
       targetWindow.removeEventListener('beforeunload', beforeunload);
     };
@@ -159,7 +175,7 @@ export class ProjectStore {
     if (this.timer !== null) clearTimeout(this.timer);
     this.timer = setTimeout(this.flush, 400);
   }
-  private reportFailure(error: string): OperationResult { this.setState({ notice: error }); return failure(error); }
+  private reportFailure(error: string): OperationResult { this.textGroup = null; this.setState({ notice: error }); return failure(error); }
   private setState(patch: Partial<ProjectStoreState>) {
     this.state = { ...this.state, ...patch };
     for (const listener of this.listeners) listener();

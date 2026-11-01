@@ -3,7 +3,7 @@ import type { Box, Card, Hole } from './types';
 export type PathOperation = { op: 'm' | 'l'; c: [number, number] } | { op: 'c'; c: [number, number, number, number, number, number] } | { op: 'h'; c: [] };
 const k = 0.552284749831;
 export const holeDiameter = (card: Pick<Card, 'width'>) => Math.min(card.width * 0.07, 5);
-export const defaultHole = (card: Pick<Card, 'width'>): Hole => ({ x: card.width / 2, y: holeDiameter(card) / 2 + 2 });
+export const defaultHole = (card: Pick<Card, 'width'>): Hole => ({ x: card.width / 2, y: holeDiameter(card) / 2 + 4 });
 
 export function ellipsePath(cx: number, cy: number, rx: number, ry: number): PathOperation[] {
   return [

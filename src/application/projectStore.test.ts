@@ -192,4 +192,24 @@ describe('project command pipeline and autosave', () => {
     expect(store.isDirty()).toBe(true);
     store.flush();
   });
+
+  it('records a full template reset as one undoable operation and saves its new revision', () => {
+    vi.useFakeTimers();
+    const { store, storage, cardId } = setup();
+    store.dispatch({ type: 'update-text', cardId, patch: { content: 'Особенный день', fontSize: 18 } });
+    store.dispatch({ type: 'update-background', cardId, scope: 'all', patch: { colors: ['#123456'] } });
+    const before = structuredClone(store.getSnapshot().project!);
+    const revision = store.getSnapshot().revision;
+    const reset = store.dispatch({ type: 'reset-project' });
+    expect(reset.changed).toBe(true);
+    expect(store.getSnapshot().revision).toBe(revision + 1);
+    expect(store.getSnapshot().project!.cards[0].text.content).toBe('1');
+    expect(store.getSnapshot().project!.cards.map(card => card.illustration.assetId)).toEqual(before.cards.map(card => card.illustration.assetId));
+    store.undo();
+    expect(store.getSnapshot().project).toEqual(before);
+    store.redo();
+    store.flush();
+    expect(decodeProject(storage.getItem(STORAGE_KEYS.project)!).cards[0].text.content).toBe('1');
+    expect(store.isDirty()).toBe(false);
+  });
 });

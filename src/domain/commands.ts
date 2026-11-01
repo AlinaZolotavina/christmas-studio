@@ -1,6 +1,6 @@
 import type { Background, Card, Decoration, Hole, Illustration, ProjectDocument, Scope, Shape, TextElement } from './types';
 import { MAX_DECORATIONS, MAX_TEXT_LENGTH } from './types';
-import { makeId } from './project';
+import { makeId, resetProject } from './project';
 import { defaultHole, isHoleInside } from './geometry';
 import { assets } from '../content/assets';
 
@@ -21,6 +21,7 @@ export type Command =
   | ({ type: 'set-hole'; enabled: boolean } & Target)
   | { type: 'move-hole'; cardId: string; patch: Hole }
   | { type: 'set-project-hole'; enabled: boolean }
+  | { type: 'reset-project' }
   | { type: 'rename-project'; name: string };
 
 export interface OperationResult {
@@ -51,10 +52,12 @@ function assertDecoration(decoration: Decoration) {
 export function executeCommand(project: ProjectDocument, command: Command): CommandOutcome {
   const result = emptyResult();
   try {
-    const next = structuredClone(project);
+    let next = structuredClone(project);
     if (command.type === 'rename-project') {
       if (typeof command.name !== 'string' || command.name.trim().length === 0 || command.name.length > 120) throw new Error('Название должно содержать от 1 до 120 символов.');
       next.name = command.name;
+    } else if (command.type === 'reset-project') {
+      next = resetProject(project);
     } else if (command.type === 'set-project-hole') {
       next.holeEnabled = command.enabled;
       for (const card of next.cards) card.hole = command.enabled ? card.hole ?? createHole(card) : null;

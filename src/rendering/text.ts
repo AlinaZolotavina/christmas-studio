@@ -47,6 +47,30 @@ export function layoutText(element: TextElement, measure: MeasureText = createTe
   return { lines, widths, lineHeight, height, baselines: lines.map((_, i) => element.y + ptToMm(element.fontSize) * 0.9 + lineHeight * i), overflow: height > element.height + 0.03 || widths.some(width => width > element.width + 0.03) };
 }
 
+/** Tighten the current line layout while retaining its horizontal text anchor and top edge. */
+export function fitTextBox(element: TextElement, measure: MeasureText = createTextMeasurer(element)): TextElement {
+  const layout = layoutText(element, measure);
+  const longestLine = Math.max(0, ...layout.widths);
+  let width = longestLine > 0 ? Math.max(0.01, longestLine) : 1;
+  const sameLines = (candidateWidth: number) => {
+    const candidate = layoutText({ ...element, width: candidateWidth }, measure);
+    return candidate.lines.length === layout.lines.length && candidate.lines.every((line, index) => line === layout.lines[index]);
+  };
+  // Preserve greedy wrapping even when measured spaces or rounding make the tight width differ.
+  if (width < element.width && !sameLines(width)) {
+    let lower = width;
+    let upper = element.width;
+    for (let index = 0; index < 32; index += 1) {
+      const middle = (lower + upper) / 2;
+      if (sameLines(middle)) upper = middle;
+      else lower = middle;
+    }
+    width = upper;
+  }
+  const x = element.align === 'center' ? element.x + (element.width - width) / 2 : element.align === 'right' ? element.x + element.width - width : element.x;
+  return { ...element, x, width, height: Math.max(layout.lineHeight, layout.height) };
+}
+
 export function fontStyle(element: Pick<TextElement, 'weight' | 'italic'>): 'normal' | 'bold' | 'italic' | 'bolditalic' {
   return element.weight === 'bold' ? element.italic ? 'bolditalic' : 'bold' : element.italic ? 'italic' : 'normal';
 }

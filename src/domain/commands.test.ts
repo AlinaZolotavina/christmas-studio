@@ -117,4 +117,43 @@ describe('atomic document commands', () => {
     expect(outcome.project).toBe(project);
     expect(project).toEqual(before);
   });
+
+  it('resets template defaults atomically without replacing IDs, order or assigned illustrations', () => {
+    const project = fixture();
+    const assigned = project.cards.map(card => card.illustration.assetId);
+    const ids = project.cards.map(card => card.id);
+    project.name = 'Мой собственный набор';
+    project.holeEnabled = false;
+    for (const card of project.cards) {
+      card.shape = 'rectangle'; card.width = 60; card.height = 90;
+      card.text = { ...card.text, content: 'Изменённый текст', fontSize: 12, x: 10, y: 20 };
+      card.background.colors = ['#123456'];
+      card.illustration.x = 1; card.illustration.y = 2; card.illustration.rotation = 45;
+      card.hole = null;
+      card.decorations = [{ id: 'star', type: 'star', x: 1, y: 1, width: 5, height: 5, fill: '#FFFFFF', stroke: null, strokeWidth: 0.5, points: 5 }];
+    }
+    const before = structuredClone(project);
+    const reset = executeCommand(project, { type: 'reset-project' });
+    expect(reset.result.changedCardIds).toHaveLength(24);
+    expect(reset.project).toMatchObject({ id: project.id, name: 'Мой собственный набор', templateId: project.templateId, cardCount: 24, holeEnabled: true });
+    expect(reset.project.cards.map(card => card.id)).toEqual(ids);
+    expect(reset.project.cards.map(card => card.illustration.assetId)).toEqual(assigned);
+    for (const [index, card] of reset.project.cards.entries()) {
+      expect(card).toMatchObject({ number: index + 1, shape: 'tag', width: 50, height: 80, hole: { x: 25, y: 5.75 }, decorations: [] });
+      expect(card.text).toMatchObject({ content: String(index + 1), fontSize: 28, x: 5, y: 60, color: '#315C4C' });
+      expect(card.illustration.rotation).toBe(0);
+      expect(card.background.colors).toEqual(['#FFF9ED']);
+    }
+    expect(project).toEqual(before);
+  });
+
+  it('does not partially reset a project containing an unavailable illustration', () => {
+    const project = fixture();
+    project.cards[2].illustration.assetId = 'missing-image';
+    const before = structuredClone(project);
+    const reset = executeCommand(project, { type: 'reset-project' });
+    expect(reset.result.error).toContain('не найдена');
+    expect(reset.project).toBe(project);
+    expect(project).toEqual(before);
+  });
 });

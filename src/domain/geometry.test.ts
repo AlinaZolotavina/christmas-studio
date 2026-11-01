@@ -11,6 +11,8 @@ describe('physical card geometry', () => {
     }
     expect(holeDiameter({ width: 100 })).toBe(5);
     expect(holeDiameter({ width: 50 })).toBeCloseTo(3.5);
+    expect(defaultHole({ width: 50 })).toEqual({ x: 25, y: 5.75 });
+    expect(defaultHole({ width: 100 })).toEqual({ x: 50, y: 6.5 });
   });
   it('checks silhouette rather than only its rectangular bounds', () => {
     const circle = { shape: 'circle' as const, width: 50, height: 50 };

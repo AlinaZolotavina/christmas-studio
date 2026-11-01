@@ -16,7 +16,7 @@ function shuffled<T>(items: T[], rng: () => number): T[] {
   return result;
 }
 
-function initialCard(template: TemplateDefinition, asset: AssetDefinition, number: number): Card {
+function initialCard(template: TemplateDefinition, asset: AssetDefinition, number: number, id: string = makeId()): Card {
   const width = 50;
   const height = template.shape === 'circle' || template.shape === 'square' ? width : 80;
   const illustrationBox = { x: 5, y: 10, width: width - 10, height: height - 33 };
@@ -24,7 +24,7 @@ function initialCard(template: TemplateDefinition, asset: AssetDefinition, numbe
   const imageWidth = asset.width * scale;
   const imageHeight = asset.height * scale;
   return {
-    id: makeId(), number, shape: template.shape, width, height,
+    id, number, shape: template.shape, width, height,
     background: { kind: 'solid', colors: [template.background], angle: 90, centerX: 0.5, centerY: 0.5 },
     text: {
       x: 5, y: height - 20, width: width - 10, height: 15,
@@ -55,4 +55,18 @@ export function createProject(templateId: string, count: 24 | 31, rng: () => num
     cardCount: count, holeEnabled: template.shape === 'tag',
     cards: selected.map((asset, index) => initialCard(template, asset, index + 1)),
   };
+}
+
+/** Restore template defaults without assigning different artwork or replacing stable identities. */
+export function resetProject(project: ProjectDocument): ProjectDocument {
+  const template = templates.find(item => item.id === project.templateId);
+  if (!template) throw new Error('Исходный шаблон проекта не найден.');
+  if ((project.cardCount !== 24 && project.cardCount !== 31) || project.cards.length !== project.cardCount) throw new Error('Нарушен состав карточек проекта.');
+  const cards = project.cards.map((card, index) => {
+    if (card.number !== index + 1) throw new Error('Нарушен постоянный порядок карточек проекта.');
+    const asset = assets.find(item => item.id === card.illustration.assetId);
+    if (!asset) throw new Error(`Иллюстрация карточки ${card.number} не найдена в библиотеке.`);
+    return initialCard(template, asset, card.number, card.id);
+  });
+  return { ...project, cards, holeEnabled: template.shape === 'tag' };
 }

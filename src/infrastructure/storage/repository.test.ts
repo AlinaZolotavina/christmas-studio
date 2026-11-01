@@ -109,4 +109,16 @@ describe('recovery without loss of the original', () => {
     expect(() => repository.discard()).toThrow('изменился');
     expect(storage.getItem(STORAGE_KEYS.project)).toBe(foreign);
   });
+
+  it('restores existing manual hole coordinates without adopting a new default position', () => {
+    const storage = new MemoryStorage();
+    const project = fixture();
+    project.cards[0].hole = { x: 25, y: 3.75 };
+    const raw = JSON.stringify(project);
+    storage.values.set(STORAGE_KEYS.project, raw);
+    const restored = new ProjectRepository(storage).load();
+    expect(restored.project!.cards[0].hole).toEqual({ x: 25, y: 3.75 });
+    expect(restored.repaired).toBe(false);
+    expect(storage.getItem(STORAGE_KEYS.project)).toBe(raw);
+  });
 });

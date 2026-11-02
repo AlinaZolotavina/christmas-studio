@@ -47,7 +47,8 @@ export function createProject(templateId: string, count: 24 | 31, rng: () => num
   const template = templates.find(item => item.id === templateId);
   if (!template) throw new Error('Шаблон не найден.');
   const preferred = template.assetIds.map(id => assets.find(asset => asset.id === id)).filter((asset): asset is AssetDefinition => Boolean(asset));
-  const pool = [...new Map([...preferred, ...assets].map(asset => [asset.id, asset])).values()];
+  const curated = [...new Map(preferred.map(asset => [asset.id, asset])).values()];
+  const pool = curated.length >= count ? curated : [...new Map([...curated, ...assets].map(asset => [asset.id, asset])).values()];
   if (pool.length < count) throw new Error('В библиотеке недостаточно уникальных иллюстраций для этого набора.');
   const selected = shuffled(pool, rng).slice(0, count);
   return {

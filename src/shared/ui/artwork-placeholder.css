@@ -1,0 +1,35 @@
+.artwork-placeholder{position:relative;isolation:isolate;min-width:0;--art-sage:var(--placeholder-sage,#b9c6aa);--art-paper:#fff6e5;--art-accent:var(--placeholder-accent,#b88663);--art-soft:var(--placeholder-soft,#dce2d3)}
+.artwork-placeholder__shape{display:block;position:absolute}
+.artwork-placeholder--branch .artwork-placeholder__shape--one{width:95%;height:33%;top:17%;left:4%;background:var(--art-sage);border-radius:70px;transform:rotate(-12deg)}
+.artwork-placeholder--branch .artwork-placeholder__shape--two{width:76%;height:23%;top:37%;left:24%;background:var(--art-soft);border-radius:60px;transform:rotate(-22deg)}
+.artwork-placeholder--branch .artwork-placeholder__shape--three{width:16%;aspect-ratio:1;top:50%;left:30%;background:#d5b777;border-radius:50%}
+.artwork-placeholder--branch .artwork-placeholder__shape--four{width:6%;aspect-ratio:1;top:43%;right:19%;background:#c78c7d;border-radius:50%}
+.artwork-placeholder--winter-scene .artwork-placeholder__shape--one{width:75%;height:70%;bottom:8%;left:11%;background:var(--art-sage);clip-path:polygon(50% 0,100% 100%,0 100%);opacity:.72}
+.artwork-placeholder--winter-scene .artwork-placeholder__shape--two{width:53%;height:44%;bottom:7%;left:12%;background:#e9e6d8;border-radius:10px}
+.artwork-placeholder--winter-scene .artwork-placeholder__shape--three{width:42%;height:30%;bottom:8%;left:32%;background:var(--art-accent);border-radius:8px;opacity:.65}
+.artwork-placeholder--winter-scene .artwork-placeholder__shape--four{width:95%;height:13%;bottom:0;left:2%;background:#eeeae1;border-radius:50%}
+.artwork-placeholder--sprig .artwork-placeholder__shape--one{height:5%;width:86%;background:#a4b693;top:49%;left:7%;transform:rotate(-4deg);border-radius:3px}
+.artwork-placeholder--sprig .artwork-placeholder__shape--two,.artwork-placeholder--sprig .artwork-placeholder__shape--three{height:33%;width:23%;top:22%;left:21%;border-radius:50%;background:var(--art-sage);transform:rotate(24deg)}
+.artwork-placeholder--sprig .artwork-placeholder__shape--three{left:55%;top:46%;transform:rotate(-20deg)}
+.artwork-placeholder--sprig .artwork-placeholder__shape--four{width:9%;aspect-ratio:1;left:45%;top:30%;border-radius:50%;background:#bc8170}
+.artwork-placeholder--tag-pair .artwork-placeholder__shape--one,.artwork-placeholder--tag-pair .artwork-placeholder__shape--two{width:33%;height:77%;top:12%;left:18%;background:var(--art-paper);clip-path:polygon(26% 0,74% 0,100% 18%,100% 100%,0 100%,0 18%);transform:rotate(-12deg)}
+.artwork-placeholder--tag-pair .artwork-placeholder__shape--two{left:51%;top:7%;transform:rotate(11deg)}
+.artwork-placeholder--tag-pair .artwork-placeholder__shape--three{width:20%;aspect-ratio:1;left:23%;top:44%;border-radius:50%;background:var(--art-sage);transform:rotate(-12deg)}
+.artwork-placeholder--tag-pair .artwork-placeholder__shape--four{width:18%;height:35%;left:59%;top:33%;border-radius:9px;background:var(--art-accent);transform:rotate(11deg);opacity:.65}
+.artwork-placeholder--gift .artwork-placeholder__shape--one{width:91%;height:16%;bottom:6%;left:3%;border-radius:50%;background:#dce2d3}
+.artwork-placeholder--gift .artwork-placeholder__shape--two{width:68%;height:54%;bottom:13%;left:14%;border-radius:8px;background:#d8bc96}
+.artwork-placeholder--gift .artwork-placeholder__shape--three{height:63%;width:9%;bottom:13%;left:44%;background:#b6c4a7;border-radius:4px}
+.artwork-placeholder--gift .artwork-placeholder__shape--four{height:30%;width:20%;bottom:22%;left:57%;background:#fff2db;border-radius:4px;transform:rotate(-12deg)}
+.artwork-placeholder--tag .artwork-placeholder__shape--one{width:39%;height:82%;left:32%;top:8%;background:#fff3dc;clip-path:polygon(26% 0,74% 0,100% 19%,100% 100%,0 100%,0 19%);transform:rotate(-12deg)}
+.artwork-placeholder--tag .artwork-placeholder__shape--two{width:21%;height:48%;left:40%;top:32%;background:#a5b595;clip-path:polygon(50% 0,100% 100%,0 100%);transform:rotate(-12deg)}
+.artwork-placeholder--tag .artwork-placeholder__shape--three{width:5%;aspect-ratio:1;left:45%;top:15%;border-radius:50%;background:#d5c7ae}
+.artwork-placeholder--postcard .artwork-placeholder__shape--one{width:68%;height:69%;left:16%;top:16%;background:#fff6e8;border-radius:3px;transform:rotate(-9deg)}
+.artwork-placeholder--postcard .artwork-placeholder__shape--two{width:49%;height:42%;left:25%;top:29%;background:#becbb6;border-radius:5px;transform:rotate(-9deg)}
+.artwork-placeholder--postcard .artwork-placeholder__shape--three{width:18%;aspect-ratio:1;left:39%;top:39%;background:#d8b996;border-radius:50%}
+.artwork-placeholder--sticker .artwork-placeholder__shape--one{width:44%;height:78%;left:28%;top:11%;border-radius:45%;background:#fffaf2;transform:rotate(8deg)}
+.artwork-placeholder--sticker .artwork-placeholder__shape--two{width:33%;height:59%;left:33%;top:20%;border-radius:45%;background:#cfab85;transform:rotate(8deg)}
+.artwork-placeholder--sticker .artwork-placeholder__shape--three{width:17%;aspect-ratio:1;left:41%;top:49%;border-radius:50%;background:#f7e4c9}
+.artwork-placeholder--envelope .artwork-placeholder__shape--one{width:72%;height:56%;top:27%;left:14%;border-radius:6px;background:#e0c89e;transform:rotate(-9deg)}
+.artwork-placeholder--envelope .artwork-placeholder__shape--two{width:51%;height:49%;top:12%;left:25%;border-radius:4px;background:#fff7e9;transform:rotate(-9deg)}
+.artwork-placeholder--envelope .artwork-placeholder__shape--three{width:18%;aspect-ratio:1;left:40%;top:29%;border-radius:50%;background:#cf8d7f}
+.artwork-placeholder--envelope .artwork-placeholder__shape--four{width:54%;height:13%;bottom:17%;left:0;background:#b4c19e;border-radius:40px;transform:rotate(22deg)}

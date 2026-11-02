@@ -4,6 +4,7 @@ vi.mock('../content/assets', () => ({ assets: Array.from({ length: 36 }, (_, ind
 vi.mock('../content/templates', () => ({ templates: [{ id: 'winter', name: 'Winter', description: '', eyebrow: '', color: '#315C4C', background: '#FFF9ED', shape: 'tag', fontId: 'serif', assetIds: ['image-0'] }] }));
 
 import { createProject } from './project';
+import { templates } from '../content/templates';
 
 describe('project factory', () => {
   it.each([24, 31] as const)('creates %i stable, uniquely illustrated cards', count => {
@@ -24,5 +25,14 @@ describe('project factory', () => {
     expect(first.cards.map(card => card.illustration.assetId)).toEqual(second.cards.map(card => card.illustration.assetId));
     expect(() => createProject('missing', 24)).toThrow('Шаблон не найден');
     expect(() => createProject('winter', 24, () => 1)).toThrow('Генератор');
+  });
+
+  it('keeps a complete themed selection instead of mixing in unrelated catalog artwork', () => {
+    const previous = templates[0].assetIds;
+    templates[0].assetIds = Array.from({ length: 31 }, (_, index) => `image-${index}`);
+    try {
+      const project = createProject('winter', 31, () => 0.42);
+      expect(new Set(project.cards.map(card => card.illustration.assetId))).toEqual(new Set(templates[0].assetIds));
+    } finally { templates[0].assetIds = previous; }
   });
 });

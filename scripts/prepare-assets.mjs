@@ -40,12 +40,12 @@ for (const image of images) {
 await fs.writeFile('src/content/image-dimensions.json', `${JSON.stringify(dimensions, null, 2)}\n`);
 console.log(`Prepared ${images.length} explicitly catalogued images and previews.`);
 
-// User-supplied page backgrounds are optimized separately and never enter the editor library.
+// User-supplied page artwork is optimized separately and never enters the editor library.
 const pageSource = await fs.readFile('src/data/site-art.ts', 'utf8');
 const pageModule = ts.transpileModule(pageSource, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
-const { templateHeroArtwork } = await import(`data:text/javascript;base64,${Buffer.from(pageModule).toString('base64')}`);
+const { pageArtwork } = await import(`data:text/javascript;base64,${Buffer.from(pageModule).toString('base64')}`);
 await fs.mkdir('public/site', { recursive: true });
-for (const artwork of Object.values(templateHeroArtwork)) {
+for (const artwork of pageArtwork) {
   await sharp(artwork.source).resize(1536, 1024, { fit: 'inside', withoutEnlargement: true }).webp({ quality: 86 }).toFile(path.join('public', artwork.src));
 }
-console.log(`Prepared ${Object.keys(templateHeroArtwork).length} page backgrounds.`);
+console.log(`Prepared ${pageArtwork.length} page illustrations.`);

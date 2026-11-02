@@ -1,5 +1,6 @@
 .artwork-placeholder{position:relative;isolation:isolate;min-width:0;--art-sage:var(--placeholder-sage,#b9c6aa);--art-paper:#fff6e5;--art-accent:var(--placeholder-accent,#b88663);--art-soft:var(--placeholder-soft,#dce2d3)}
 .artwork-placeholder__shape{display:block;position:absolute}
+.artwork-placeholder--image{display:block;object-fit:contain}
 .artwork-placeholder--branch .artwork-placeholder__shape--one{width:95%;height:33%;top:17%;left:4%;background:var(--art-sage);border-radius:70px;transform:rotate(-12deg)}
 .artwork-placeholder--branch .artwork-placeholder__shape--two{width:76%;height:23%;top:37%;left:24%;background:var(--art-soft);border-radius:60px;transform:rotate(-22deg)}
 .artwork-placeholder--branch .artwork-placeholder__shape--three{width:16%;aspect-ratio:1;top:50%;left:30%;background:#d5b777;border-radius:50%}

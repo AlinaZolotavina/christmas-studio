@@ -16,6 +16,7 @@
 .template-gallery-main .template-card:hover .template-card__art{transform:none;box-shadow:none}
 .template-gallery-main .template-card__art{height:auto;aspect-ratio:1.3;border:0;border-radius:0;box-shadow:none;transform:none;background:#dcd6c5}
 .template-gallery-main .template-card__art>.artwork-placeholder{width:100%;height:100%}
+.template-gallery-main .template-card__art>.artwork-placeholder--image{object-fit:cover}
 .template-gallery-main .template-card__art--1{background:#dce3df;--placeholder-sage:#acbdb4;--placeholder-accent:#a69f87}
 .template-gallery-main .template-card__art--2{background:#dfd0bc;--placeholder-sage:#b4bca0;--placeholder-accent:#b27e6a}
 .template-gallery-main .template-card__art--3{background:#e4d5c4;--placeholder-sage:#b2bf9c;--placeholder-accent:#b99472}

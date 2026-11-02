@@ -41,16 +41,23 @@ test('about products keep their destinations and feedback offers the real author
   await expect(page.getByRole('heading', { name: 'Готовые шаблоны', exact: true })).toBeVisible();
 });
 
-test('the two redesigned bodies use geometry and fit phone, tablet and desktop widths', async ({ page }) => {
+test('the two redesigned bodies load supplied covers and retain geometry for missing artwork at every width', async ({ page }) => {
   for (const route of ['tags', 'about']) {
     for (const width of [360, 390, 768, 1024, 1440]) {
       await page.setViewportSize({ width, height: width < 1000 ? 1024 : 900 });
       await page.goto(`/#${route}`);
       await expect(page.locator('main [data-art-slot]').first()).toBeVisible();
       if (route === 'tags') {
-        await expect(page.locator('.template-hero img')).toHaveCount(2);
+        await expect(page.locator('.template-hero img')).toHaveCount(3);
         await expect.poll(() => page.locator('.template-hero img').evaluateAll(images => images.every(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0))).toBe(true);
-        await expect(page.locator('.template-catalog img,.template-catalog image')).toHaveCount(0);
+        await expect(page.locator('.template-catalog img')).toHaveCount(6);
+        for (const cover of await page.locator('.template-catalog img').all()) {
+          await cover.scrollIntoViewIfNeeded();
+          await expect.poll(() => cover.evaluate(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0)).toBe(true);
+        }
+        for (const [id, file] of [['woodland', 'coniferous-fairytale'], ['winter', 'winter-stories'], ['vintage', 'vintage-celebration'], ['forest-friends', 'forest-friends'], ['warm-gifts', 'warm-gifts'], ['classic-christmas', 'classic-christmas']]) {
+          await expect(page.locator(`[data-template-id="${id}"] img`)).toHaveAttribute('src', new RegExp(`/site/${file}\\.webp$`));
+        }
       } else await expect(page.locator('main img,main image')).toHaveCount(0);
       expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
       if (route === 'tags') await expect(page.locator('.template-card')).toHaveCount(6);

@@ -113,12 +113,29 @@ test('image library searches both languages and combines taxonomy filters', asyn
   await query.fill('веточка омелы');
   await expect(mistletoe).toBeVisible();
   await page.getByLabel('Категория иллюстраций', { exact: true }).selectOption('botanical');
-  await page.getByLabel('Подкатегория иллюстраций', { exact: true }).selectOption('botanical-branches');
+  await page.getByLabel('Мотив иллюстрации', { exact: true }).selectOption('botanical-mistletoe');
   await expect(page.getByLabel('Фон иллюстрации', { exact: true })).toHaveCount(0);
   await expect(mistletoe).toBeVisible();
   await query.fill('definitelymissingterm');
   await expect(page.locator('.image-library button')).toHaveCount(0);
   await expect(page.getByText('Пока ничего не нашлось')).toBeVisible();
+  await query.fill('');
+  const category = page.getByLabel('Категория иллюстраций', { exact: true });
+  const motif = page.getByLabel('Мотив иллюстрации', { exact: true });
+  await expect(category.locator('option')).toHaveCount(9);
+  await category.selectOption('ornaments');
+  await motif.selectOption('ornaments-soviet');
+  const soviet = page.getByRole('button', { name: 'Заменить иллюстрацию: Коллекция ретро-игрушек', exact: true });
+  await expect(soviet).toBeVisible();
+  await category.selectOption('russian-traditions');
+  await expect(motif).toHaveValue('');
+  await expect(soviet).toBeVisible();
+  await category.selectOption('animals');
+  await motif.selectOption('animals-bears');
+  await expect(page.getByRole('button', { name: 'Заменить иллюстрацию: Медвежонок с рождественским подарком', exact: true })).toBeVisible();
+  await category.selectOption('characters');
+  await expect(motif.locator('option[value="characters-santa"]')).toHaveCount(0);
+  await expect(motif.locator('option[value="characters-snowmen"]')).toHaveCount(1);
 });
 
 test('help keeps card contents out of its report and replays the voluntary tour from step one', async ({ page }) => {

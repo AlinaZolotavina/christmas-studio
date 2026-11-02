@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AlignCenter, AlignLeft, AlignRight, Bold, Check, Circle, ImagePlus, Italic, Plus, Search, Shapes, Star, Trash2, X } from 'lucide-react';
 import type { Background, Box, Card, Decoration, ProjectDocument, Scope, Selection, Shape, TextElement } from '../../domain/types';
 import { MAX_DECORATIONS, MAX_TEXT_LENGTH } from '../../domain/types';
@@ -6,7 +6,7 @@ import type { Command, OperationResult } from '../../domain/commands';
 import { assetUrl, getAsset } from '../../content/assets';
 import { fonts, getFont } from '../../content/fonts';
 import { fitTextBox } from '../../rendering/text';
-import { categories, images, searchImages, subcategories } from '../../data/images';
+import { categories, getAvailableMotifs, images, searchImages } from '../../data/images';
 import { Button, ColorPalette, Field, IconButton } from '../../shared/ui/Controls';
 import { Modal } from '../../shared/ui/Modal';
 import type { InspectorTab } from './StudioShell';
@@ -77,6 +77,7 @@ export function Inspector({ project, card, tab, selection, onSelect, onCommand, 
   const text = (patch: Partial<TextElement>, useScope = true) => send({ type: 'update-text', cardId: card.id, patch }, useScope);
   const background = (patch: Partial<Background>) => send({ type: 'update-background', cardId: card.id, patch });
   const filteredImages = searchImages(query, { category: category || undefined, subcategory: subcategory || undefined });
+  const availableMotifs = useMemo(() => getAvailableMotifs(category || undefined), [category]);
   const requestGeometry = (patch: Partial<Pick<Card, 'shape' | 'width' | 'height'>>) => setGeometry({ shape: patch.shape ?? card.shape, width: patch.width ?? card.width, height: patch.height ?? card.height, scope });
   const decorationStyle = (patch: Partial<Omit<Decoration, 'id' | 'type'>>) => { if (selectedDecoration) send({ type: 'update-decoration', cardId: card.id, decorationId: selectedDecoration.id, patch }, false); };
   const typeCount = removeType ? (scope === 'all' ? project.cards : [card]).reduce((total, item) => total + item.decorations.filter((decoration) => decoration.type === removeType).length, 0) : 0;
@@ -95,7 +96,7 @@ export function Inspector({ project, card, tab, selection, onSelect, onCommand, 
       <div className="panel-heading"><h2>Настройки изображения</h2></div>
       <section className="panel-section image-picker"><h3>Выберите изображение</h3><p className="selected-art-name">Сейчас выбрано: {getAsset(card.illustration.assetId).name}</p>
       <label className="library-search"><Search size={16} /><input aria-label="Поиск иллюстраций" value={query} placeholder="Домик, звезда, snow…" onChange={(event) => setQuery(event.target.value)} />{query && <button type="button" aria-label="Очистить поиск" onClick={() => setQuery('')}><X size={14} /></button>}</label>
-      <div className="library-filters"><select aria-label="Категория иллюстраций" value={category} onChange={(event) => { setCategory(event.target.value); setSubcategory(''); }}><option value="">Все категории</option>{categories.map((item) => <option key={item.id} value={item.id}>{item.name.ru}</option>)}</select><select aria-label="Подкатегория иллюстраций" value={subcategory} onChange={(event) => setSubcategory(event.target.value)}><option value="">Все сюжеты</option>{subcategories.filter((item) => !category || item.category === category).map((item) => <option key={item.id} value={item.id}>{item.name.ru}</option>)}</select></div>
+      <div className="library-filters"><select aria-label="Категория иллюстраций" value={category} onChange={(event) => { setCategory(event.target.value); setSubcategory(''); }}><option value="">Все категории</option>{categories.map((item) => <option key={item.id} value={item.id}>{item.name.ru}</option>)}</select><select aria-label="Мотив иллюстрации" value={subcategory} onChange={(event) => setSubcategory(event.target.value)}><option value="">Все мотивы</option>{availableMotifs.map((item) => <option key={item.id} value={item.id}>{item.name.ru}</option>)}</select></div>
       <div className="library-result-count">{filteredImages.length} из {images.length} иллюстраций</div><div className="image-library">{filteredImages.map((image) => <button key={image.id} type="button" title={`${image.name.ru} · ${image.name.en}`} aria-label={`Заменить иллюстрацию: ${image.name.ru}`} aria-pressed={card.illustration.assetId === image.id} className={card.illustration.assetId === image.id ? 'is-selected' : ''} onClick={() => { send({ type: 'update-illustration', cardId: card.id, patch: { assetId: image.id } }); onSelect({ kind: 'illustration' }); }}><img src={assetUrl(`art/${image.id}-preview.webp`)} alt="" loading="lazy" />{card.illustration.assetId === image.id && <span><Check size={12} /></span>}</button>)}</div>{!filteredImages.length && <div className="library-empty"><ImagePlus size={25} /><strong>Пока ничего не нашлось</strong><p>Попробуйте другое слово или снимите фильтры.</p><button type="button" className="text-link" onClick={() => { setQuery(''); setCategory(''); setSubcategory(''); }}>Показать всю коллекцию</button></div>}
       </section>
       <section className="panel-section"><h3>Размер и положение</h3><BoxFields box={card.illustration} lockRatio onChange={(patch) => send({ type: 'update-illustration', cardId: card.id, patch })} /><div className="rotation-field"><NumberField label="Поворот иллюстрации" value={card.illustration.rotation} unit="°" min={-360} max={360} step={1} onCommit={(value) => send({ type: 'update-illustration', cardId: card.id, patch: { rotation: value } })} /></div><p className="field__hint inspector-footnote">Пропорции сохраняются. Замена иллюстрации не меняет рамку и угол.</p></section>

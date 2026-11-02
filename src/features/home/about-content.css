@@ -1,0 +1,42 @@
+.about-content{background:#fcf8f2;overflow:hidden}
+.about-content .about-overview{max-width:1180px;margin:0 auto;padding:0 44px 55px}
+.about-overview p{font-size:17px;line-height:1.7;color:#26392d;margin:0}
+.about-heading{position:relative;display:grid;grid-template-columns:44% 56%;min-height:254px;align-items:center}
+.about-heading__copy{text-align:center;position:relative;z-index:1;padding:30px 10px}
+.about-heading__copy>svg{color:#315d40;margin-bottom:12px}
+.about-overview .about-heading h1{font-family:'PT Sans',sans-serif;font-size:52px;line-height:1.12;font-weight:700;letter-spacing:-1.4px;color:#14291e;margin:0}
+.about-overview .about-heading__lead{font-size:15px;line-height:1.5;max-width:320px;margin:17px auto 0;color:#688064}
+.about-heading__lead strong{font-weight:400}
+.about-heading__art{height:220px;position:absolute;right:-50px;top:-19px;width:53%;--placeholder-sage:#a6b893;--placeholder-soft:#cdd6bd;opacity:.86}
+.about-story{display:grid;grid-template-columns:40% minmax(0,1fr);align-items:center;gap:38px;margin:4px 0 44px}
+.about-story__art{width:100%;height:310px}
+.about-story__copy{padding:10px 0}
+.about-story__copy p+p{margin-top:19px}
+.about-divider{display:flex;align-items:center;gap:16px;color:#698361;margin:8px 12px 22px}
+.about-divider>span{height:1px;background:#d9dfce;flex:1}
+.about-products>h2{text-align:center;color:#172c20;font-size:29px;line-height:1.3;letter-spacing:-.5px;font-weight:700;margin:0 0 31px}
+.about-product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:25px}
+.about-product{display:block;min-width:0;overflow:hidden;background:#fffdf8;border:1px solid #ebe5da;border-radius:18px;text-decoration:none;box-shadow:0 6px 14px #5847290a;transition:transform .18s,box-shadow .18s}
+.about-product:hover{transform:translateY(-3px);box-shadow:0 9px 20px #58472916}
+.about-product__art{aspect-ratio:1.65;background:#bbc6a9}
+.about-product--postcards .about-product__art{background:#ead3ca}
+.about-product--stickers .about-product__art{background:#f0dfc5}
+.about-product__art>.artwork-placeholder{height:100%;width:100%}
+.about-product__caption{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:68px;padding:16px 18px}
+.about-product__caption h3{font-size:17px;font-weight:700;color:#1c2c23;line-height:1.3;letter-spacing:-.2px;margin:0}
+.about-product__caption svg{color:#365e44;flex-shrink:0}
+.about-product__caption span{display:block;font-size:10px;color:#8b907e;margin-top:3px}
+.about-feedback{display:grid;grid-template-columns:190px minmax(0,1fr);gap:28px;align-items:center;background:#eef0e5;border-radius:25px;padding:27px 33px 28px 26px;margin-top:82px}
+.about-feedback__art{width:100%;height:165px}
+.about-feedback h2{font-size:24px;line-height:1.3;letter-spacing:-.5px;color:#192d20;margin:0 0 10px}
+.about-feedback p{font-size:16px;line-height:1.6;max-width:660px}
+.about-feedback__actions{display:flex;flex-wrap:wrap;gap:16px;margin-top:22px}
+.about-feedback__actions .public-button{font-size:14px;font-weight:700;gap:10px;min-height:46px;padding:11px 23px;border-radius:12px;flex-shrink:0}
+.about-feedback__actions .about-feedback__email{color:#254f39;background:transparent;border:1px solid #476a4c}
+.about-feedback__actions .about-feedback__email:hover{background:#e2e9da}
+.about-feedback-notice p{font-size:15px;line-height:1.75;color:#586b51}
+.about-feedback-notice a{display:inline-flex;align-items:center;gap:9px;margin-top:20px;color:#315c4c;font-size:15px;overflow-wrap:anywhere}
+@media(max-width:1000px){.about-content .about-overview{padding:0 32px 45px}.about-heading{min-height:230px}.about-overview .about-heading h1{font-size:45px}.about-heading__art{right:-35px;height:195px}.about-story{gap:26px;margin-bottom:38px}.about-overview p{font-size:16px}.about-story__art{height:280px}.about-product-grid{gap:18px}.about-product__caption{padding:14px;min-height:64px}.about-product__caption h3{font-size:16px}.about-feedback{grid-template-columns:155px minmax(0,1fr);gap:23px;padding:24px;margin-top:65px}.about-feedback h2{font-size:22px}.about-feedback p{font-size:15px}.about-feedback__actions{gap:12px}.about-feedback__actions .public-button{padding:11px 18px;font-size:13px}}
+@media(max-width:700px){.about-content .about-overview{padding:0 24px 35px}.about-heading{min-height:235px;grid-template-columns:1fr}.about-heading__copy{padding:34px 0 25px;max-width:360px;margin:auto}.about-heading__art{opacity:.32;width:58%;height:135px;right:-38px;top:-12px}.about-overview .about-heading h1{font-size:43px}.about-overview .about-heading__lead{max-width:290px;font-size:14px}.about-story{grid-template-columns:1fr;gap:4px;margin:0 0 31px}.about-story__art{height:225px;max-width:350px;margin:0 auto}.about-story__copy{padding-top:8px}.about-story__copy p+p{margin-top:17px}.about-overview p{font-size:16px;line-height:1.75}.about-divider{margin:0 0 20px;gap:13px}.about-products>h2{font-size:27px;margin-bottom:24px}.about-product-grid{gap:14px}.about-product__caption{padding:12px;gap:7px}.about-product__caption h3{font-size:14px}.about-product__caption svg{width:16px}.about-feedback{grid-template-columns:1fr;padding:23px;gap:13px;margin-top:44px;text-align:center}.about-feedback__art{max-width:155px;height:125px;margin:auto}.about-feedback h2{font-size:23px}.about-feedback p{font-size:15px}.about-feedback__actions{justify-content:center;margin-top:20px;gap:12px}}
+@media(max-width:540px){.about-product-grid{grid-template-columns:1fr;max-width:390px;margin:auto;gap:21px}.about-product__art{aspect-ratio:1.75}.about-product__caption{min-height:68px;padding:16px 19px}.about-product__caption h3{font-size:19px}.about-product__caption span{font-size:11px}.about-product__caption svg{width:20px;height:20px}.about-feedback__actions{flex-direction:column}.about-feedback__actions .public-button{width:100%;min-height:48px;font-size:14px}.about-feedback{padding:24px 22px}.about-content .about-overview{padding-inline:22px}}
+@media(prefers-reduced-motion:reduce){.about-product{transition:none}.about-product:hover{transform:none}}

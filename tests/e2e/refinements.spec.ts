@@ -31,11 +31,11 @@ test('home keeps the tag collections and gives future products real coming-soon 
   await page.locator('.public-header nav').getByRole('link', { name: 'О проекте', exact: true }).click();
   await expect(page.locator('.about-project')).toContainText('Новогодняя мастерская для больших праздничных идей.');
   await expect(page.locator('.about-project')).toContainText('Мы создали это пространство, чтобы подготовка к праздникам стала проще и приятнее.');
-  await page.getByRole('link', { name: 'Выбрать набор бирок', exact: true }).click();
+  await page.locator('.about-products [data-product=tags]').click();
   await expect(page.getByRole('heading', { name: 'Хвойная сказка', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Зимние истории', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Винтажный праздник', exact: true })).toBeVisible();
-  for (let template = 0; template < 3; template++) {
+  for (let template = 0; template < 6; template++) {
     await page.locator('.template-card').nth(template).click();
     const examples = [];
     for (const [index, number] of [1, 12, 24].entries()) {

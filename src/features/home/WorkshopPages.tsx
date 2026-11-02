@@ -4,6 +4,7 @@ import { assetUrl, assets } from '../../content/assets';
 import { getTemplate } from '../../content/templates';
 import { previewCard } from '../gallery/previewCard';
 import { CardSvg } from '../../rendering/CardSvg';
+import { AboutContent } from './AboutContent';
 import './workshop.css';
 
 export type WorkshopRoute = 'home' | 'tags' | 'postcards' | 'stickers' | 'ideas' | 'about' | 'editor';
@@ -57,7 +58,7 @@ export function HomePage({ hasProject }: { hasProject: boolean }) {
 }
 
 export function AboutPage({ hasProject }: { hasProject: boolean }) {
-  return <div className="public-site"><SiteHeader current="about" hasProject={hasProject} /><main className="public-content-page"><a className="public-back-link" href="#home"><ArrowLeft size={17} /> На главную</a><article className="about-project"><span className="about-project__mark" aria-hidden="true"><TreePine size={39} strokeWidth={1.2} /></span><h1>О проекте</h1><p className="about-project__lead"><strong>Новогодняя мастерская для больших праздничных идей.</strong></p><p>Мы создали это пространство, чтобы подготовка к праздникам стала проще и приятнее. Здесь можно создавать адвент-бирки, открытки и наклейки, выбирать иллюстрации, сочетать цвета и добавлять собственные надписи.</p><p>Всё необходимое для праздничного оформления собрано в одном месте: удобный редактор, готовые шаблоны и коллекция иллюстраций в уютном рождественском стиле.</p><p>Создавайте что-то своё, распечатывайте и добавляйте немного праздничного волшебства в обычные вещи.</p><div className="about-project__action"><a className="public-button public-button--pill" href="#tags">Выбрать набор бирок <ArrowRight size={18} /></a></div></article></main><SiteFooter hasProject={hasProject} /></div>;
+  return <div className="public-site"><SiteHeader current="about" hasProject={hasProject} /><main className="about-content"><AboutContent /></main><SiteFooter hasProject={hasProject} /></div>;
 }
 
 export function ComingSoonPage({ page, hasProject }: { page: 'postcards' | 'stickers' | 'ideas'; hasProject: boolean }) {

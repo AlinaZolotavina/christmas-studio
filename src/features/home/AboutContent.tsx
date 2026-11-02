@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowRight, Mail, MessageCircle, TreePine } from 'lucide-react';
+import { ArrowRight, Mail, MessageCircle } from 'lucide-react';
 import { siteContacts } from '../../content/siteContacts';
 import { ArtworkPlaceholder } from '../../shared/ui/ArtworkPlaceholder';
 import { Button } from '../../shared/ui/Controls';
@@ -20,7 +20,7 @@ export function AboutContent() {
   const [feedbackNotice, setFeedbackNotice] = useState(false);
   const email = `mailto:${siteContacts.authorEmail}`;
   return <article className="about-project about-overview">
-    <section className="about-heading" aria-labelledby="about-title"><div className="about-heading__copy"><TreePine size={37} strokeWidth={1.4} aria-hidden="true" /><h1 id="about-title">О проекте</h1><p className="about-heading__lead"><strong>Новогодняя мастерская для больших праздничных идей.</strong></p></div><ArtworkPlaceholder kind="branch" slot="about-hero-branch" className="about-heading__art" /></section>
+    <section className="about-heading" aria-labelledby="about-title"><div className="about-heading__copy"><h1 id="about-title">О проекте</h1></div><ArtworkPlaceholder kind="branch" slot="about-hero-branch" className="about-heading__art" /></section>
     <section className="about-story" aria-label="О новогодней мастерской"><ArtworkPlaceholder kind="gift" slot="about-gift" className="about-story__art" /><div className="about-story__copy"><p>Мы создали это пространство, чтобы подготовка к праздникам стала проще и приятнее. Здесь можно создавать адвент-бирки, открытки и наклейки, выбирать иллюстрации, сочетать цвета и добавлять собственные надписи.</p><p>Всё необходимое для праздничного оформления собрано в одном месте: удобный редактор, готовые шаблоны и коллекция иллюстраций в уютном рождественском стиле.</p><p>Создавайте что-то своё, распечатывайте и добавляйте немного праздничного волшебства в обычные вещи.</p></div></section>
     <BowDivider />
     <section className="about-products" aria-labelledby="about-products-title"><h2 id="about-products-title">Что можно создать</h2><div className="about-product-grid">{products.map(product => <a key={product.id} href={`#${product.id}`} className={`about-product about-product--${product.id}`} data-product={product.id}><div className="about-product__art"><ArtworkPlaceholder kind={product.kind} slot={product.slot} /></div><div className="about-product__caption"><div><h3>{product.name}</h3>{product.soon && <span>В разработке</span>}</div><ArrowRight size={19} aria-hidden="true" /></div></a>)}</div></section>

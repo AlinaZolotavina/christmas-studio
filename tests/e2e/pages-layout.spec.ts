@@ -43,13 +43,27 @@ test('about products keep their destinations and feedback offers the real author
 
 test('the two redesigned bodies load supplied covers and retain geometry for missing artwork at every width', async ({ page }) => {
   for (const route of ['tags', 'about']) {
-    for (const width of [360, 390, 768, 1024, 1440]) {
+    for (const width of route === 'tags' ? [360, 390, 650, 768, 900, 901, 1024, 1150, 1151, 1280, 1440, 1499, 1500, 1600] : [360, 390, 768, 1024, 1440]) {
       await page.setViewportSize({ width, height: width < 1000 ? 1024 : 900 });
       await page.goto(`/#${route}`);
-      await expect(page.locator('main [data-art-slot]').first()).toBeVisible();
+      await expect(page.locator('main h1')).toBeVisible();
       if (route === 'tags') {
         await expect(page.locator('.template-hero img')).toHaveCount(3);
-        await expect.poll(() => page.locator('.template-hero img').evaluateAll(images => images.every(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0))).toBe(true);
+        await expect(page.locator('.template-hero img:visible')).toHaveCount(width <= 1150 ? 1 : 3);
+        await expect.poll(() => page.locator('.template-hero img:visible').evaluateAll(images => images.every(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0))).toBe(true);
+        if (width <= 1150) await expect(page.locator('.template-hero__scene--right')).toBeVisible();
+        const layout = await page.evaluate(() => {
+          const hero = document.querySelector('.template-hero')!.getBoundingClientRect();
+          const grid = document.querySelector('.template-grid')!.getBoundingClientRect();
+          const copy = document.querySelector('.template-hero__copy')!.getBoundingClientRect();
+          const overlaps = [...document.querySelectorAll('.template-hero__scene')].some(scene => {
+            const art = scene.getBoundingClientRect();
+            return art.width > 0 && art.height > 0 && art.left < copy.right - 1 && art.right > copy.left + 1 && art.top < copy.bottom - 1 && art.bottom > copy.top + 1;
+          });
+          const house = document.querySelector('.template-hero__scene--right')!.getBoundingClientRect();
+          return { aligned: Math.abs(hero.left - grid.left) < 1 && Math.abs(hero.width - grid.width) < 1, overlaps, imageFirstOnPhone: innerWidth > 650 || house.bottom <= copy.top + 1 };
+        });
+        expect(layout).toEqual({ aligned: true, overlaps: false, imageFirstOnPhone: true });
         await expect(page.locator('.template-catalog img')).toHaveCount(6);
         for (const cover of await page.locator('.template-catalog img').all()) {
           await cover.scrollIntoViewIfNeeded();

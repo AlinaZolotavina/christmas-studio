@@ -58,7 +58,14 @@ test('the two redesigned bodies load supplied covers and retain geometry for mis
         for (const [id, file] of [['woodland', 'coniferous-fairytale'], ['winter', 'winter-stories'], ['vintage', 'vintage-celebration'], ['forest-friends', 'forest-friends'], ['warm-gifts', 'warm-gifts'], ['classic-christmas', 'classic-christmas']]) {
           await expect(page.locator(`[data-template-id="${id}"] img`)).toHaveAttribute('src', new RegExp(`/site/${file}\\.webp$`));
         }
-      } else await expect(page.locator('main img,main image')).toHaveCount(0);
+      } else {
+        await expect(page.locator('main img')).toHaveCount(3);
+        for (const artwork of await page.locator('main img').all()) {
+          await artwork.scrollIntoViewIfNeeded();
+          await expect.poll(() => artwork.evaluate(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0)).toBe(true);
+        }
+        await expect(page.locator('.about-products .artwork-placeholder--image')).toHaveCount(0);
+      }
       expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
       if (route === 'tags') await expect(page.locator('.template-card')).toHaveCount(6);
     }

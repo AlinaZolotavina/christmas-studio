@@ -29,4 +29,10 @@ export const templateCoverArtwork = [
   { id: 'template-classic-christmas-cover', source: 'assets/artwork-placeholders/classic-christmas.png', src: 'site/classic-christmas.webp', width: 1536, height: 1024 },
 ] as const;
 
-export const pageArtwork = [...Object.values(templateHeroArtwork), ...templateCoverArtwork];
+export const aboutArtwork = [
+  { id: 'about-hero-branch', source: 'assets/backgrounds/branch-and-evergreen-berries.png', src: 'site/branch-and-evergreen-berries.webp', width: 951, height: 526 },
+  { id: 'about-gift', source: 'assets/backgrounds/christmas-gift-box-with-pinecone.png', src: 'site/christmas-gift-box-with-pinecone.webp', width: 1536, height: 1024 },
+  { id: 'about-feedback-envelope', source: 'assets/backgrounds/envelope-with-heart-and-holly.png', src: 'site/envelope-with-heart-and-holly.webp', width: 1536, height: 1024 },
+] as const;
+
+export const pageArtwork = [...Object.values(templateHeroArtwork), ...templateCoverArtwork, ...aboutArtwork];

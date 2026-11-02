@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { categories, images, searchImages, subcategories } from './images';
+import { readdirSync } from 'node:fs';
+import { categories, getAvailableMotifs, getImage, imageMatchesCategory, images, motifs, searchImages, subcategories } from './images';
 
 describe('explicit illustration metadata', () => {
   it('keeps one unique kebab ID and source per image with valid taxonomy', () => {
@@ -8,8 +9,12 @@ describe('explicit illustration metadata', () => {
     expect(new Set(images.map(i => i.source)).size).toBe(images.length);
     expect(new Set(categories.map(i => i.id)).size).toBe(categories.length);
     expect(new Set(subcategories.map(i => i.id)).size).toBe(subcategories.length);
+    expect(categories).toHaveLength(8);
+    expect(new Set(images.map(i => i.source))).toEqual(new Set(readdirSync('assets').filter(file => /\.png$/i.test(file)).map(file => `assets/${file}`)));
     for (const image of images) {
       expect(image.id).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+      expect(image.source).toBe(`assets/${image.id}.png`);
+      expect(image.src).toBe(`art/${image.id}.png`);
       expect(categories.some(c => c.id === image.category)).toBe(true);
       expect(subcategories.some(c => c.id === image.subcategory && c.category === image.category)).toBe(true);
       expect(image.tags.length).toBeGreaterThan(0);
@@ -25,17 +30,56 @@ describe('explicit illustration metadata', () => {
   it('combines category, subcategory, tags and background without duplicate images', () => {
     const results = searchImages('bow', { category: 'botanical', subcategory: 'botanical-wreaths', background: 'transparent', tags: ['шишки'] });
     expect(results.length).toBeGreaterThan(0);
-    expect(results.every(i => i.category === 'botanical' && i.subcategory === 'botanical-wreaths')).toBe(true);
+    expect(results.map(image => image.id)).toContain('velvet-bow-wreath');
+    expect(results.every(image => imageMatchesCategory(image, 'botanical'))).toBe(true);
+    expect(new Set(results.map(image => image.id)).size).toBe(results.length);
     expect(searchImages('', { background: 'ivory' })).toEqual([]);
     expect(searchImages('definitelymissingterm')).toEqual([]);
   });
   it('includes IDs, taxonomy labels and new locale tags in the same search', () => {
     expect(searchImages('ornaments-stars').length).toBeGreaterThan(0);
-    expect(searchImages('Сказочные герои').every(i => i.category === 'characters')).toBe(true);
+    expect(searchImages('Персонажи').length).toBeGreaterThan(0);
+    expect(searchImages('Персонажи').every(i => imageMatchesCategory(i, 'characters'))).toBe(true);
     const image = images[0];
     const previous = image.tagsByLocale;
     image.tagsByLocale = { de: ['Weihnachtsstern'] };
     try { expect(searchImages('weihnachtsstern')).toContain(image); }
     finally { image.tagsByLocale = previous; }
+  });
+  it('finds the same Soviet ornament in its object and cultural collections without changing its primary category', () => {
+    const image = getImage('glass-bird-ornament')!;
+    expect(image.category).toBe('ornaments');
+    expect(searchImages('', { category: 'ornaments', subcategory: 'ornaments-soviet' })).toContain(image);
+    expect(searchImages('', { category: 'russian-traditions' })).toContain(image);
+    expect(searchImages('', { category: 'animals', subcategory: 'animals-birds' })).toContain(image);
+    expect(searchImages('Русские новогодние традиции')).toContain(image);
+    expect(images.filter(item => item.id === image.id)).toHaveLength(1);
+  });
+  it('keeps Father Frost with a tree a character and uses tags for secondary themes', () => {
+    const image = getImage('father-frost-christmas-tree')!;
+    expect(image.category).toBe('characters');
+    expect(image.tagsEn).toEqual(expect.arrayContaining(['christmas-tree', 'winter', 'new-year']));
+    expect(searchImages('', { category: 'characters', subcategory: 'characters-father-frost' })).toContain(image);
+    expect(searchImages('', { category: 'ornaments' })).not.toContain(image);
+    expect(searchImages('christmas-tree winter')).toContain(image);
+    expect(searchImages('', { category: 'characters', subcategory: 'animals-deer' })).toEqual([]);
+  });
+  it('classifies sleighs and a city by object type while keeping their Russian cultural motifs', () => {
+    const troika = getImage('russian-troika-snow')!;
+    expect(troika.category).toBe('seasonal-objects');
+    expect(searchImages('', { category: 'seasonal-objects', subcategory: 'seasonal-objects-sleighs' })).toContain(troika);
+    expect(searchImages('', { category: 'russian-traditions', subcategory: 'russian-traditions-troikas' })).toContain(troika);
+    const city = getImage('winter-kremlin-panorama')!;
+    expect(city.category).toBe('landscapes');
+    expect(searchImages('', { category: 'landscapes', subcategory: 'landscapes-cities' })).toContain(city);
+    expect(searchImages('', { category: 'russian-traditions', subcategory: 'russian-traditions-symbols' })).toContain(city);
+  });
+  it('hides empty future motifs and exposes them when matching art is explicitly registered', () => {
+    expect(motifs.some(motif => motif.id === 'characters-santa')).toBe(true);
+    expect(getAvailableMotifs('characters').some(motif => motif.id === 'characters-santa')).toBe(false);
+    images.push({ ...images[0], id: 'future-santa', category: 'characters', subcategory: 'characters-santa', tagsEn: ['Santa Claus'] });
+    try { expect(getAvailableMotifs('characters').some(motif => motif.id === 'characters-santa')).toBe(true); }
+    finally { images.pop(); }
+    expect(getAvailableMotifs('unknown')).toEqual([]);
   });
 });

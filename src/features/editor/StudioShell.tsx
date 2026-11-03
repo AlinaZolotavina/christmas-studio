@@ -62,6 +62,7 @@ export function StudioShell({ project, onHome, onTemplates, onCommand, focusTarg
   const card = project.cards[Math.min(cardIndex, project.cards.length - 1)];
   const errorCount = issues.filter(issue => issue.severity === 'error').length;
   const warningCount = issues.length - errorCount;
+  const issueSummary = [errorCount > 0 ? `Ошибок: ${errorCount}` : '', warningCount > 0 ? `Предупреждений: ${warningCount}` : ''].filter(Boolean).join(' · ') || 'Все в порядке, проблем нет';
 
   useEffect(() => {
     const update = () => setLayout(modes());
@@ -112,9 +113,10 @@ export function StudioShell({ project, onHome, onTemplates, onCommand, focusTarg
       <IconButton label="Открыть меню" className="mobile-menu-button" onClick={() => setMenu(true)}><Menu size={22} /></IconButton>
       <div className="studio-header__project"><div className="project-title-row"><span className="studio-wordmark" title={project.name}><span>{project.name}</span></span>{showStrip && <IconButton label="Сбросить проект" className="project-reset" onClick={openReset}><RotateCcw size={17} /></IconButton>}</div></div>
       <div className="studio-header__status">
-        <button type="button" className="project-state" onClick={() => setProblems(true)} aria-label="Проверка всего проекта" title={`Ошибок: ${errorCount} · Предупреждений: ${warningCount}`}>
-          <span className="project-issue-count project-issue-count--error"><AlertCircle size={13} aria-hidden="true" /><span>Ошибок: {errorCount}</span></span>
-          <span className="project-issue-count project-issue-count--warning"><AlertTriangle size={13} aria-hidden="true" /><span>Предупреждений: {warningCount}</span></span>
+        <button type="button" className="project-state" onClick={() => setProblems(true)} aria-label="Проверка всего проекта" title={issueSummary}>
+          {errorCount > 0 && <span className="project-issue-count project-issue-count--error"><AlertCircle size={13} aria-hidden="true" /><span>Ошибок: {errorCount}</span></span>}
+          {warningCount > 0 && <span className="project-issue-count project-issue-count--warning"><AlertTriangle size={13} aria-hidden="true" /><span>Предупреждений: {warningCount}</span></span>}
+          {errorCount === 0 && warningCount === 0 && <span className="project-state__success"><Check size={13} aria-hidden="true" /><span>Все в порядке, проблем нет</span></span>}
         </button>
         <span className="header-divider" aria-hidden="true" />
         <span className={`save-status ${saveStatus === 'error' ? 'save-status--error' : ''}`} title={statusText}><CloudCheck size={15} /><span>{statusText}</span></span>

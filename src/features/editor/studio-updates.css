@@ -13,6 +13,8 @@
 .project-issue-count>svg{flex-shrink:0}
 .project-issue-count--error{color:#b23e38}
 .project-issue-count--warning{color:#966a00}
+.project-state__success{display:inline-flex;align-items:center;gap:5px;color:#315c4c;flex-shrink:0}
+.project-state__success>svg{flex-shrink:0}
 .studio-header__status .header-divider{height:22px;width:1px;flex-shrink:0}
 .studio-header__status .save-status{margin:0;flex-shrink:0}
 .project-reset.icon-button{width:30px;height:30px;min-height:30px;color:#879382}
@@ -58,6 +60,7 @@
  .studio .studio-wordmark{font-size:12px}
  .studio-header__status{gap:6px;max-width:none}
  .studio-header__status .project-state{font-size:10px;flex-direction:column;align-items:flex-start;gap:2px}
+ .project-state__success>span{max-width:96px;white-space:normal;line-height:1.3;text-wrap:balance}
 }
 .inspector .inspector-tabs--expanded{height:auto}
 .inspector-tabs--expanded>button{min-height:60px;min-width:0}

@@ -257,7 +257,15 @@ export function EditorCanvas({ card, selection, onSelectionChange, onCommit, fit
       if (target) { target.x += event.key === 'ArrowRight' ? step : event.key === 'ArrowLeft' ? -step : 0; target.y += event.key === 'ArrowDown' ? step : event.key === 'ArrowUp' ? -step : 0; if (selection.kind === 'hole' && next.hole) next.hole = { x: target.x + target.width / 2, y: target.y + target.height / 2 }; commitTransform(next, selection); }
     }
   }}>
-    <div className="canvas-zoom" onPointerDown={event => event.stopPropagation()}><span>{Math.round(scale / CSS_PIXELS_PER_MM * 100)}%</span><button type="button" aria-label="Приблизить" onClick={() => zoom(1.15)}><Plus size={19} /></button><button type="button" aria-label="Отдалить" onClick={() => zoom(1 / 1.15)}><Minus size={19} /></button><button type="button" className="canvas-zoom__actual-size" aria-label="Масштаб 100%" title="Показать карточку в масштабе 100%" aria-pressed={Math.abs(scale - CSS_PIXELS_PER_MM) < 0.000001} onClick={() => setScale(CSS_PIXELS_PER_MM)}>100%</button><button type="button" aria-label="Вписать карточку" onClick={fit}><Expand size={17} /></button></div>
+    <div className="canvas-zoom" onPointerDown={event => event.stopPropagation()}>
+      <div className="canvas-zoom__readout"><output aria-label="Текущий масштаб">{Math.round(scale / CSS_PIXELS_PER_MM * 100)}%</output></div>
+      <div className="canvas-zoom__actions" role="group" aria-label="Управление масштабом">
+        <button type="button" aria-label="Приблизить" onClick={() => zoom(1.15)}><Plus size={19} /></button>
+        <button type="button" aria-label="Отдалить" onClick={() => zoom(1 / 1.15)}><Minus size={19} /></button>
+        <button type="button" className="canvas-zoom__actual-size" aria-label="Масштаб 100%" title="Показать карточку в масштабе 100%" aria-pressed={Math.abs(scale - CSS_PIXELS_PER_MM) < 0.000001} onClick={() => setScale(CSS_PIXELS_PER_MM)}>100%</button>
+        <button type="button" aria-label="Вписать карточку" onClick={fit}><Expand size={17} /></button>
+      </div>
+    </div>
     <div ref={artboard} className="canvas-artboard" style={{ width: card.width * scale, height: card.height * scale, transform: 'translate(-50%, -50%)' }}>
       <CardSvg card={displayed} idPrefix="editable" />
       <svg className="selection-overlay" viewBox={`0 0 ${card.width} ${card.height}`} aria-hidden="true">

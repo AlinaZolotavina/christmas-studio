@@ -82,4 +82,30 @@ describe('explicit illustration metadata', () => {
     finally { images.pop(); }
     expect(getAvailableMotifs('unknown')).toEqual([]);
   });
+  it('finds the new folk objects in both object and cultural collections', () => {
+    const boots = getImage('embroidered-felt-boots-rowan')!;
+    expect(boots.category).toBe('seasonal-objects');
+    expect(searchImages('ВАЛЁНКИ', { category: 'seasonal-objects', subcategory: 'seasonal-objects-felt-boots' })).toContain(boots);
+    expect(searchImages('felt boots', { category: 'russian-traditions', subcategory: 'russian-traditions-folk' })).toContain(boots);
+    const doll = getImage('snowy-nesting-doll-spruce-branches')!;
+    expect(searchImages('матрешка', { category: 'seasonal-objects', subcategory: 'seasonal-objects-nesting-dolls' })).toContain(doll);
+    expect(searchImages('matryoshka', { category: 'russian-traditions', subcategory: 'russian-traditions-folk' })).toContain(doll);
+    expect(getAvailableMotifs('seasonal-objects').map(motif => motif.id)).toEqual(expect.arrayContaining(['seasonal-objects-felt-boots', 'seasonal-objects-nesting-dolls']));
+  });
+  it('keeps new troikas as sleighs and new villages as landscapes', () => {
+    const troika = getImage('winter-russian-troika-gifts')!;
+    expect(troika.category).toBe('seasonal-objects');
+    expect(searchImages('gifts', { category: 'seasonal-objects', subcategory: 'seasonal-objects-sleighs' })).toContain(troika);
+    expect(searchImages('тройка', { category: 'russian-traditions', subcategory: 'russian-traditions-troikas' })).toContain(troika);
+    const village = getImage('winter-village-golden-domes')!;
+    expect(village.category).toBe('landscapes');
+    expect(searchImages('golden domes', { category: 'landscapes', subcategory: 'landscapes-villages' })).toContain(village);
+    expect(searchImages('деревня', { category: 'russian-traditions', subcategory: 'russian-traditions-houses' })).toContain(village);
+  });
+  it('makes both animals in the new fox and rabbit illustration discoverable', () => {
+    const friends = getImage('fox-rabbit-snowy-branch')!;
+    expect(searchImages('fox', { category: 'animals', subcategory: 'animals-foxes' })).toContain(friends);
+    expect(searchImages('rabbit', { category: 'animals', subcategory: 'animals-hares' })).toContain(friends);
+    expect(searchImages('зайчик', { category: 'animals', subcategory: 'animals-hares' })).toContain(friends);
+  });
 });

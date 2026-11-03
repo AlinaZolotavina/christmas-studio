@@ -74,6 +74,8 @@ export const motifs: ImageMotif[] = [
   { id: 'seasonal-objects-skates', category: 'seasonal-objects', name: { ru: 'Коньки', en: 'Ice skates' } },
   { id: 'seasonal-objects-mittens', category: 'seasonal-objects', name: { ru: 'Варежки', en: 'Mittens' } },
   { id: 'seasonal-objects-scarves', category: 'seasonal-objects', name: { ru: 'Шарфы', en: 'Scarves' } },
+  { id: 'seasonal-objects-felt-boots', category: 'seasonal-objects', name: { ru: 'Валенки', en: 'Felt boots' } },
+  { id: 'seasonal-objects-nesting-dolls', category: 'seasonal-objects', name: { ru: 'Матрёшки', en: 'Nesting dolls' } },
   { id: 'seasonal-objects-candles', category: 'seasonal-objects', name: { ru: 'Свечи', en: 'Candles' } },
   { id: 'seasonal-objects-snowflakes', category: 'seasonal-objects', name: { ru: 'Снежинки и морозные узоры', en: 'Snowflakes and frost patterns' } },
   { id: 'landscapes-cottages', category: 'landscapes', name: { ru: 'Уютные домики', en: 'Cozy cottages' }, includeTags: ['cottage'] },
@@ -103,6 +105,226 @@ export const subcategories = motifs;
 
 
 export const images: ImageMetadata[] = [
+  {
+    id: "burgundy-poinsettia-gold-accents", src: "art/burgundy-poinsettia-gold-accents.png", source: "assets/burgundy-poinsettia-gold-accents.png",
+    name: { ru: "Бордовая пуансеттия с золотыми акцентами", en: "Burgundy poinsettia with golden accents" }, category: "botanical", subcategory: "botanical-poinsettia",
+    tags: ["пуансеттия", "бордовый цветок", "золото", "падуб", "хвоя", "шишка", "красные ягоды"], tagsEn: ["botanical", "poinsettia", "burgundy flower", "gold", "holly", "evergreen", "pine cone", "red berries"], aliases: ["рождественская звезда цветок", "gold tipped christmas flower"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "cranberry-knitted-scarf-fir-sprig", src: "art/cranberry-knitted-scarf-fir-sprig.png", source: "assets/cranberry-knitted-scarf-fir-sprig.png",
+    name: { ru: "Красный вязаный шарф с еловой веточкой", en: "Cranberry knitted scarf with a fir sprig" }, category: "seasonal-objects", subcategory: "seasonal-objects-scarves",
+    tags: ["шарф", "вязание", "красный", "зимний узор", "бахрома", "хвоя", "шишка", "ягоды"], tagsEn: ["festive-object", "scarf", "knitted", "cranberry red", "winter pattern", "fringe", "evergreen", "pine cone", "berries"], aliases: ["красный зимний шарфик", "fair isle winter scarf"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "gzhel-christmas-bauble-fir-branches", src: "art/gzhel-christmas-bauble-fir-branches.png", source: "assets/gzhel-christmas-bauble-fir-branches.png",
+    name: { ru: "Ёлочный шар с гжельской росписью и хвоей", en: "Gzhel Christmas bauble with fir branches" }, category: "ornaments", subcategory: "ornaments-baubles",
+    tags: ["шар", "ёлочная игрушка", "гжель", "синий", "белый", "цветочная роспись", "бант", "хвоя", "ягоды"], tagsEn: ["ornament", "bauble", "gzhel", "blue and white", "floral painting", "bow", "evergreen", "berries", "russian-traditions", "russian-folk"], aliases: ["гжельский новогодний шарик", "russian blue floral christmas ball"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "sleeping-fox-snowy-fir-branches", src: "art/sleeping-fox-snowy-fir-branches.png", source: "assets/sleeping-fox-snowy-fir-branches.png",
+    name: { ru: "Спящая лиса под заснеженными еловыми ветками", en: "Sleeping fox beneath snowy fir branches" }, category: "animals", subcategory: "animals-foxes",
+    tags: ["лиса", "лисичка", "спит", "рыжий мех", "пушистый хвост", "снег", "хвоя", "шишки", "ягоды"], tagsEn: ["animal", "fox", "sleeping", "orange fur", "fluffy tail", "snow", "fir branches", "pine cones", "berries"], aliases: ["спящая зимняя лисичка", "curled up woodland fox"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "watercolor-snowy-alpine-village", src: "art/watercolor-snowy-alpine-village.png", source: "assets/watercolor-snowy-alpine-village.png",
+    name: { ru: "Заснеженная альпийская деревня с шале", en: "Snowy Alpine village with wooden chalets" }, category: "landscapes", subcategory: "landscapes-villages",
+    tags: ["деревня", "Альпы", "шале", "горы", "снег", "церковь", "деревянные дома", "тёплые окна", "венки"], tagsEn: ["landscape", "snowy-village", "alpine", "chalets", "mountains", "snow", "church", "wooden houses", "glowing windows", "wreaths"], aliases: ["альпийская зимняя улочка", "snowy mountain village"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "watercolor-snowy-alpine-village-1", src: "art/watercolor-snowy-alpine-village-1.png", source: "assets/watercolor-snowy-alpine-village-1.png",
+    name: { ru: "Заснеженная альпийская деревня с шале — вариант", en: "Snowy Alpine village with wooden chalets — variant" }, category: "landscapes", subcategory: "landscapes-villages",
+    tags: ["деревня", "Альпы", "шале", "горы", "снег", "церковь", "деревянные дома", "тёплые окна", "венки"], tagsEn: ["landscape", "snowy-village", "alpine", "chalets", "mountains", "snow", "church", "wooden houses", "glowing windows", "wreaths"], aliases: ["альпийские домики в снегу", "winter alpine chalet village"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "snowy-russian-wooden-house", src: "art/snowy-russian-wooden-house.png", source: "assets/snowy-russian-wooden-house.png",
+    name: { ru: "Заснеженная русская изба с дымящей трубой", en: "Snowy Russian wooden house with a smoking chimney" }, category: "landscapes", subcategory: "landscapes-cottages",
+    tags: ["изба", "деревянный дом", "резьба", "снег", "дым", "тёплые окна", "ель", "рябина", "дрова"], tagsEn: ["landscape", "cottage", "log house", "carved wood", "snow", "chimney smoke", "glowing windows", "rowan", "firewood", "russian-traditions", "russian-house", "russian-folk"], aliases: ["русская бревенчатая избушка", "traditional russian log cabin"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "christmas-candle-fir-greenery", src: "art/christmas-candle-fir-greenery.png", source: "assets/christmas-candle-fir-greenery.png",
+    name: { ru: "Кремовая рождественская свеча с хвоей", en: "Ivory Christmas candle with fir greenery" }, category: "seasonal-objects", subcategory: "seasonal-objects-candles",
+    tags: ["свеча", "кремовый", "пламя", "воск", "бечёвка", "хвоя", "шишки", "красные ягоды"], tagsEn: ["festive-object", "candle", "ivory", "flame", "wax", "twine", "evergreen", "pine cones", "red berries"], aliases: ["свечка с еловым декором", "rustic christmas pillar candle"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "watercolor-nutcracker-golden-scepter", src: "art/watercolor-nutcracker-golden-scepter.png", source: "assets/watercolor-nutcracker-golden-scepter.png",
+    name: { ru: "Щелкунчик с золотым жезлом и красным пером", en: "Nutcracker with a golden scepter and red feather" }, category: "characters", subcategory: "characters-nutcracker",
+    tags: ["щелкунчик", "солдатик", "золотой жезл", "красный мундир", "перо", "хвоя", "шишки", "ягоды"], tagsEn: ["character", "nutcracker", "toy soldier", "golden scepter", "red uniform", "feather", "evergreen", "pine cones", "berries"], aliases: ["рождественский щелкунчик с жезлом", "christmas nutcracker soldier"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "watercolor-nutcracker-christmas-decor", src: "art/watercolor-nutcracker-christmas-decor.png", source: "assets/watercolor-nutcracker-christmas-decor.png",
+    name: { ru: "Щелкунчик в красном мундире с рождественским декором", en: "Red uniform nutcracker with Christmas decorations" }, category: "characters", subcategory: "characters-nutcracker",
+    tags: ["щелкунчик", "солдатик", "красный мундир", "зелёные брюки", "золотые эполеты", "хвоя", "падуб", "шишки"], tagsEn: ["character", "nutcracker", "toy soldier", "red uniform", "green trousers", "gold epaulettes", "evergreen", "holly", "pine cones"], aliases: ["новогодний деревянный солдатик", "festive wooden nutcracker"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "watercolor-snowman-gifts", src: "art/watercolor-snowman-gifts.png", source: "assets/watercolor-snowman-gifts.png",
+    name: { ru: "Снеговик в красной шапке с подарками", en: "Snowman in a red hat holding gifts" }, category: "characters", subcategory: "characters-snowmen",
+    tags: ["снеговик", "красная шапка", "шарф", "варежки", "морковный нос", "подарки", "хвоя", "снег"], tagsEn: ["character", "snowman", "red hat", "scarf", "mittens", "carrot nose", "gift", "evergreen", "snow"], aliases: ["снеговичок с новогодними подарками", "snowman carrying christmas presents"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "vintage-skates-snowy-branch", src: "art/vintage-skates-snowy-branch.png", source: "assets/vintage-skates-snowy-branch.png",
+    name: { ru: "Коричневые винтажные коньки на заснеженной ветке", en: "Brown vintage ice skates hanging from a snowy branch" }, category: "seasonal-objects", subcategory: "seasonal-objects-skates",
+    tags: ["коньки", "коричневые ботинки", "мех", "шнурки", "подвеска", "снег", "хвоя", "шишки", "ягоды"], tagsEn: ["festive-object", "ice skates", "brown boots", "fur lining", "laces", "hanging", "snow", "evergreen", "pine cones", "berries"], aliases: ["ретро коньки на ветке", "hanging vintage skating boots"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "vintage-sleigh-snow-berries", src: "art/vintage-sleigh-snow-berries.png", source: "assets/vintage-sleigh-snow-berries.png",
+    name: { ru: "Красные винтажные сани в снегу с ягодами", en: "Red vintage sleigh in the snow with berries" }, category: "seasonal-objects", subcategory: "seasonal-objects-sleighs",
+    tags: ["сани", "санки", "дерево", "красный", "снег", "хвоя", "шишки", "красные ягоды"], tagsEn: ["festive-object", "sleigh", "sled", "wooden", "red", "snow", "evergreen", "pine cones", "red berries"], aliases: ["деревянные зимние саночки", "vintage wooden winter sled"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "snowy-christmas-village", src: "art/snowy-christmas-village.png", source: "assets/snowy-christmas-village.png",
+    name: { ru: "Заснеженная рождественская улочка с фахверковыми домами", en: "Snowy Christmas street with timber framed houses" }, category: "landscapes", subcategory: "landscapes-villages",
+    tags: ["деревня", "улочка", "фахверк", "церковь", "снег", "тёплые окна", "фонарь", "гирлянды", "ёлки"], tagsEn: ["landscape", "snowy-village", "street", "timber framed houses", "church", "snow", "glowing windows", "lantern", "garlands", "fir trees"], aliases: ["рождественская европейская деревня", "cozy old town christmas street"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "snowy-christmas-hamlet", src: "art/snowy-christmas-hamlet.png", source: "assets/snowy-christmas-hamlet.png",
+    name: { ru: "Рождественская деревушка с церковью и каменным мостом", en: "Christmas hamlet with a church and stone bridge" }, category: "landscapes", subcategory: "landscapes-villages",
+    tags: ["деревушка", "церковь", "мост", "ручей", "снег", "тёплые окна", "фонарь", "ели", "рождество"], tagsEn: ["landscape", "snowy-village", "hamlet", "church", "stone bridge", "stream", "snow", "glowing windows", "lantern", "christmas"], aliases: ["зимняя деревенька у ручья", "snow covered village bridge"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "snowy-russian-cottage-carved-window-frames", src: "art/snowy-russian-cottage-carved-window-frames.png", source: "assets/snowy-russian-cottage-carved-window-frames.png",
+    name: { ru: "Заснеженная русская изба с резными наличниками", en: "Snowy Russian cottage with carved window frames" }, category: "landscapes", subcategory: "landscapes-cottages",
+    tags: ["изба", "деревянный дом", "резные наличники", "крыльцо", "красная дверь", "снег", "ели", "рябина", "забор"], tagsEn: ["landscape", "cottage", "log house", "carved window frames", "porch", "red door", "snow", "fir trees", "rowan", "fence", "russian-traditions", "russian-house", "russian-folk"], aliases: ["русская избушка с резьбой", "ornate russian winter cabin"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "snowy-vintage-sleigh-under-spruce", src: "art/snowy-vintage-sleigh-under-spruce.png", source: "assets/snowy-vintage-sleigh-under-spruce.png",
+    name: { ru: "Винтажные санки с пледом под заснеженной елью", en: "Vintage sleds with a blanket beneath snowy spruce" }, category: "seasonal-objects", subcategory: "seasonal-objects-sleighs",
+    tags: ["санки", "сани", "дерево", "пара", "красный плед", "снег", "еловая ветка", "шишки", "ягоды"], tagsEn: ["festive-object", "sleigh", "sleds", "wooden", "pair", "red blanket", "snow", "spruce branch", "pine cones", "berries"], aliases: ["деревянные саночки у ели", "snow covered vintage wooden sleds"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "snowy-cottage-warm-lights", src: "art/snowy-cottage-warm-lights.png", source: "assets/snowy-cottage-warm-lights.png",
+    name: { ru: "Заснеженный бревенчатый домик с тёплыми окнами", en: "Snowy log cottage with warm glowing windows" }, category: "landscapes", subcategory: "landscapes-cottages",
+    tags: ["домик", "изба", "бревно", "тёплые окна", "дым", "снег", "рябина", "дрова", "забор"], tagsEn: ["landscape", "cottage", "log house", "glowing windows", "chimney smoke", "snow", "rowan", "firewood", "fence", "russian-traditions", "russian-house"], aliases: ["уютная зимняя избушка", "cozy glowing winter cabin"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "snowy-russian-wooden-manor-golden-rooster", src: "art/snowy-russian-wooden-manor-golden-rooster.png", source: "assets/snowy-russian-wooden-manor-golden-rooster.png",
+    name: { ru: "Заснеженный русский терем с золотым петушком", en: "Snowy Russian wooden manor with a golden rooster" }, category: "landscapes", subcategory: "landscapes-cottages",
+    tags: ["терем", "русский дом", "резьба", "красная дверь", "золотой петушок", "сказка", "снег", "ели", "рябина"], tagsEn: ["landscape", "cottage", "wooden manor", "carved wood", "red door", "golden rooster", "fairy tale", "snow", "russian-traditions", "russian-house", "russian-fairytale", "russian-folk"], aliases: ["сказочный теремок с петушком", "russian fairytale wooden palace"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "embroidered-felt-boots-rowan", src: "art/embroidered-felt-boots-rowan.png", source: "assets/embroidered-felt-boots-rowan.png",
+    name: { ru: "Валенки с красной вышивкой и рябиной", en: "Felt boots with red embroidery and rowan berries" }, category: "seasonal-objects", subcategory: "seasonal-objects-felt-boots",
+    tags: ["валенки", "войлок", "кремовый", "красная вышивка", "снежинки", "народный узор", "рябина", "хвоя", "снег"], tagsEn: ["festive-object", "felt boots", "valenki", "ivory", "red embroidery", "snowflakes", "folk pattern", "rowan", "evergreen", "snow", "russian-traditions", "russian-folk"], aliases: ["русские зимние валеночки", "traditional embroidered russian boots"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "winter-hare-spruce-branches-berries", src: "art/winter-hare-spruce-branches-berries.png", source: "assets/winter-hare-spruce-branches-berries.png",
+    name: { ru: "Белый заяц среди еловых веток и ягод", en: "White winter hare among spruce branches and berries" }, category: "animals", subcategory: "animals-hares",
+    tags: ["заяц", "зайчик", "белый мех", "длинные уши", "зима", "снег", "хвоя", "красные ягоды", "шишки"], tagsEn: ["animal", "hare", "white fur", "long ears", "winter", "snow", "spruce branches", "red berries", "pine cones"], aliases: ["белый лесной зайчонок", "snow hare evergreen berries"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "winter-squirrel-nuts-pouch", src: "art/winter-squirrel-nuts-pouch.png", source: "assets/winter-squirrel-nuts-pouch.png",
+    name: { ru: "Зимняя белочка с орешком и мешочком орехов", en: "Winter squirrel with a nut and a pouch of nuts" }, category: "animals", subcategory: "animals-squirrels",
+    tags: ["белка", "белочка", "орехи", "мешочек", "пушистый хвост", "снег", "хвоя", "шишки", "ягоды"], tagsEn: ["animal", "squirrel", "nuts", "pouch", "fluffy tail", "snow", "evergreen", "pine cones", "berries"], aliases: ["белочка с запасом орешков", "woodland squirrel nut sack"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "winter-coat-rack-mittens", src: "art/winter-coat-rack-mittens.png", source: "assets/winter-coat-rack-mittens.png",
+    name: { ru: "Вязаные варежки на деревянной вешалке", en: "Knitted mittens hanging from a wooden coat rack" }, category: "seasonal-objects", subcategory: "seasonal-objects-mittens",
+    tags: ["варежки", "вешалка", "дерево", "вязание", "красные манжеты", "снежинки", "красный бант", "хвоя", "ягоды"], tagsEn: ["festive-object", "mittens", "coat rack", "wooden", "knitted", "red cuffs", "snowflake pattern", "red bow", "evergreen", "berries"], aliases: ["зимние рукавички на крючке", "hanging fair isle winter mittens"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "winter-village-sunset", src: "art/winter-village-sunset.png", source: "assets/winter-village-sunset.png",
+    name: { ru: "Зимняя русская деревня на закате", en: "Russian winter village at sunset" }, category: "landscapes", subcategory: "landscapes-villages",
+    tags: ["деревня", "избы", "закат", "золотые купола", "церковь", "снег", "берёза", "рябина", "дорога"], tagsEn: ["landscape", "snowy-village", "cottages", "sunset", "golden domes", "church", "snow", "birch", "rowan", "road", "russian-traditions", "russian-house"], aliases: ["русская заснеженная деревенька", "russian snowy village evening"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "winter-village-golden-domes", src: "art/winter-village-golden-domes.png", source: "assets/winter-village-golden-domes.png",
+    name: { ru: "Зимняя деревня под золотыми куполами", en: "Winter village beneath golden church domes" }, category: "landscapes", subcategory: "landscapes-villages",
+    tags: ["деревня", "русские дома", "золотые купола", "церковь", "закат", "снег", "резные окна", "берёза", "рябина"], tagsEn: ["landscape", "snowy-village", "russian houses", "golden domes", "church", "sunset", "snow", "carved windows", "birch", "rowan", "russian-traditions", "russian-house"], aliases: ["золотые маковки над деревней", "golden onion domes snowy village"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "watercolor-winter-christmas-village", src: "art/watercolor-winter-christmas-village.png", source: "assets/watercolor-winter-christmas-village.png",
+    name: { ru: "Акварельная рождественская улочка с фонарём и ёлкой", en: "Watercolor Christmas street with a lantern and tree" }, category: "landscapes", subcategory: "landscapes-villages",
+    tags: ["деревня", "улочка", "фахверк", "фонарь", "ёлка", "церковь", "снег", "тёплые окна", "гирлянды"], tagsEn: ["landscape", "snowy-village", "street", "timber framed houses", "lantern", "christmas-tree", "church", "snow", "glowing windows", "garlands"], aliases: ["зимняя рождественская деревня в акварели", "watercolor festive village street"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "winter-russian-troika-gifts", src: "art/winter-russian-troika-gifts.png", source: "assets/winter-russian-troika-gifts.png",
+    name: { ru: "Русская тройка с подарками на фоне зимней деревни", en: "Russian troika with gifts before a winter village" }, category: "seasonal-objects", subcategory: "seasonal-objects-sleighs",
+    tags: ["тройка", "лошади", "сани", "подарки", "русский узор", "снег", "деревня", "золотые купола", "закат"], tagsEn: ["festive-object", "troika", "horses", "sleigh", "gift", "folk pattern", "snow", "snowy-village", "golden domes", "sunset", "russian-traditions", "russian-folk"], aliases: ["зимняя русская тройка с подарками", "three horse russian christmas sleigh"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "fox-rabbit-snowy-branch", src: "art/fox-rabbit-snowy-branch.png", source: "assets/fox-rabbit-snowy-branch.png",
+    name: { ru: "Лиса и кролик в шарфиках под снежной веткой", en: "Fox and rabbit in scarves beneath a snowy branch" }, category: "animals", subcategory: "animals-foxes",
+    tags: ["лиса", "кролик", "зайчик", "друзья", "красный платок", "зелёный шарф", "снег", "рябина", "берёза"], tagsEn: ["animal", "fox", "hare", "rabbit", "friends", "red shawl", "green scarf", "snow", "rowan", "birch"], aliases: ["лисичка и зайчик зимой", "woodland fox and bunny friends"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "polar-bear-cub-snowy-rock", src: "art/polar-bear-cub-snowy-rock.png", source: "assets/polar-bear-cub-snowy-rock.png",
+    name: { ru: "Белый медвежонок в красном шарфе на снежной скале", en: "Polar bear cub in a red scarf on a snowy rock" }, category: "animals", subcategory: "animals-bears",
+    tags: ["белый медведь", "медвежонок", "красный шарф", "зимний узор", "снежная скала", "снег", "хвоя", "ягоды"], tagsEn: ["animal", "bear", "polar bear", "cub", "red scarf", "winter pattern", "snowy rock", "snow", "evergreen", "berries"], aliases: ["полярный медвежонок в шарфике", "little arctic bear winter scarf"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "festive-russian-troika-snow", src: "art/festive-russian-troika-snow.png", source: "assets/festive-russian-troika-snow.png",
+    name: { ru: "Праздничная русская тройка в снегу", en: "Festive Russian troika in the snow" }, category: "seasonal-objects", subcategory: "seasonal-objects-sleighs",
+    tags: ["тройка", "три лошади", "сани", "красный", "золотой узор", "подарки", "фонарь", "хвоя", "снег"], tagsEn: ["festive-object", "troika", "three horses", "sleigh", "red", "golden pattern", "gift", "lantern", "evergreen", "snow", "russian-traditions", "russian-folk"], aliases: ["новогодняя тройка лошадей", "ornate russian three horse sleigh"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "painted-christmas-star-ribbon", src: "art/painted-christmas-star-ribbon.png", source: "assets/painted-christmas-star-ribbon.png",
+    name: { ru: "Расписная рождественская звезда с красным бантом", en: "Painted Christmas star with a red ribbon bow" }, category: "ornaments", subcategory: "ornaments-stars",
+    tags: ["звезда", "ёлочная игрушка", "цветочная роспись", "народный узор", "красный бант", "подвеска", "хвоя", "шишки", "ягоды"], tagsEn: ["ornament", "star", "floral painting", "folk pattern", "red bow", "hanging", "evergreen", "pine cones", "berries", "russian-traditions", "russian-folk"], aliases: ["звёздочка с народной росписью", "russian folk painted star ornament"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "christmas-branch-bell", src: "art/christmas-branch-bell.png", source: "assets/christmas-branch-bell.png",
+    name: { ru: "Золотой колокольчик на заснеженной еловой ветке", en: "Golden bell hanging from a snowy fir branch" }, category: "ornaments", subcategory: "ornaments-bells",
+    tags: ["колокольчик", "золото", "еловая ветка", "красный бант", "верёвка", "снег", "шишки", "красные ягоды"], tagsEn: ["ornament", "bell", "gold", "fir branch", "red bow", "rope", "snow", "pine cones", "red berries"], aliases: ["рождественская ветвь с колокольчиком", "snowy evergreen hanging christmas bell"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "snowy-christmas-village-square", src: "art/snowy-christmas-village-square.png", source: "assets/snowy-christmas-village-square.png",
+    name: { ru: "Заснеженная деревенская площадь с рождественской ёлкой", en: "Snowy village square with a Christmas tree" }, category: "landscapes", subcategory: "landscapes-villages",
+    tags: ["деревня", "площадь", "ёлка", "подарки", "церковь", "фахверк", "скамейка", "фонарь", "снег"], tagsEn: ["landscape", "snowy-village", "square", "christmas-tree", "gift", "church", "timber framed houses", "bench", "lantern", "snow"], aliases: ["рождественская деревенская площадь в снегу", "festive old town christmas square"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "christmas-poinsettia-evergreen-branches", src: "art/christmas-poinsettia-evergreen-branches.png", source: "assets/christmas-poinsettia-evergreen-branches.png",
+    name: { ru: "Красная пуансеттия с хвоей и ягодами", en: "Red poinsettia with evergreen branches and berries" }, category: "botanical", subcategory: "botanical-poinsettia",
+    tags: ["пуансеттия", "красный цветок", "хвоя", "падуб", "шишка", "красные ягоды", "рождество"], tagsEn: ["botanical", "poinsettia", "red flower", "evergreen", "holly", "pine cone", "red berries", "christmas"], aliases: ["рождественская пуансеттия с хвойными ветвями", "christmas star flower greenery"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "christmas-gifts-russian-sleigh", src: "art/christmas-gifts-russian-sleigh.png", source: "assets/christmas-gifts-russian-sleigh.png",
+    name: { ru: "Рождественские подарки в красных русских санях", en: "Christmas gifts in a red Russian sleigh" }, category: "seasonal-objects", subcategory: "seasonal-objects-sleighs",
+    tags: ["сани", "подарки", "красный", "золотая роспись", "фонарь", "мех", "снег", "рябина", "ели"], tagsEn: ["festive-object", "sleigh", "gift", "red", "golden painting", "lantern", "fur trim", "snow", "rowan", "fir trees", "russian-traditions", "russian-folk"], aliases: ["рождественские подарки в русских санях", "ornate red christmas gift sleigh"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "christmas-sleigh-blanket-berries", src: "art/christmas-sleigh-blanket-berries.png", source: "assets/christmas-sleigh-blanket-berries.png",
+    name: { ru: "Деревянные санки с клетчатым пледом и ягодами", en: "Wooden sled with a plaid blanket and berries" }, category: "seasonal-objects", subcategory: "seasonal-objects-sleighs",
+    tags: ["сани", "санки", "дерево", "клетчатый плед", "красный бант", "верёвка", "хвоя", "ягоды", "снег"], tagsEn: ["festive-object", "sleigh", "sled", "wooden", "plaid blanket", "red bow", "rope", "evergreen", "berries", "snow"], aliases: ["рождественские сани с пледом и ягодами", "cozy wooden winter sled blanket"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "christmas-nutcrackers-nuts-spruce", src: "art/christmas-nutcrackers-nuts-spruce.png", source: "assets/christmas-nutcrackers-nuts-spruce.png",
+    name: { ru: "Два щелкунчика с орехами и еловыми ветками", en: "Two nutcrackers with nuts and spruce branches" }, category: "characters", subcategory: "characters-nutcracker",
+    tags: ["щелкунчики", "щелкунчик", "пара", "солдатики", "красный мундир", "синий мундир", "орехи", "хвоя", "шишки"], tagsEn: ["character", "nutcrackers", "nutcracker", "pair", "toy soldiers", "red uniform", "blue uniform", "nuts", "evergreen", "pine cones"], aliases: ["рождественские щелкунчики с орехами и елью", "pair of festive nutcracker soldiers"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "christmas-nutcracker-king-pedestal", src: "art/christmas-nutcracker-king-pedestal.png", source: "assets/christmas-nutcracker-king-pedestal.png",
+    name: { ru: "Щелкунчик-король в короне на пьедестале", en: "Crowned nutcracker king on a pedestal" }, category: "characters", subcategory: "characters-nutcracker",
+    tags: ["щелкунчик", "король", "корона", "скипетр", "красная мантия", "пьедестал", "золото", "хвоя", "ягоды"], tagsEn: ["character", "nutcracker", "king", "crown", "scepter", "red cape", "pedestal", "gold", "evergreen", "berries"], aliases: ["рождественский щелкунчик-король на пьедестале", "royal christmas nutcracker"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "christmas-candy-bouquet", src: "art/christmas-candy-bouquet.png", source: "assets/christmas-candy-bouquet.png",
+    name: { ru: "Рождественские сладости с пряничным человечком", en: "Christmas sweets with a gingerbread man" }, category: "treats", subcategory: "treats-candy",
+    tags: ["сладости", "леденец", "карамельная трость", "пряничный человечек", "печенье", "мармелад", "красный бант", "хвоя", "ягоды"], tagsEn: ["treat", "candy", "lollipop", "candy cane", "gingerbread-cookie", "gingerbread", "gingerbread man", "cookies", "jellies", "red bow", "evergreen", "berries"], aliases: ["рождественский букет сладостей", "festive candy and gingerbread assortment"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "christmas-candelabrum-wreath", src: "art/christmas-candelabrum-wreath.png", source: "assets/christmas-candelabrum-wreath.png",
+    name: { ru: "Золотой канделябр с тремя красными свечами", en: "Golden candelabrum with three red candles" }, category: "seasonal-objects", subcategory: "seasonal-objects-candles",
+    tags: ["канделябр", "подсвечник", "три свечи", "красный", "пламя", "золото", "хвойный венок", "красный бант", "шишки"], tagsEn: ["festive-object", "candelabrum", "candlestick", "three candles", "red", "flame", "gold", "wreath", "evergreen", "red bow", "pine cones"], aliases: ["рождественский канделябр с венком", "festive three arm candle holder"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "christmas-bell-ribbon-snow", src: "art/christmas-bell-ribbon-snow.png", source: "assets/christmas-bell-ribbon-snow.png",
+    name: { ru: "Золотой рождественский колокольчик с красной лентой", en: "Golden Christmas bell with a red ribbon" }, category: "ornaments", subcategory: "ornaments-bells",
+    tags: ["колокольчик", "золото", "красный бант", "лента", "верёвка", "снег", "хвоя", "шишки", "ягоды"], tagsEn: ["ornament", "bell", "gold", "red bow", "ribbon", "rope", "snow", "evergreen", "pine cones", "berries"], aliases: ["рождественский колокольчик с лентой и снегом", "hanging golden holiday bell"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "christmas-lollipop-evergreen-wreath", src: "art/christmas-lollipop-evergreen-wreath.png", source: "assets/christmas-lollipop-evergreen-wreath.png",
+    name: { ru: "Красно-белый леденец с хвойным венком", en: "Red and white lollipop with an evergreen wreath" }, category: "treats", subcategory: "treats-candy",
+    tags: ["леденец", "карамель", "спираль", "красный", "белый", "хвойный венок", "падуб", "красный бант", "ягоды"], tagsEn: ["treat", "candy", "lollipop", "peppermint swirl", "red and white", "wreath", "evergreen", "holly", "red bow", "berries"], aliases: ["рождественский леденец с хвойным венком", "peppermint candy christmas greenery"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "christmas-nutcracker-wreath", src: "art/christmas-nutcracker-wreath.png", source: "assets/christmas-nutcracker-wreath.png",
+    name: { ru: "Щелкунчик с рождественским венком", en: "Nutcracker holding a Christmas wreath" }, category: "characters", subcategory: "characters-nutcracker",
+    tags: ["щелкунчик", "солдатик", "красный мундир", "зелёные брюки", "венок", "красный бант", "шишки", "ягоды"], tagsEn: ["character", "nutcracker", "toy soldier", "red uniform", "green trousers", "wreath", "red bow", "pine cones", "berries"], aliases: ["рождественский щелкунчик с венком", "wooden nutcracker holiday wreath"], style: "vintage-watercolor", background: "transparent",
+  },
+  {
+    id: "snowy-nesting-doll-spruce-branches", src: "art/snowy-nesting-doll-spruce-branches.png", source: "assets/snowy-nesting-doll-spruce-branches.png",
+    name: { ru: "Матрёшка с рябиновой росписью среди еловых веток", en: "Rowan painted nesting doll among spruce branches" }, category: "seasonal-objects", subcategory: "seasonal-objects-nesting-dolls",
+    tags: ["матрёшка", "деревянная кукла", "красный платок", "народная роспись", "рябина", "хвоя", "шишки", "снег"], tagsEn: ["festive-object", "nesting doll", "matryoshka", "wooden doll", "red headscarf", "folk painting", "rowan", "evergreen", "pine cones", "snow", "russian-traditions", "russian-folk"], aliases: ["снежная матрёшка среди еловых ветвей", "russian winter matryoshka doll"], style: "vintage-watercolor", background: "transparent",
+  },
   {
     id: "rustic-wooden-star", src: "art/rustic-wooden-star.png", source: "assets/rustic-wooden-star.png",
     name: {"ru":"Деревянная звезда с хвоей","en":"Wooden star with evergreen"}, category: "ornaments", subcategory: "ornaments-stars",

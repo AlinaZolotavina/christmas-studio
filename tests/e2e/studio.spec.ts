@@ -1,3 +1,4 @@
+import { acceptTermsIfOffered } from './support/terms';
 import { expect, test, type Page } from '@playwright/test';
 import fs from 'node:fs/promises';
 
@@ -8,6 +9,7 @@ async function create(page: Page, count: 24 | 31 = 24) {
   await page.getByRole('button', { name: 'Выбрать шаблон' }).click();
   await page.locator('.count-picker__options button').filter({ hasText: String(count) }).click();
   await page.getByRole('button', { name: 'Создать проект', exact: false }).click();
+  await acceptTermsIfOffered(page);
   await expect(page.locator('.studio')).toBeVisible();
   const acknowledge = page.getByRole('button', { name: 'Понятно', exact: true });
   if (await acknowledge.count()) await acknowledge.click();
@@ -142,8 +144,8 @@ test('help keeps card contents out of its report and replays the voluntary tour 
   await create(page);
   await page.getByLabel('Текст на карточке', { exact: true }).fill('СЕКРЕТНЫЙ ТЕКСТ КАРТОЧКИ');
   await page.locator('.studio-nav').getByRole('button', { name: 'Справка', exact: true }).click();
-  await page.getByRole('button', { name: 'Помощь', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Помощь', exact: true })).toBeVisible();
+  await page.getByRole('tab', { name: 'Помощь', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Как пользоваться редактором', exact: true })).toBeVisible();
   await expect(page.locator('.technical-report')).not.toContainText('СЕКРЕТНЫЙ');
   await page.getByRole('button', { name: 'Назад к справке', exact: true }).click();
   await page.getByRole('button', { name: 'Пройти тур', exact: true }).click();

@@ -43,9 +43,13 @@ console.log(`Prepared ${images.length} explicitly catalogued images and previews
 // User-supplied page artwork is optimized separately and never enters the editor library.
 const pageSource = await fs.readFile('src/data/site-art.ts', 'utf8');
 const pageModule = ts.transpileModule(pageSource, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } }).outputText;
-const { pageArtwork } = await import(`data:text/javascript;base64,${Buffer.from(pageModule).toString('base64')}`);
+const { pageArtwork, brandArtwork } = await import(`data:text/javascript;base64,${Buffer.from(pageModule).toString('base64')}`);
 await fs.mkdir('public/site', { recursive: true });
 for (const artwork of pageArtwork) {
-  await sharp(artwork.source).resize(1536, 1024, { fit: 'inside', withoutEnlargement: true }).webp({ quality: 86 }).toFile(path.join('public', artwork.src));
+  const output = path.join('public', artwork.src);
+  await fs.mkdir(path.dirname(output), { recursive: true });
+  if (path.extname(artwork.source).toLowerCase() === '.svg') await fs.copyFile(artwork.source, output);
+  else await sharp(artwork.source).resize(1536, 1024, { fit: 'inside', withoutEnlargement: true }).webp({ quality: 86 }).toFile(output);
 }
-console.log(`Prepared ${pageArtwork.length} page illustrations.`);
+await fs.copyFile(brandArtwork.source, 'public/favicon.svg');
+console.log(`Prepared ${pageArtwork.length} page assets.`);

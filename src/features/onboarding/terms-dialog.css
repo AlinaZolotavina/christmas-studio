@@ -1,0 +1,8 @@
+.public-site.public-site--dialog{min-height:0;background:transparent}
+.terms-dialog{width:540px;max-width:100%}
+.terms-dialog .modal__body>p+p{margin-top:16px}
+.terms-dialog__accept{display:flex;align-items:flex-start;gap:12px;margin:24px 0;cursor:pointer}
+.terms-dialog__accept input{appearance:auto;width:20px;height:20px;min-height:20px;padding:0;flex-shrink:0;margin:4px 0 0;accent-color:var(--public-green)}
+.terms-dialog a{color:#254f39;text-underline-offset:3px}
+.terms-dialog .modal__footer{flex-wrap:wrap}
+@media(max-width:760px){.terms-dialog .modal__footer>.button{flex:1;white-space:normal}}

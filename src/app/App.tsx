@@ -11,15 +11,20 @@ import { StudioShell } from '../features/editor/StudioShell';
 import { EditorCanvas } from '../rendering/interaction/EditorCanvas';
 import { Button, IconButton } from '../shared/ui/Controls';
 import { Modal } from '../shared/ui/Modal';
-import { AboutPage, ComingSoonPage, HomePage, type WorkshopRoute } from '../features/home/WorkshopPages';
+import { AboutPage, ComingSoonPage, HomePage } from '../features/home/WorkshopPages';
+import type { WorkshopRoute } from '../shared/navigation/routes';
+import { SiteLayout } from '../shared/layout/SiteLayout';
+import { TermsDialog } from '../features/onboarding/TermsDialog';
+import { termsAcceptance } from '../features/onboarding/termsAcceptance';
 
 const PrintPreview = lazy(() => import('../features/print-preview/PrintPreview'));
+const LegalPage = lazy(() => import('../features/legal/LegalPage').then(module => ({ default: module.LegalPage })));
 
 function routeFromHash(hasProject: boolean): WorkshopRoute {
   const route = window.location.hash.replace(/^#\/?/, '');
   if (route === 'templates') return 'tags';
   if (route === 'editor') return hasProject ? 'editor' : 'tags';
-  return ['tags', 'postcards', 'stickers', 'ideas', 'about'].includes(route) ? route as WorkshopRoute : 'home';
+  return ['tags', 'postcards', 'stickers', 'ideas', 'about', 'privacy', 'terms'].includes(route) ? route as WorkshopRoute : 'home';
 }
 
 export default function App() {
@@ -36,6 +41,7 @@ export default function App() {
   const [tourOffer, setTourOffer] = useState(false);
   const [tourActive, setTourActive] = useState(false);
   const [pendingCreate, setPendingCreate] = useState<{ templateId: string; count: 24 | 31 } | null>(null);
+  const [pendingTerms, setPendingTerms] = useState<{ templateId: string; count: 24 | 31 } | null>(null);
   const [recoveryHidden, setRecoveryHidden] = useState(false);
   const [fontVersion, updateFonts] = useReducer((value) => value + 1, 0);
   useEffect(() => {
@@ -77,6 +83,11 @@ export default function App() {
     if (!wasTourOffered()) setTourOffer(true);
 
   };
+  const requestCreate = (templateId: string, count: 24 | 31) => {
+    if (!termsAcceptance.hasAccepted()) { setPendingTerms({ templateId, count }); return; }
+    if (store.project) setPendingCreate({ templateId, count });
+    else create(templateId, count);
+  };
   const downloadRaw = () => {
     if (!store.recovery) return;
     const url = URL.createObjectURL(new Blob([store.recovery.raw], { type: 'application/json' }));
@@ -88,13 +99,15 @@ export default function App() {
   return <>
     {view === 'editor' && store.project && <StudioShell key={store.project.id} project={store.project} onCommand={execute} onHome={() => navigate('home')} onTemplates={() => navigate('tags')} saveStatus={store.saveStatus} canUndo={store.canUndo} canRedo={store.canRedo} onUndo={store.undo} onRedo={store.redo} onExport={() => setPreview(true)} onStartTour={() => { setTourOffer(false); setTourActive(true); }} focusTarget={focusTarget} recentColors={store.recentColors} onRecentColor={store.addRecentColor} issues={issues} canvas={(card, selection, onSelectionChange) => <EditorCanvas card={card} selection={selection} onSelectionChange={onSelectionChange} onCommit={execute} fitKey={card.id} />} />}
     {view === 'home' && <HomePage hasProject={hasProject} />}
-    {view === 'tags' && <TemplateGallery onHome={() => navigate('home')} onCreate={(templateId, count) => { if (store.project) setPendingCreate({ templateId, count }); else create(templateId, count); }} onContinue={store.project ? () => navigate('editor') : undefined} />}
+    {view === 'tags' && <TemplateGallery hasProject={hasProject} onCreate={requestCreate} />}
     {view === 'about' && <AboutPage hasProject={hasProject} />}
     {(view === 'postcards' || view === 'stickers' || view === 'ideas') && <ComingSoonPage page={view} hasProject={hasProject} />}
+    {(view === 'privacy' || view === 'terms') && <Suspense fallback={<SiteLayout current={view} hasProject={hasProject}><main className="public-content-page" aria-busy="true"><p>Загружаем документ…</p></main></SiteLayout>}><LegalPage document={view} hasProject={hasProject} /></Suspense>}
+    {pendingTerms && <TermsDialog onCancel={() => setPendingTerms(null)} onAccept={() => { const selection = pendingTerms; termsAcceptance.accept(); setPendingTerms(null); requestCreate(selection.templateId, selection.count); }} />}
     {tourOffer && store.project && <TourOffer onStart={() => { setTourOffer(false); setTourActive(true); }} onSkip={() => setTourOffer(false)} />}
     {tourActive && store.project && <TourDialog onClose={() => setTourActive(false)} />}
     {preview && store.project && <Suspense fallback={<Modal title="Готовим предпросмотр" onClose={() => setPreview(false)}><p className="muted">Обновляем предпросмотр…</p></Modal>}><PrintPreview project={store.project} revision={store.revision} onClose={() => setPreview(false)} onFix={(cardId: string, element?: ElementKind) => { setFocusTarget({ cardId, element, requestId: Date.now() }); setPreview(false); navigate('editor'); }} /></Suspense>}
-    {pendingCreate && <Modal title="Начнём новую историю?" onClose={() => setPendingCreate(null)} footer={<><Button variant="secondary" onClick={() => setPendingCreate(null)}>Оставить текущий</Button><Button onClick={() => create(pendingCreate.templateId, pendingCreate.count)}>Создать новый</Button></>}><p className="muted">В браузере хранится один проект. Новый набор заменит текущий. Если хотите сохранить готовые бирки, сначала скачайте PDF.</p></Modal>}
+    {pendingCreate && <Modal title="Начнём новую историю?" onClose={() => setPendingCreate(null)} footer={<><Button variant="secondary" onClick={() => setPendingCreate(null)}>Оставить текущий</Button><Button onClick={() => create(pendingCreate.templateId, pendingCreate.count)}>Создать новый</Button></>}><p className="muted">В браузере хранится один проект. Новый набор заменит текущий. Если хотите сохранить готовые адвент-теги, сначала скачайте PDF.</p></Modal>}
 
     {store.recovery && !recoveryHidden && <Modal title="Не удалось восстановить проект" onClose={() => setRecoveryHidden(true)} footer={<><Button variant="secondary" onClick={downloadRaw}><Download size={16} /> Скачать данные</Button><Button onClick={store.retryRecovery}>Повторить</Button></>}><div className="inline-note inline-note--error"><AlertCircle size={20} /><span>{store.recovery.error}</span></div><p className="muted recovery-explanation">Исходные данные сохранены. Вы можете скачать их, повторить восстановление или начать заново.</p><button className="text-link danger-link" onClick={() => { setRecoveryHidden(true); setResetRecovery(true); }}>Удалить повреждённый проект и начать заново</button></Modal>}
     {store.recovery && recoveryHidden && !resetRecovery && <div className="recovery-banner" role="status"><AlertCircle size={17} /><span>Сохранённый проект требует восстановления.</span><button type="button" onClick={() => setRecoveryHidden(false)}>Открыть восстановление</button></div>}

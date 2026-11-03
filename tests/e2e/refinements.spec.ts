@@ -1,3 +1,4 @@
+import { acceptTermsIfOffered } from './support/terms';
 import { expect, test, type Page } from '@playwright/test';
 
 const key = 'advent-tag-studio:project';
@@ -8,6 +9,7 @@ async function project(page: Page) {
   await page.getByRole('button', { name: 'Выбрать шаблон' }).click();
   await page.locator('.count-picker__options button').first().click();
   await page.getByRole('button', { name: 'Создать проект', exact: false }).click();
+  await acceptTermsIfOffered(page);
   await expect(page.locator('.studio')).toBeVisible();
   const skip = page.getByRole('button', { name: 'Пропустить', exact: true });
   if (await skip.count()) await skip.click();
@@ -29,8 +31,8 @@ test('home keeps the tag collections and gives future products real coming-soon 
   await page.locator('.public-header nav').getByRole('link', { name: 'Идеи', exact: true }).click();
   await expect(page.locator('.coming-soon__section')).toHaveText('Идеи · В разработке');
   await page.locator('.public-header nav').getByRole('link', { name: 'О проекте', exact: true }).click();
-  await expect(page.locator('.about-project')).toContainText('Новогодняя мастерская для больших праздничных идей.');
-  await expect(page.locator('.about-project')).toContainText('Мы создали это пространство, чтобы подготовка к праздникам стала проще и приятнее.');
+  await expect(page.locator('.about-project')).toContainText('Проект полностью бесплатный и не требует регистрации.');
+  await expect(page.locator('.about-story__copy')).toContainText('подготовка к праздникам');
   await page.locator('.about-products [data-product=tags]').click();
   await expect(page.getByRole('heading', { name: 'Хвойная сказка', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Зимние истории', exact: true })).toBeVisible();
@@ -254,7 +256,8 @@ test('portrait tablets use the dock and burger, and templates and the home logo 
   await page.getByRole('button', { name: 'Открыть меню', exact: true }).click();
   await page.locator('.mobile-navigation').getByRole('button', { name: 'Шаблоны', exact: true }).click();
   await expect(page).toHaveURL(/#tags$/);
-  await page.getByRole('button', { name: 'Вернуться к проекту', exact: false }).click();
+  await page.getByRole('button', { name: 'Открыть навигацию', exact: true }).click();
+  await page.locator('.public-header nav').getByRole('link', { name: 'Редактор', exact: true }).click();
   await page.locator('.studio-home').click();
   await expect(page).toHaveURL(/#home$/);
   expect((await documentData(page)).id).toBe(saved.id);

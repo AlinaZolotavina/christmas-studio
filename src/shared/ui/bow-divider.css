@@ -1,0 +1,3 @@
+.bow-divider{display:flex;align-items:center;gap:16px;color:#698361}
+.bow-divider>span{height:1px;background:#d9dfce;flex:1}
+.bow-divider>svg{flex-shrink:0}

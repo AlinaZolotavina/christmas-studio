@@ -2,17 +2,17 @@
 .studio .studio-header{gap:18px;padding:0 20px 0 0;flex-wrap:nowrap;align-content:normal}
 .studio-home{display:flex;align-items:center;justify-content:center;align-self:flex-start;flex:0 0 var(--studio-nav-width);width:var(--studio-nav-width);height:var(--studio-header-height);border-right:1px solid #e3e7df;text-decoration:none;color:#315c4c}
 .studio-home:hover{background:#edf2e9}
-.studio-home>span{display:flex;align-items:flex-end}
-.studio-home svg:first-child{width:27px;height:33px;fill:#315c401c}
-.studio-home svg:last-child{width:20px;height:26px;margin-left:-8px;fill:#315c401c}
+.studio-home>.brand-mark{width:36px;height:36px}
 .studio-header__project{display:flex;align-items:center;flex:1;min-width:0}
 .project-title-row{display:flex;align-items:center;gap:14px;min-width:0;max-width:100%}
 .studio .studio-wordmark{cursor:default;max-width:100%;min-width:0}
 .studio-wordmark>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:460px}
 .studio-header__status{display:flex;align-items:center;justify-content:flex-end;gap:14px;flex-shrink:0;max-width:50%;min-width:0;margin-left:auto}
-.studio-header__status .project-state{display:flex;min-width:0;white-space:nowrap;font-size:11px;padding:4px 0}
-.studio-header__status .project-state>svg{flex-shrink:0}
-.studio-header__status .project-state>span{overflow:hidden;text-overflow:ellipsis}
+.studio-header__status .project-state{display:flex;min-width:0;gap:16px;white-space:nowrap;font-size:11px;padding:4px 0}
+.project-issue-count{display:inline-flex;align-items:center;gap:5px;flex-shrink:0}
+.project-issue-count>svg{flex-shrink:0}
+.project-issue-count--error{color:#b23e38}
+.project-issue-count--warning{color:#966a00}
 .studio-header__status .header-divider{height:22px;width:1px;flex-shrink:0}
 .studio-header__status .save-status{margin:0;flex-shrink:0}
 .project-reset.icon-button{width:30px;height:30px;min-height:30px;color:#879382}
@@ -56,6 +56,10 @@
  .studio{--studio-nav-width:56px}
  .studio .studio-header{gap:6px;padding-right:10px}
  .studio .studio-wordmark{font-size:12px}
- .studio-header__status{gap:6px;max-width:43%}
- .studio-header__status .project-state{font-size:10px}
+ .studio-header__status{gap:6px;max-width:none}
+ .studio-header__status .project-state{font-size:10px;flex-direction:column;align-items:flex-start;gap:2px}
 }
+.inspector .inspector-tabs--expanded{height:auto}
+.inspector-tabs--expanded>button{min-height:60px;min-width:0}
+.inspector-tabs>button>span,.mobile-dock>button>span{max-width:100%;text-align:center;line-height:1.2}
+@media(max-width:400px){.studio--compact .mobile-dock{gap:4px}}

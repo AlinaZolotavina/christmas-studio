@@ -1,3 +1,4 @@
+import { acceptTermsIfOffered } from './support/terms';
 import { expect, test } from '@playwright/test';
 
 test('all six gallery collections create a complete 31-card project', async ({ browser, baseURL }) => {
@@ -10,6 +11,7 @@ test('all six gallery collections create a complete 31-card project', async ({ b
       await page.getByRole('button', { name: 'Выбрать шаблон' }).click();
       await page.locator('.count-picker__options').getByRole('button', { name: '31 карточки', exact: true }).click();
       await page.getByRole('button', { name: 'Создать проект', exact: false }).click();
+      await acceptTermsIfOffered(page);
       const skip = page.getByRole('button', { name: 'Пропустить', exact: true });
       if (await skip.count()) await skip.click();
       await expect(page.locator('.studio')).toBeVisible();
@@ -38,12 +40,13 @@ test('about products keep their destinations and feedback offers the real author
     await page.goto('/#about');
   }
   await page.locator('.about-products [data-product=tags]').click();
-  await expect(page.getByRole('heading', { name: 'Готовые шаблоны', exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/#tags$/);
+  await expect(page.locator('#templates-title')).toBeVisible();
 });
 
 test('the two redesigned bodies load supplied covers and retain geometry for missing artwork at every width', async ({ page }) => {
   for (const route of ['tags', 'about']) {
-    for (const width of route === 'tags' ? [360, 390, 650, 768, 900, 901, 1024, 1150, 1151, 1280, 1440, 1499, 1500, 1600] : [360, 390, 768, 1024, 1440]) {
+    for (const width of route === 'tags' ? [360, 390, 650, 768, 900, 901, 1024, 1150, 1151, 1280, 1440, 1499, 1500, 1600] : [360, 390, 700, 701, 768, 1024, 1150, 1151, 1440]) {
       await page.setViewportSize({ width, height: width < 1000 ? 1024 : 900 });
       await page.goto(`/#${route}`);
       await expect(page.locator('main h1')).toBeVisible();
@@ -73,12 +76,16 @@ test('the two redesigned bodies load supplied covers and retain geometry for mis
           await expect(page.locator(`[data-template-id="${id}"] img`)).toHaveAttribute('src', new RegExp(`/site/${file}\\.webp$`));
         }
       } else {
-        await expect(page.locator('main img')).toHaveCount(3);
-        for (const artwork of await page.locator('main img').all()) {
+        await expect(page.locator('main img')).toHaveCount(6);
+        if (width <= 1150) await expect(page.locator('.about-heading__art')).toBeHidden();
+        else await expect(page.locator('.about-heading__art')).toBeVisible();
+        const textAlignment = await page.evaluate(() => Math.abs(document.querySelector('#about-title')!.getBoundingClientRect().left - document.querySelector('.about-story__copy')!.getBoundingClientRect().left));
+        expect(textAlignment).toBeLessThan(1);
+        for (const artwork of await page.locator('main img:visible').all()) {
           await artwork.scrollIntoViewIfNeeded();
           await expect.poll(() => artwork.evaluate(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0)).toBe(true);
         }
-        await expect(page.locator('.about-products .artwork-placeholder--image')).toHaveCount(0);
+        await expect(page.locator('.about-products .artwork-placeholder--image')).toHaveCount(3);
       }
       expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
       if (route === 'tags') await expect(page.locator('.template-card')).toHaveCount(6);

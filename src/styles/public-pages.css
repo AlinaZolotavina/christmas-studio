@@ -1,0 +1,27 @@
+:root{
+  --public-page-background:radial-gradient(ellipse at 45% 15%,#fffdf7 0,#faf6ee 65%,#f7f2e9 100%);
+  --public-chrome-background:#edf0e9;
+  --public-header-shadow:0 4px 14px #2437290d;
+}
+
+body:has(.public-site),.public-site{background:var(--public-page-background)}
+.public-site .home-intro,.public-site .about-content,.public-site .template-gallery-main{background:transparent}
+.public-site .home-intro{overflow:clip}
+.public-header{background:#fff;box-shadow:var(--public-header-shadow)}
+
+.public-site{
+  --public-font:'PT Sans',sans-serif;
+  --public-h1-size:40px;--public-h2-size:28px;--public-h3-size:20px;--public-h4-size:17px;--public-body-size:17px;
+  font-family:var(--public-font);font-size:var(--public-body-size);line-height:1.65;
+}
+.public-site :is(main,.modal) :is(h1,h2,h3,h4){font-family:var(--public-font);font-weight:700;font-style:normal}
+.public-site :is(main,.modal) h1{font-size:var(--public-h1-size);line-height:1.2;letter-spacing:-.8px}
+.public-site :is(main,.modal) h2{font-size:var(--public-h2-size);line-height:1.3;letter-spacing:-.4px}
+.public-site :is(main,.modal) h3{font-size:var(--public-h3-size);line-height:1.35;letter-spacing:-.2px}
+.public-site :is(main,.modal) h4{font-size:var(--public-h4-size);line-height:1.4;letter-spacing:0}
+.public-site :is(main,.modal) p{font-family:var(--public-font);font-size:var(--public-body-size);font-weight:400;line-height:1.65;letter-spacing:0}
+.public-site :is(main,.modal) p strong{font-family:inherit;font-size:inherit;font-weight:700}
+.public-site :is(button,input,select,textarea){font-family:var(--public-font)}
+@media(max-width:1050px){.public-site{--public-h1-size:34px;--public-h2-size:24px;--public-h3-size:18px;--public-h4-size:16px;--public-body-size:16px}}
+@media(max-width:760px){.public-site{--public-h1-size:30px;--public-h2-size:22px}}
+@media(max-width:400px){.public-site{--public-h1-size:28px}}

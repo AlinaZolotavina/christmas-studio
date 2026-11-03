@@ -219,7 +219,7 @@ export async function generatePdf(project: ProjectDocument, prepared?: PreparedP
   const print = prepared || await preparePrint(project);
   if (print.issues.some(issue => issue.severity === 'error')) throw new PdfValidationError(print.issues);
   const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true, putOnlyUsedFonts: true });
-  doc.setProperties({ title: 'Advent Tags', subject: 'Печатные бирки для адвент-календаря', creator: 'Advent Tag Studio' });
+  doc.setProperties({ title: 'Advent Tags', subject: 'Печатные адвент-теги для адвент-календаря', creator: 'Advent Tag Studio' });
   for (const font of print.fonts) { const file = `${font.id}-${font.style}.ttf`; doc.addFileToVFS(file, binaryString(font.bytes)); doc.addFont(file, fontFamilyId(font.id), font.style); }
   const images = new Map<string, Uint8Array>();
   const ids = [...new Set(print.project.cards.map(card => card.illustration.assetId))];

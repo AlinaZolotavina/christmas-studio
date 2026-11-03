@@ -1,0 +1,32 @@
+@font-face {
+  font-family: "Pacifico";
+  src: url("/fonts/Pacifico-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+.brand-name {
+  display: block;
+  font-family: "Pacifico", cursive;
+  font-size: 26px;
+  font-weight: 400;
+  font-style: normal;
+  font-synthesis: none;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+@media (max-width: 1050px) {
+  .brand-name {
+    font-size: clamp(18px, 2.4vw, 24px);
+  }
+}
+@media (max-width: 760px) {
+  .brand-name {
+    font-size: 20px;
+  }
+}
+@media (max-width: 360px) {
+  .brand-name {
+    font-size: 17px;
+  }
+}

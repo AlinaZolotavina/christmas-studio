@@ -3,8 +3,9 @@ import { MAX_DECORATIONS, MAX_TEXT_LENGTH } from './types';
 import { makeId, resetProject } from './project';
 import { defaultHole, isHoleInside } from './geometry';
 import { assets } from '../content/assets';
+import { imageAliases } from '../data/images';
 
-const knownAssetIds = new Set(assets.map(asset => asset.id));
+const knownAssetIds = new Set([...assets.map(asset => asset.id), ...Object.keys(imageAliases)]);
 
 interface Target { cardId: string; scope?: Scope }
 type DecorationStyle = Pick<Decoration, 'fill' | 'stroke' | 'strokeWidth' | 'points'>;

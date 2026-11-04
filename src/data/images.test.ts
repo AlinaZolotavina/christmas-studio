@@ -75,12 +75,22 @@ describe('explicit illustration metadata', () => {
     expect(searchImages('', { category: 'russian-traditions', subcategory: 'russian-traditions-symbols' })).toContain(city);
   });
   it('hides empty future motifs and exposes them when matching art is explicitly registered', () => {
-    expect(motifs.some(motif => motif.id === 'characters-santa')).toBe(true);
-    expect(getAvailableMotifs('characters').some(motif => motif.id === 'characters-santa')).toBe(false);
-    images.push({ ...images[0], id: 'future-santa', category: 'characters', subcategory: 'characters-santa', tagsEn: ['Santa Claus'] });
-    try { expect(getAvailableMotifs('characters').some(motif => motif.id === 'characters-santa')).toBe(true); }
-    finally { images.pop(); }
+    motifs.push({ id: 'characters-future', category: 'characters', name: { ru: 'Будущий персонаж', en: 'Future character' } });
+    expect(getAvailableMotifs('characters').some(motif => motif.id === 'characters-future')).toBe(false);
+    images.push({ ...images[0], id: 'future-character', category: 'characters', subcategory: 'characters-future' });
+    try { expect(getAvailableMotifs('characters').some(motif => motif.id === 'characters-future')).toBe(true); }
+    finally { images.pop(); motifs.pop(); }
     expect(getAvailableMotifs('unknown')).toEqual([]);
+  });
+  it('exposes the supplied Santas and elves independently from Father Frost', () => {
+    expect(searchImages('santa', { category: 'characters', subcategory: 'characters-santa' })).toHaveLength(5);
+    expect(searchImages('эльф', { category: 'characters', subcategory: 'characters-elves' })).toHaveLength(5);
+    expect(getAvailableMotifs('characters').map(motif => motif.id)).toEqual(expect.arrayContaining(['characters-santa', 'characters-elves']));
+    expect(searchImages('', { subcategory: 'characters-santa' }).every(image => !image.id.startsWith('father-frost'))).toBe(true);
+  });
+  it('resolves the removed duplicate ID without duplicating a library entry', () => {
+    expect(getImage('watercolor-snowy-alpine-village-1')).toBe(getImage('watercolor-snowy-alpine-village'));
+    expect(images.some(image => image.id === 'watercolor-snowy-alpine-village-1')).toBe(false);
   });
   it('finds the new folk objects in both object and cultural collections', () => {
     const boots = getImage('embroidered-felt-boots-rowan')!;

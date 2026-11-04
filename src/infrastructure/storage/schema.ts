@@ -1,10 +1,11 @@
 import { assets } from '../../content/assets';
+import { imageAliases } from '../../data/images';
 import { templates } from '../../content/templates';
 import { isHoleInside } from '../../domain/geometry';
 import { MAX_DECORATIONS, MAX_TEXT_LENGTH } from '../../domain/types';
 import type { Card, ProjectDocument } from '../../domain/types';
 
-const assetIds = new Set(assets.map(asset => asset.id));
+const assetIds = new Set([...assets.map(asset => asset.id), ...Object.keys(imageAliases)]);
 const templateIds = new Set(templates.map(template => template.id));
 const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value);
 const finite = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value);

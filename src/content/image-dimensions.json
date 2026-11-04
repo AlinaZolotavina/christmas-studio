@@ -1,4 +1,68 @@
 {
+  "santa-gift-stack": {
+    "width": 1054,
+    "height": 1492
+  },
+  "santa-gift-sack": {
+    "width": 1148,
+    "height": 1371
+  },
+  "santa-cozy-armchair": {
+    "width": 1254,
+    "height": 1254
+  },
+  "santa-bell-gift-sack": {
+    "width": 1054,
+    "height": 1492
+  },
+  "santa-evergreen-bouquet": {
+    "width": 1254,
+    "height": 1254
+  },
+  "elf-painting-ornaments": {
+    "width": 1536,
+    "height": 1024
+  },
+  "elf-ornament-basket": {
+    "width": 1254,
+    "height": 1254
+  },
+  "elf-with-christmas-gift": {
+    "width": 1054,
+    "height": 1492
+  },
+  "elf-decorating-christmas-tree": {
+    "width": 1254,
+    "height": 1254
+  },
+  "elf-pair-decorating-christmas-gift": {
+    "width": 1536,
+    "height": 1024
+  },
+  "snowman-robin-mitten": {
+    "width": 1055,
+    "height": 1491
+  },
+  "cheerful-snowman-winter-scarf": {
+    "width": 1054,
+    "height": 1492
+  },
+  "christmas-tree-gifts-berries": {
+    "width": 1024,
+    "height": 1536
+  },
+  "christmas-tree-green-gifts": {
+    "width": 1145,
+    "height": 1374
+  },
+  "christmas-tree-red-gifts": {
+    "width": 1536,
+    "height": 1024
+  },
+  "snowy-fir-thicket-berries": {
+    "width": 1536,
+    "height": 1024
+  },
   "burgundy-poinsettia-gold-accents": {
     "width": 1055,
     "height": 1491
@@ -16,10 +80,6 @@
     "height": 1491
   },
   "watercolor-snowy-alpine-village": {
-    "width": 1536,
-    "height": 1024
-  },
-  "watercolor-snowy-alpine-village-1": {
     "width": 1536,
     "height": 1024
   },

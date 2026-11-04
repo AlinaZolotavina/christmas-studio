@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import ts from 'typescript';
 import sharp from 'sharp';
+import { createHash } from 'node:crypto';
 
 // Read explicit registries: semantic metadata is never guessed from filenames.
 async function readRegistry(filename) {
@@ -10,10 +11,11 @@ async function readRegistry(filename) {
   return import(`data:text/javascript;base64,${Buffer.from(moduleSource).toString('base64')}`);
 }
 
-const [illustrationRegistry, letteringRegistry, backgroundRegistry, siteRegistry] = await Promise.all([
+const [illustrationRegistry, letteringRegistry, backgroundRegistry, decorationRegistry, siteRegistry] = await Promise.all([
   readRegistry('src/data/images.ts'),
   readRegistry('src/data/lettering.ts'),
   readRegistry('src/data/backgrounds.ts'),
+  readRegistry('src/data/decorations.ts'),
   readRegistry('src/data/site-art.ts'),
 ]);
 const catalogs = [
@@ -29,23 +31,28 @@ const catalogs = [
     records: backgroundRegistry.backgrounds, categories: backgroundRegistry.backgroundCategories, motifs: backgroundRegistry.backgroundMotifs,
     registry: 'src/data/backgrounds.ts', sourceDir: 'assets/backgrounds', outputDir: 'backgrounds', dimensionsFile: 'background-dimensions.json', label: 'backgrounds',
   },
+  {
+    records: decorationRegistry.decorations, categories: decorationRegistry.decorationCategories, motifs: decorationRegistry.decorationMotifs,
+    registry: 'src/data/decorations.ts', sourceDir: 'assets/decorations', outputDir: 'decorations', dimensionsFile: 'decoration-dimensions.json', label: 'decorations',
+  },
 ];
 
 async function validateCatalog(catalog) {
   const { records, categories, motifs, registry, sourceDir, outputDir } = catalog;
   const ids = new Set();
   const sources = new Set();
-  const files = (await fs.readdir(sourceDir)).filter(name => /\.png$/i.test(name));
-  const invalidNames = files.filter(name => !/^[a-z0-9]+(?:-[a-z0-9]+)*\.png$/.test(name));
-  if (invalidNames.length) throw new Error(`Use English kebab-case PNG filenames in ${sourceDir}: ${invalidNames.join(', ')}`);
+  const files = (await fs.readdir(sourceDir)).filter(name => /\.(png|svg)$/i.test(name));
+  const invalidNames = files.filter(name => !/^[a-z0-9]+(?:-[a-z0-9]+)*\.(png|svg)$/.test(name));
+  if (invalidNames.length) throw new Error(`Use English kebab-case PNG/SVG filenames in ${sourceDir}: ${invalidNames.join(', ')}`);
   if (new Set(categories.map(item => item.id)).size !== categories.length || new Set(motifs.map(item => item.id)).size !== motifs.length) throw new Error(`Duplicate category or motif ID in ${registry}`);
   for (const motif of motifs) if (!categories.some(category => category.id === motif.category)) throw new Error(`Unknown parent category: ${motif.id}`);
   for (const image of records) {
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(image.id) || ids.has(image.id)) throw new Error(`Invalid/duplicate ID in ${registry}: ${image.id}`);
     if (sources.has(image.source)) throw new Error(`Duplicate source: ${image.source}`);
     if (!categories.some(c => c.id === image.category) || !motifs.some(c => c.id === image.subcategory && c.category === image.category)) throw new Error(`Invalid taxonomy: ${image.id}`);
-    if (image.source !== `${sourceDir}/${image.id}.png` || image.src !== `${outputDir}/${image.id}.png`) throw new Error(`Match source and src filenames to the explicit image ID: ${image.id}`);
-    if (!files.includes(`${image.id}.png`)) throw new Error(`Missing source: ${image.source}`);
+    const extension = path.extname(image.source);
+    if (!['.png', '.svg'].includes(extension) || image.source !== `${sourceDir}/${image.id}${extension}` || image.src !== `${outputDir}/${image.id}${extension}`) throw new Error(`Match source and src filenames to the explicit image ID: ${image.id}`);
+    if (!files.includes(`${image.id}${extension}`)) throw new Error(`Missing source: ${image.source}`);
     if (!image.name.ru || !image.name.en || !image.tags.length || !image.tagsEn.length) throw new Error(`Missing bilingual metadata: ${image.id}`);
     ids.add(image.id); sources.add(image.source);
   }
@@ -55,6 +62,16 @@ async function validateCatalog(catalog) {
 
 // Validate every collection before producing files, including future postcard materials.
 for (const catalog of catalogs) await validateCatalog(catalog);
+// Compare decoded pixels rather than PNG metadata or filenames. Transparent RGB is invisible.
+const sourceFingerprints = new Map();
+for (const catalog of catalogs) for (const image of catalog.records) {
+  const { data, info } = await sharp(image.source).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  for (let offset = 0; offset < data.length; offset += 4) if (data[offset + 3] === 0) data.fill(0, offset, offset + 3);
+  const fingerprint = createHash('sha256').update(`${info.width}x${info.height}:`).update(data).digest('hex');
+  const duplicate = sourceFingerprints.get(fingerprint);
+  if (duplicate) throw new Error(`Duplicate artwork: ${image.source} has the same pixels as ${duplicate}. Reuse its existing ID.`);
+  sourceFingerprints.set(fingerprint, image.source);
+}
 await fs.mkdir('src/content', { recursive: true });
 for (const catalog of catalogs) {
   await fs.mkdir(path.join('public', catalog.outputDir), { recursive: true });

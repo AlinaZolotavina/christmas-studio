@@ -1,4 +1,4 @@
-import { images } from '../data/images';
+import { images, resolveImageId } from '../data/images';
 import type { AssetDefinition } from '../domain/types';
 import dimensions from './image-dimensions.json';
 
@@ -16,7 +16,7 @@ export const assets: AssetDefinition[] = images.map(image => ({
 }));
 
 export function getAsset(id: string): AssetDefinition {
-  const asset = assets.find(item => item.id === id);
+  const asset = assets.find(item => item.id === resolveImageId(id));
   if (!asset) throw new Error(`Иллюстрация не найдена: ${id}`);
   return asset;
 }

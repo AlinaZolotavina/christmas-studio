@@ -104,7 +104,91 @@ export const motifs: ImageMotif[] = [
 export const subcategories = motifs;
 
 
+/** Retain stored references when an identical source is consolidated. */
+export const imageAliases: Record<string, string> = { 'watercolor-snowy-alpine-village-1': 'watercolor-snowy-alpine-village' };
+export const resolveImageId = (id: string) => imageAliases[id] ?? id;
+
 export const images: ImageMetadata[] = [
+  {
+    id: 'santa-gift-stack', source: 'assets/santa-gift-stack.png', src: 'art/santa-gift-stack.png',
+    name: { ru: 'Санта со стопкой рождественских подарков', en: 'Santa with a stack of Christmas gifts' }, category: 'characters', subcategory: 'characters-santa',
+    tags: ['санта', 'санта-клаус', 'красный костюм', 'борода', 'подарки', 'мешок', 'рождество'], tagsEn: ['character', 'santa', 'santa claus', 'red suit', 'beard', 'gifts', 'sack', 'christmas'], aliases: ['санта с подарками', 'santa gift pile'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'santa-gift-sack', source: 'assets/santa-gift-sack.png', src: 'art/santa-gift-sack.png',
+    name: { ru: 'Санта с большим мешком подарков', en: 'Santa carrying a large gift sack' }, category: 'characters', subcategory: 'characters-santa',
+    tags: ['санта', 'санта-клаус', 'мешок', 'игрушки', 'подарки', 'красный костюм', 'борода'], tagsEn: ['character', 'santa', 'santa claus', 'sack', 'toys', 'gifts', 'red suit', 'beard'], aliases: ['санта с мешком', 'santa carrying presents'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'santa-cozy-armchair', source: 'assets/santa-cozy-armchair.png', src: 'art/santa-cozy-armchair.png',
+    name: { ru: 'Санта с чашкой в уютном рождественском кресле', en: 'Santa with a cup in a cozy Christmas armchair' }, category: 'characters', subcategory: 'characters-santa',
+    tags: ['санта', 'санта-клаус', 'кресло', 'плед', 'чашка', 'фонарь', 'подарки', 'уют'], tagsEn: ['character', 'santa', 'santa claus', 'armchair', 'blanket', 'cup', 'lantern', 'gifts', 'cozy'], aliases: ['санта отдыхает', 'santa in chair'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'santa-bell-gift-sack', source: 'assets/santa-bell-gift-sack.png', src: 'art/santa-bell-gift-sack.png',
+    name: { ru: 'Санта с золотым колокольчиком и мешком', en: 'Santa with a golden bell and gift sack' }, category: 'characters', subcategory: 'characters-santa',
+    tags: ['санта', 'санта-клаус', 'колокольчик', 'золото', 'мешок', 'красный костюм', 'подарки'], tagsEn: ['character', 'santa', 'santa claus', 'bell', 'gold', 'sack', 'red suit', 'gifts'], aliases: ['санта звонит в колокольчик', 'santa ringing bell'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'santa-evergreen-bouquet', source: 'assets/santa-evergreen-bouquet.png', src: 'art/santa-evergreen-bouquet.png',
+    name: { ru: 'Санта с рождественским хвойным букетом', en: 'Santa with a Christmas evergreen bouquet' }, category: 'characters', subcategory: 'characters-santa',
+    tags: ['санта', 'санта-клаус', 'хвоя', 'букет', 'красные ягоды', 'шишки', 'борода'], tagsEn: ['character', 'santa', 'santa claus', 'evergreen', 'bouquet', 'red berries', 'pine cones', 'beard'], aliases: ['санта с зеленью', 'botanical santa'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'elf-painting-ornaments', source: 'assets/elf-painting-ornaments.png', src: 'art/elf-painting-ornaments.png',
+    name: { ru: 'Рождественский эльф расписывает игрушки', en: 'Christmas elf painting ornaments' }, category: 'characters', subcategory: 'characters-elves',
+    tags: ['эльф', 'игрушки', 'ёлочные шары', 'кисть', 'краски', 'мастерская', 'подарки', 'зелёный колпак'], tagsEn: ['character', 'elf', 'elves', 'toys', 'ornaments', 'paintbrush', 'paint', 'workshop', 'gifts', 'green hat'], aliases: ['помощник санты', 'santa helper painting baubles'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'elf-ornament-basket', source: 'assets/elf-ornament-basket.png', src: 'art/elf-ornament-basket.png',
+    name: { ru: 'Эльф с корзиной рождественских украшений', en: 'Elf with a basket of Christmas ornaments' }, category: 'characters', subcategory: 'characters-elves',
+    tags: ['эльф', 'корзина', 'ёлочные шары', 'хвоя', 'красный бант', 'зелёный колпак', 'полосатые чулки'], tagsEn: ['character', 'elf', 'elves', 'basket', 'ornaments', 'evergreen', 'red bow', 'green hat', 'striped stockings'], aliases: ['помощник санты', 'elf carrying decorations'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'elf-with-christmas-gift', source: 'assets/elf-with-christmas-gift.png', src: 'art/elf-with-christmas-gift.png',
+    name: { ru: 'Рождественский эльф с подарком', en: 'Christmas elf holding a gift' }, category: 'characters', subcategory: 'characters-elves',
+    tags: ['эльф', 'подарок', 'красный бант', 'зелёный костюм', 'колпак', 'полосатые чулки'], tagsEn: ['character', 'elf', 'elves', 'gift', 'red bow', 'green suit', 'hat', 'striped stockings'], aliases: ['помощник санты с подарком', 'santa helper with present'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'elf-decorating-christmas-tree', source: 'assets/elf-decorating-christmas-tree.png', src: 'art/elf-decorating-christmas-tree.png',
+    name: { ru: 'Эльф украшает рождественскую ёлку', en: 'Elf decorating a Christmas tree' }, category: 'characters', subcategory: 'characters-elves',
+    tags: ['эльф', 'ёлка', 'золотая звезда', 'шары', 'подарки', 'зелёный костюм'], tagsEn: ['character', 'elf', 'elves', 'christmas-tree', 'golden star', 'baubles', 'gifts', 'green suit'], aliases: ['помощник санты у ёлки', 'elf trimming the tree'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'elf-pair-decorating-christmas-gift', source: 'assets/elf-pair-decorating-christmas-gift.png', src: 'art/elf-pair-decorating-christmas-gift.png',
+    name: { ru: 'Два эльфа украшают рождественский подарок', en: 'Two elves decorating a Christmas gift' }, category: 'characters', subcategory: 'characters-elves',
+    tags: ['эльфы', 'два эльфа', 'подарки', 'лента', 'бант', 'колокольчик', 'мастерская'], tagsEn: ['character', 'elf', 'elves', 'pair', 'gifts', 'ribbon', 'bow', 'bell', 'workshop'], aliases: ['помощники санты', 'santa helpers wrapping presents'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'snowman-robin-mitten', source: 'assets/snowman-robin-mitten.png', src: 'art/snowman-robin-mitten.png',
+    name: { ru: 'Снеговик с малиновкой на варежке', en: 'Snowman with a robin on its mitten' }, category: 'characters', subcategory: 'characters-snowmen',
+    tags: ['снеговик', 'малиновка', 'зарянка', 'варежка', 'наушники', 'красный шарф', 'снег'], tagsEn: ['character', 'snowman', 'bird', 'robin', 'mitten', 'earmuffs', 'red scarf', 'snow'], aliases: ['снеговик с птичкой', 'snowman bird friend'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'cheerful-snowman-winter-scarf', source: 'assets/cheerful-snowman-winter-scarf.png', src: 'art/cheerful-snowman-winter-scarf.png',
+    name: { ru: 'Весёлый снеговик в цилиндре и красном шарфе', en: 'Cheerful snowman in a top hat and red scarf' }, category: 'characters', subcategory: 'characters-snowmen',
+    tags: ['снеговик', 'улыбка', 'цилиндр', 'красный шарф', 'варежки', 'падуб', 'снег'], tagsEn: ['character', 'snowman', 'smile', 'top hat', 'red scarf', 'mittens', 'holly', 'snow'], aliases: ['счастливый снеговик', 'happy winter snowman'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'christmas-tree-gifts-berries', source: 'assets/christmas-tree-gifts-berries.png', src: 'art/christmas-tree-gifts-berries.png',
+    name: { ru: 'Рождественская ёлка с подарками и ягодами', en: 'Christmas tree with gifts and berries' }, category: 'botanical', subcategory: 'botanical-trees',
+    tags: ['ёлка', 'подарки', 'ягоды', 'шары', 'золотая звезда', 'красный бант', 'снег'], tagsEn: ['christmas-tree', 'fir', 'gifts', 'berries', 'baubles', 'golden star', 'red bow', 'snow'], aliases: ['новогодняя ёлка с подарками', 'berry christmas fir'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'christmas-tree-green-gifts', source: 'assets/christmas-tree-green-gifts.png', src: 'art/christmas-tree-green-gifts.png',
+    name: { ru: 'Рождественская ёлка с зелёными подарками', en: 'Christmas tree with green gifts' }, category: 'botanical', subcategory: 'botanical-trees',
+    tags: ['ёлка', 'зелёные подарки', 'шары', 'ленты', 'золотая звезда', 'снег'], tagsEn: ['christmas-tree', 'fir', 'green gifts', 'baubles', 'ribbons', 'golden star', 'snow'], aliases: ['новогодняя ёлка в акварели', 'green present christmas fir'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'christmas-tree-red-gifts', source: 'assets/christmas-tree-red-gifts.png', src: 'art/christmas-tree-red-gifts.png',
+    name: { ru: 'Рождественская ёлка с красными подарками', en: 'Christmas tree with red gifts' }, category: 'botanical', subcategory: 'botanical-trees',
+    tags: ['ёлка', 'красные подарки', 'шары', 'ягоды', 'шишки', 'золотая звезда', 'снег'], tagsEn: ['christmas-tree', 'fir', 'red gifts', 'baubles', 'berries', 'pine cones', 'golden star', 'snow'], aliases: ['праздничная ёлка с коробками', 'red present christmas fir'], style: 'vintage-watercolor', background: 'transparent',
+  },
+  {
+    id: 'snowy-fir-thicket-berries', source: 'assets/snowy-fir-thicket-berries.png', src: 'art/snowy-fir-thicket-berries.png',
+    name: { ru: 'Заснеженная хвойная чаща с ягодами', en: 'Snowy fir thicket with berries' }, category: 'landscapes', subcategory: 'landscapes-forests',
+    tags: ['зимний лес', 'ель', 'снег', 'ягоды', 'шишки', 'сухие травы', 'хвоя'], tagsEn: ['landscape', 'forest-landscape', 'spruce', 'snow', 'berries', 'pine cones', 'dry grasses', 'evergreen'], aliases: ['рождественская снежная чаща', 'snowy evergreen woodland'], style: 'vintage-watercolor', background: 'transparent',
+  },
   {
     id: "burgundy-poinsettia-gold-accents", src: "art/burgundy-poinsettia-gold-accents.png", source: "assets/burgundy-poinsettia-gold-accents.png",
     name: { ru: "Бордовая пуансеттия с золотыми акцентами", en: "Burgundy poinsettia with golden accents" }, category: "botanical", subcategory: "botanical-poinsettia",
@@ -129,11 +213,6 @@ export const images: ImageMetadata[] = [
     id: "watercolor-snowy-alpine-village", src: "art/watercolor-snowy-alpine-village.png", source: "assets/watercolor-snowy-alpine-village.png",
     name: { ru: "Заснеженная альпийская деревня с шале", en: "Snowy Alpine village with wooden chalets" }, category: "landscapes", subcategory: "landscapes-villages",
     tags: ["деревня", "Альпы", "шале", "горы", "снег", "церковь", "деревянные дома", "тёплые окна", "венки"], tagsEn: ["landscape", "snowy-village", "alpine", "chalets", "mountains", "snow", "church", "wooden houses", "glowing windows", "wreaths"], aliases: ["альпийская зимняя улочка", "snowy mountain village"], style: "vintage-watercolor", background: "transparent",
-  },
-  {
-    id: "watercolor-snowy-alpine-village-1", src: "art/watercolor-snowy-alpine-village-1.png", source: "assets/watercolor-snowy-alpine-village-1.png",
-    name: { ru: "Заснеженная альпийская деревня с шале — вариант", en: "Snowy Alpine village with wooden chalets — variant" }, category: "landscapes", subcategory: "landscapes-villages",
-    tags: ["деревня", "Альпы", "шале", "горы", "снег", "церковь", "деревянные дома", "тёплые окна", "венки"], tagsEn: ["landscape", "snowy-village", "alpine", "chalets", "mountains", "snow", "church", "wooden houses", "glowing windows", "wreaths"], aliases: ["альпийские домики в снегу", "winter alpine chalet village"], style: "vintage-watercolor", background: "transparent",
   },
   {
     id: "snowy-russian-wooden-house", src: "art/snowy-russian-wooden-house.png", source: "assets/snowy-russian-wooden-house.png",
@@ -996,4 +1075,4 @@ export function searchImages(query = '', filters: ImageFilters = {}): ImageMetad
   });
 }
 
-export const getImage = (id: string) => images.find(image => image.id === id);
+export const getImage = (id: string) => images.find(image => image.id === resolveImageId(id));

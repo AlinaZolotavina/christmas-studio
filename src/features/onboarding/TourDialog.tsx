@@ -3,18 +3,19 @@ import { ArrowRight, Check, Sparkles } from 'lucide-react';
 import { Button } from '../../shared/ui/Controls';
 import { Modal } from '../../shared/ui/Modal';
 import { markTourOffered } from './preferences';
-import { tourSteps } from './steps';
+import { tourSteps as defaultTourSteps, type TourStep } from './steps';
 import { positionTourPanel } from './position';
 import './tour.css';
 
-export function TourOffer({ onStart, onSkip }: { onStart: () => void; onSkip: () => void }) {
-  const skip = () => { markTourOffered(); onSkip(); };
-  const start = () => { markTourOffered(); onStart(); };
-  return <Modal className="tour-offer" title="Познакомимся с мастерской?" onClose={skip} footer={<><Button variant="secondary" onClick={skip}>Пропустить</Button><Button onClick={start}>Начать знакомство <ArrowRight size={16} /></Button></>}><div className="tour-offer__intro"><span><Sparkles size={30} strokeWidth={1.3} /></span><p>Пять небольших подсказок покажут, как редактировать карточки, менять весь набор и подготовить PDF к печати.</p><p className="muted">Можно начать творить сразу. Тур всегда доступен заново в справке.</p></div></Modal>;
+export function TourOffer({ onStart, onSkip, offerKey, product = 'tags' }: { onStart: () => void; onSkip: () => void; offerKey?: string; product?: 'tags' | 'postcards' }) {
+  const skip = () => { markTourOffered(offerKey); onSkip(); };
+  const start = () => { markTourOffered(offerKey); onStart(); };
+  return <Modal className="tour-offer" title="Познакомимся с мастерской?" onClose={skip} footer={<><Button variant="secondary" onClick={skip}>Пропустить</Button><Button onClick={start}>Начать знакомство <ArrowRight size={16} /></Button></>}><div className="tour-offer__intro"><span><Sparkles size={30} strokeWidth={1.3} /></span><p>{product === 'postcards' ? 'Пять подсказок покажут, как создавать открытки, работать со слоями и сохранять результат для печати.' : 'Пять небольших подсказок покажут, как редактировать карточки, менять весь набор и подготовить PDF к печати.'}</p><p className="muted">Можно начать творить сразу. Тур всегда доступен заново в справке.</p></div></Modal>;
 }
 
 /** Every mount is a full replay from step one; no automatic start or persisted partial progress. */
-export function TourDialog({ onClose }: { onClose: () => void }) {
+export function TourDialog({ onClose, steps = defaultTourSteps }: { onClose: () => void; steps?: TourStep[] }) {
+  const tourSteps = steps;
   const [index, setIndex] = useState(0);
   const [target, setTarget] = useState<DOMRect | null>(null);
   const [viewport, setViewport] = useState(() => ({ width: window.innerWidth, height: window.innerHeight }));

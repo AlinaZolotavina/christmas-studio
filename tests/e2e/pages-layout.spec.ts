@@ -34,11 +34,14 @@ test('about products keep their destinations and feedback offers the real author
   await expect(page.getByRole('dialog').getByRole('link', { name: 'albekmerus@gmail.com' })).toHaveAttribute('href', 'mailto:albekmerus@gmail.com');
   await page.getByRole('button', { name: 'Понятно', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Оставить отзыв', exact: true })).toBeFocused();
-  for (const product of ['postcards', 'stickers']) {
-    await page.locator(`.about-products [data-product=${product}]`).click();
-    await expect(page.locator('.coming-soon')).toBeVisible();
-    await page.goto('/#about');
-  }
+  await page.locator('.about-products [data-product=postcards]').click();
+  await expect(page).toHaveURL(/#postcards$/);
+  await expect(page.locator('.postcard-gallery-main')).toBeVisible();
+  await expect(page.locator('#postcards-title')).toHaveText('Открытки');
+  await page.goto('/#about');
+  await page.locator('.about-products [data-product=stickers]').click();
+  await expect(page.locator('.coming-soon')).toBeVisible();
+  await page.goto('/#about');
   await page.locator('.about-products [data-product=tags]').click();
   await expect(page).toHaveURL(/#tags$/);
   await expect(page.locator('#templates-title')).toBeVisible();

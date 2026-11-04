@@ -136,8 +136,12 @@ test('image library searches both languages and combines taxonomy filters', asyn
   await motif.selectOption('animals-bears');
   await expect(page.getByRole('button', { name: 'Заменить иллюстрацию: Медвежонок с рождественским подарком', exact: true })).toBeVisible();
   await category.selectOption('characters');
-  await expect(motif.locator('option[value="characters-santa"]')).toHaveCount(0);
+  await expect(motif.locator('option[value="characters-santa"]')).toHaveCount(1);
+  await expect(motif.locator('option[value="characters-elves"]')).toHaveCount(1);
   await expect(motif.locator('option[value="characters-snowmen"]')).toHaveCount(1);
+  await category.selectOption('seasonal-objects');
+  await expect(motif.locator('option[value="seasonal-objects-drinks"]')).toHaveCount(0);
+  await expect(motif.locator('option[value="seasonal-objects-fireworks"]')).toHaveCount(0);
 });
 
 test('help keeps card contents out of its report and replays the voluntary tour from step one', async ({ page }) => {

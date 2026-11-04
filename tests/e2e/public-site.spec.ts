@@ -44,9 +44,11 @@ test('public routes share navigation, a responsive footer and PT Sans typography
       await page.evaluate(() => document.fonts.ready);
       await expect(page.locator('.public-header')).toHaveCount(1);
       await expect(page.locator('.public-footer')).toHaveCount(1);
+      await expect(page.locator('.public-header__create')).toHaveAttribute('href', route === 'tags' || route === 'postcards' ? `#${route}` : '#create');
       const header = await page.locator('.public-header').evaluate(element => {
         const clone = element.cloneNode(true) as HTMLElement;
         clone.querySelectorAll('[aria-current]').forEach(item => item.removeAttribute('aria-current'));
+        clone.querySelector('.public-header__create')?.setAttribute('href', '#create');
         return clone.outerHTML;
       });
       const footer = await page.locator('.public-footer').evaluate(element => element.outerHTML);

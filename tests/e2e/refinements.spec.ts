@@ -19,15 +19,19 @@ async function project(page: Page) {
   await expect.poll(async () => (await documentData(page))?.cardCount).toBe(24);
 }
 
-test('home keeps the tag collections and gives future products real coming-soon pages', async ({ page }) => {
+test('home keeps the tag collections, opens postcards and gives future products real coming-soon pages', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: 'Выберите, что создать' })).toBeVisible();
-  for (const product of ['postcards', 'stickers']) {
-    await page.locator(`[data-product=${product}]`).click();
-    await expect(page.getByRole('heading', { name: 'Готовим для вас что-то особенное' })).toBeVisible();
-    await expect(page.locator('.studio')).toHaveCount(0);
-    await page.getByRole('link', { name: 'На главную', exact: true }).click();
-  }
+  await page.locator('[data-product=postcards]').click();
+  await expect(page).toHaveURL(/#postcards$/);
+  await expect(page.locator('.postcard-gallery-main')).toBeVisible();
+  await expect(page.locator('#postcards-title')).toHaveText('Открытки');
+  await expect(page.locator('.studio')).toHaveCount(0);
+  await page.locator('.public-header .public-brand-link').click();
+  await page.locator('[data-product=stickers]').click();
+  await expect(page.getByRole('heading', { name: 'Готовим для вас что-то особенное' })).toBeVisible();
+  await expect(page.locator('.studio')).toHaveCount(0);
+  await page.getByRole('link', { name: 'На главную', exact: true }).click();
   await page.locator('.public-header nav').getByRole('link', { name: 'Идеи', exact: true }).click();
   await expect(page.locator('.coming-soon__section')).toHaveText('Идеи · В разработке');
   await page.locator('.public-header nav').getByRole('link', { name: 'О проекте', exact: true }).click();
@@ -145,22 +149,25 @@ test('preview uses physical A4 at 100 percent and keeps both left edges reachabl
   await page.getByRole('button', { name: 'Предпросмотр и PDF', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Скачать PDF', exact: true })).toBeEnabled();
   await expect(page.getByText('ПОСЛЕДНИЙ ШТРИХ', { exact: true })).toHaveCount(0);
-  const thumbs = page.locator('.print-page-thumb');
+  const preview = page.getByRole('dialog', { name: 'Предпросмотр печати', exact: true });
+  const thumbs = preview.locator('.print-page-thumb');
+  await expect(thumbs.nth(0)).toBeVisible();
+  await expect(thumbs.nth(1)).toBeVisible();
   const first = await thumbs.nth(0).boundingBox(), second = await thumbs.nth(1).boundingBox();
   expect(first!.y).toBeCloseTo(second!.y, 1); expect(second!.x).toBeGreaterThan(first!.x);
-  await page.getByRole('button', { name: 'Масштаб 100%', exact: true }).click();
-  const paper = await page.locator('.print-page-paper').boundingBox();
+  await preview.getByRole('button', { name: 'Масштаб 100%', exact: true }).click();
+  const paper = await preview.locator('.print-page-paper').boundingBox();
   expect(paper!.width).toBeCloseTo(210 * 96 / 25.4, 1);
   expect(paper!.height).toBeCloseTo(297 * 96 / 25.4, 1);
-  const edges = await page.locator('.print-document-stage').evaluate(element => {
+  const edges = await preview.locator('.print-document-stage').evaluate(element => {
     element.scrollLeft = 0;
     const rect = element.getBoundingClientRect();
     const paperRect = element.querySelector('.print-page-paper')!.getBoundingClientRect();
     return { left: paperRect.left - rect.left, scrollable: element.scrollWidth > element.clientWidth };
   });
   expect(edges.left).toBeGreaterThanOrEqual(20); expect(edges.scrollable).toBe(true);
-  await page.getByRole('button', { name: 'Вписать страницу', exact: true }).click();
-  await expect(page.getByRole('button', { name: 'Масштаб 100%', exact: true })).not.toHaveText('100%');
+  await preview.getByRole('button', { name: 'Вписать страницу', exact: true }).click();
+  await expect(preview.getByRole('button', { name: 'Масштаб 100%', exact: true })).not.toHaveText('100%');
 });
 
 test('tour keeps its size on every step and leaves the explained interface sharp', async ({ page }) => {
@@ -257,12 +264,16 @@ test('portrait tablets use the dock and burger, and templates and the home logo 
   await page.locator('.mobile-navigation').getByRole('button', { name: 'Шаблоны', exact: true }).click();
   await expect(page).toHaveURL(/#tags$/);
   await page.getByRole('button', { name: 'Открыть навигацию', exact: true }).click();
-  await page.locator('.public-header nav').getByRole('link', { name: 'Редактор', exact: true }).click();
+  await page.locator('.public-header nav').getByRole('button', { name: 'Редактор', exact: true }).click();
+  await page.getByRole('menu', { name: 'Редактор: направление', exact: true }).getByRole('menuitem', { name: 'Адвент-теги', exact: true }).click();
+  await expect(page).toHaveURL(/#editor\/tags$/);
   await page.locator('.studio-home').click();
   await expect(page).toHaveURL(/#home$/);
   expect((await documentData(page)).id).toBe(saved.id);
   await page.setViewportSize({ width: 1151, height: 1400 });
-  await page.locator('.public-header nav').getByRole('link', { name: 'Редактор', exact: true }).click();
+  await page.locator('.public-header nav').getByRole('button', { name: 'Редактор', exact: true }).click();
+  await page.getByRole('menu', { name: 'Редактор: направление', exact: true }).getByRole('menuitem', { name: 'Адвент-теги', exact: true }).click();
+  await expect(page).toHaveURL(/#editor\/tags$/);
   await expect(page.locator('.thumbnail-strip')).toBeVisible();
   await expect(page.locator('.mobile-dock')).not.toBeVisible();
   await page.locator('.studio-nav').getByRole('button', { name: 'Шаблоны', exact: true }).click();

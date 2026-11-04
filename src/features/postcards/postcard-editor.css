@@ -1,0 +1,27 @@
+.postcard-studio{grid-template-columns:64px minmax(0,1fr) 370px}
+.postcard-tabs{height:auto;min-height:68px;grid-template-columns:repeat(5,minmax(0,1fr));padding:4px 8px}
+.postcard-text-modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:20px}.postcard-text-modes .button{padding-inline:8px;white-space:normal;line-height:1.3;min-height:44px}
+.postcard-format-settings{padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid #e3e9db}
+.postcard-tabs>button{min-height:60px;padding:7px 3px;font-size:11px;line-height:1.2}
+.postcard-studio .inspector-content{padding:21px;scrollbar-gutter:stable}
+.postcard-studio fieldset{border:0;margin:0;padding:0;min-width:0;display:grid;gap:12px}
+.postcard-studio fieldset:disabled{opacity:.65}
+.postcard-studio .color-palette{flex-wrap:wrap}
+.postcard-color-setting{margin:14px 0}.postcard-color-setting h3{font-size:12px;color:#4f6845;margin-bottom:11px}
+.postcard-inline-controls{display:flex;flex-wrap:wrap;gap:18px}.postcard-inline-controls label,.postcard-effect-toggle{display:flex;align-items:center;gap:8px;font-size:12px;min-height:36px}
+.postcard-inline-controls input,.postcard-effect-toggle input{width:17px;min-height:17px;margin:0}
+.postcard-shapes,.postcard-element-actions,.postcard-dialog-actions{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}
+.postcard-dialog-actions{flex-direction:column}.postcard-align-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin-top:10px}.postcard-align-controls .button{font-size:11px;padding:7px 4px;min-height:38px;white-space:normal}
+.postcard-element-properties h3{line-height:1.5}.postcard-element-properties>.inline-note{margin:12px 0;align-items:flex-start;line-height:1.6}
+.postcard-layers{display:grid;gap:6px}.postcard-layers>div{display:flex;align-items:center;gap:2px;padding:5px;border:1px solid #e3e9db;border-radius:7px;min-width:0;background:#fafbf5}.postcard-layers>div.is-selected{border-color:#6e8863;background:#f0f5e9}.postcard-layer-choice{background:transparent;text-align:left;flex:1;min-width:0;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;font-size:12px;min-height:36px;padding:5px}.postcard-layers .icon-button{width:32px;min-width:32px;height:36px;padding:4px}
+.postcard-studio .thumbnail__art{width:72px;height:86px;display:flex;align-items:center;justify-content:center}.postcard-studio .thumbnail__art>svg{max-height:100%;width:100%;height:100%}.postcard-add-thumbnail{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:106px;border:1px dashed #a5b593;background:#fbfcf5;color:#657e58;font-size:11px}
+.postcard-card-actions{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:15px 0}.postcard-card-actions>.button{font-size:11px}.postcard-strip-actions{border-left:1px solid #e2e9da;padding:0 12px;flex-shrink:0}.postcard-strip-actions .postcard-card-actions{display:grid;grid-template-columns:repeat(3,36px);gap:3px;margin:0}.postcard-strip-actions .button{grid-column:1/-1;white-space:normal;line-height:1.1;font-size:10px;min-height:35px;padding:5px}.postcard-strip-actions .icon-button{width:36px;height:34px;min-height:34px}.postcard-studio .inspector-footer>.text-link{display:block;margin:10px auto 0;font-size:11px;min-height:30px}.postcard-help{display:grid;gap:16px;line-height:1.75;color:#66765e;font-size:14px}
+.postcard-dock{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:70px;overflow-x:auto;overflow-y:hidden;justify-content:start;overscroll-behavior-x:contain;scrollbar-width:thin}.postcard-dock>button{min-width:64px;min-height:52px}.postcard-dock>button>span{display:block;font-size:10px;line-height:1.1;white-space:normal}
+@media(max-width:1150px){.postcard-studio{grid-template-columns:64px minmax(0,1fr) 320px}.postcard-studio .inspector-content{padding:18px}.postcard-tabs{grid-template-columns:repeat(3,minmax(0,1fr));min-height:188px}.postcard-layers .icon-button{width:30px;min-width:30px}}
+@media(max-width:900px) and (orientation:landscape){.postcard-studio{grid-template-columns:56px minmax(0,1fr) 304px}}
+@media(max-width:1150px) and (orientation:portrait),(max-width:650px){
+ .postcard-studio.studio--compact{grid-template-columns:minmax(0,1fr);grid-template-rows:76px minmax(0,1fr) calc(78px + env(safe-area-inset-bottom))}
+ .postcard-dock{height:calc(78px + env(safe-area-inset-bottom));padding:6px 10px calc(6px + env(safe-area-inset-bottom));gap:4px;scroll-padding-inline:12px}
+ .postcard-studio .sheet-backdrop{bottom:calc(78px + env(safe-area-inset-bottom))}.postcard-studio .bottom-sheet{max-height:80%;width:100%}.postcard-studio .bottom-sheet__content{padding-bottom:24px}.postcard-studio .bottom-sheet .image-library{max-height:34dvh}
+ .postcard-studio .color-swatch,.postcard-studio .color-custom{width:44px;height:44px}.postcard-studio .postcard-layers .icon-button{width:44px;min-width:44px;height:44px}.postcard-layer-choice{min-height:44px}.postcard-align-controls .button{min-height:44px}.postcard-inline-controls label,.postcard-effect-toggle{min-height:44px}.postcard-studio .thumbnail-list--panel{max-height:33dvh}.postcard-studio .postcard-card-actions>.button{min-height:44px}
+}

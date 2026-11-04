@@ -2,29 +2,18 @@ import { jsPDF } from 'jspdf';
 import type { AssetDefinition, Background, Card, FontDefinition, FontId, ProjectDocument, TextElement, ValidationIssue } from '../../domain/types';
 import { ptToMm } from '../../domain/types';
 import { containBox, ellipsePath, holeDiameter, outlinePath, starPoints, type PathOperation } from '../../domain/geometry';
-import { assetUrl, assets, getAsset } from '../../content/assets';
+import { assets, getAsset } from '../../content/assets';
 import { fonts, getFont } from '../../content/fonts';
 import { calculatePrintLayout, type PrintLayout } from '../../application/export/layout';
 import { validateProject } from '../../application/export/validation';
 import { fontFile, fontStyle, layoutText } from '../../rendering/text';
+import { loadLocalResourceBytes as loadBytes, releaseLocalResourceBytes } from '../resources';
 
 interface FontResource { id: FontId; family: string; style: ReturnType<typeof fontStyle>; file: string; bytes: Uint8Array }
 export interface PreparedPrint { project: ProjectDocument; layout: PrintLayout; issues: ValidationIssue[]; fonts: FontResource[] }
-const byteCache = new Map<string, Promise<Uint8Array>>();
 const fontFaces = new Map<string, Promise<void>>();
 const printImageCache = new Map<string, Promise<Uint8Array>>();
 export const PRINT_IMAGE_DPI = 300;
-
-async function loadBytes(path: string): Promise<Uint8Array> {
-  if (!byteCache.has(path)) {
-    const request = fetch(assetUrl(path)).then(async response => {
-      if (!response.ok) throw new Error(`Не удалось загрузить ресурс для PDF: ${path}`);
-      return new Uint8Array(await response.arrayBuffer());
-    }).catch(error => { byteCache.delete(path); throw error; });
-    byteCache.set(path, request);
-  }
-  return byteCache.get(path)!;
-}
 
 function binaryString(bytes: Uint8Array): string {
   let result = '';
@@ -65,7 +54,7 @@ async function printImage(asset: AssetDefinition, cards: Card[]): Promise<Uint8A
       context.drawImage(bitmap, 0, 0, size.width, size.height);
       const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Не удалось подготовить иллюстрацию для PDF.')), 'image/png'));
       return new Uint8Array(await blob.arrayBuffer());
-    } finally { if ('close' in bitmap) bitmap.close(); if (objectUrl) URL.revokeObjectURL(objectUrl); byteCache.delete(asset.print); }
+    } finally { if ('close' in bitmap) bitmap.close(); if (objectUrl) URL.revokeObjectURL(objectUrl); releaseLocalResourceBytes(asset.print); }
   })().catch(error => { printImageCache.delete(key); throw error; });
   printImageCache.set(key, request);
   // Keep at most one practical set of optimized print resources between exports.
@@ -136,7 +125,7 @@ function interpolateColor(colors: string[], value: number): [number, number, num
   return start.map((value, i) => Math.round(value + (end[i] - value) * fraction)) as [number, number, number];
 }
 
-function drawBackground(doc: jsPDF, background: Background, x: number, y: number, width: number, height: number) {
+export function drawPdfBackground(doc: jsPDF, background: Background, x: number, y: number, width: number, height: number) {
   if (background.kind === 'solid' || background.colors.length < 2) {
     doc.setFillColor(...rgb(background.colors[0] || '#fff9ee')); doc.rect(x, y, width, height, 'F'); return;
   }
@@ -178,7 +167,7 @@ function drawCard(doc: jsPDF, card: Card, x: number, y: number, images: Map<stri
   const outline = offsetPath(outlinePath(card), x, y);
   const cutout = card.hole ? offsetPath(ellipsePath(card.hole.x, card.hole.y, holeDiameter(card) / 2, holeDiameter(card) / 2), x, y) : [];
   doc.saveGraphicsState(); doc.path([...outline, ...cutout]); doc.clipEvenOdd(); doc.discardPath();
-  drawBackground(doc, card.background, x, y, card.width, card.height);
+  drawPdfBackground(doc, card.background, x, y, card.width, card.height);
   for (const decoration of card.decorations) {
     const path: PathOperation[] = decoration.type === 'circle' ? ellipsePath(decoration.x + decoration.width / 2, decoration.y + decoration.height / 2, decoration.width / 2, decoration.height / 2) : [...starPoints(decoration, decoration.points).map(([px, py], index): PathOperation => ({ op: index ? 'l' : 'm', c: [px, py] })), { op: 'h', c: [] }];
     doc.path(offsetPath(path, x, y));

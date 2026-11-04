@@ -4,23 +4,26 @@ import { ptToMm } from '../domain/types';
 export const FONT_FAMILIES: Record<FontId, string> = { sans: 'PT Sans', serif: 'PT Serif', script: 'Bad Script' };
 export interface TextLayout { lines: string[]; baselines: number[]; lineHeight: number; height: number; overflow: boolean; widths: number[] }
 export type MeasureText = (text: string) => number;
+export type LayoutTextElement = TextElement & { lineHeight?: number; letterSpacing?: number };
 
 let canvasContext: CanvasRenderingContext2D | null | undefined;
-export function createTextMeasurer(element: TextElement): MeasureText {
+export function createTextMeasurer(element: LayoutTextElement): MeasureText {
+  const spacing = ptToMm(element.letterSpacing ?? 0);
+  const spaced = (value: string, width: number) => Math.max(0, width + Math.max(0, Array.from(value).length - 1) * spacing);
   if (typeof document !== 'undefined') {
     canvasContext ??= document.createElement('canvas').getContext('2d');
     if (canvasContext) {
       const context = canvasContext;
       const family = FONT_FAMILIES[element.fontId] || FONT_FAMILIES.sans;
-      context.font = `${element.italic ? 'italic' : 'normal'} ${element.weight} ${element.fontSize * 96 / 72}px "${family}"`;
-      return value => context.measureText(value).width * 25.4 / 96;
+      const font = `${element.italic ? 'italic' : 'normal'} ${element.weight} ${element.fontSize * 96 / 72}px "${family}"`;
+      return value => { context.font = font; return spaced(value, context.measureText(value).width * 25.4 / 96); };
     }
   }
   // Deterministic approximation is only used before fonts/DOM are available.
-  return value => Array.from(value).reduce((sum, c) => sum + (/\s/.test(c) ? 0.27 : /[ilI1.,!:;]/.test(c) ? 0.28 : /[MWЖШЩЮ]/.test(c) ? 0.85 : 0.54), 0) * ptToMm(element.fontSize);
+  return value => spaced(value, Array.from(value).reduce((sum, c) => sum + (/\s/.test(c) ? 0.27 : /[ilI1.,!:;]/.test(c) ? 0.28 : /[MWЖШЩЮ]/.test(c) ? 0.85 : 0.54), 0) * ptToMm(element.fontSize));
 }
 
-export function layoutText(element: TextElement, measure: MeasureText = createTextMeasurer(element)): TextLayout {
+export function layoutText(element: LayoutTextElement, measure: MeasureText = createTextMeasurer(element)): TextLayout {
   const lines: string[] = [];
   const maxWidth = Math.max(0.01, element.width);
   const content = element.content.replace(/\r\n?/g, '\n');
@@ -41,14 +44,14 @@ export function layoutText(element: TextElement, measure: MeasureText = createTe
     }
     lines.push(current.trimEnd());
   }
-  const lineHeight = ptToMm(element.fontSize) * 1.22;
+  const lineHeight = ptToMm(element.fontSize) * (element.lineHeight ?? 1.22);
   const height = lines.length * lineHeight;
   const widths = lines.map(measure);
   return { lines, widths, lineHeight, height, baselines: lines.map((_, i) => element.y + ptToMm(element.fontSize) * 0.9 + lineHeight * i), overflow: height > element.height + 0.03 || widths.some(width => width > element.width + 0.03) };
 }
 
 /** Tighten the current line layout while retaining its horizontal text anchor and top edge. */
-export function fitTextBox(element: TextElement, measure: MeasureText = createTextMeasurer(element)): TextElement {
+export function fitTextBox<T extends LayoutTextElement>(element: T, measure: MeasureText = createTextMeasurer(element)): T {
   const layout = layoutText(element, measure);
   const longestLine = Math.max(0, ...layout.widths);
   let width = longestLine > 0 ? Math.max(0.01, longestLine) : 1;

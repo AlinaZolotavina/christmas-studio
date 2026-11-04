@@ -1,0 +1,12 @@
+.postcard-export-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-bottom: 14px; }
+.postcard-export-options .field { margin: 0; }
+.postcard-export-options select { min-height: 44px; width: 100%; }
+.postcard-export-accept { display: flex; align-items: center; gap: 10px; min-height: 44px; margin-top: 16px; font-size: 15px; cursor: pointer; }
+.postcard-export-accept input { width: 20px; height: 20px; flex: 0 0 auto; accent-color: var(--green, #315c4c); }
+.postcard-export-progress { margin: 10px 0 0; color: var(--green, #315c4c); }
+.postcard-print-preview .print-page-thumb__paper { height: auto; }
+@media (max-width: 480px) {
+  .postcard-export-options { grid-template-columns: 1fr; gap: 10px; }
+  .postcard-print-preview .print-document-toolbar { flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .postcard-print-preview .print-page-nav { flex: 1 1 100%; justify-content: center; }
+}

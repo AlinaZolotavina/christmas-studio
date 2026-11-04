@@ -1,0 +1,29 @@
+import { describe, expect, it } from 'vitest';
+import { createPostcardProject, createTextElement } from '../../domain/postcards/project';
+import { validatePostcardProject } from './postcardValidation';
+
+describe('postcard scoped live and preflight checks', () => {
+  it('keeps current-card exports independent of another postcard error', () => {
+    const project = createPostcardProject({ count: 2, format: 'a6-portrait' });
+    const text = createTextElement({ x: -2, y: 10, width: 70, height: 30 });
+    project.postcards[1].elements.push(text);
+    expect(validatePostcardProject(project, { scope: 'current' })).toEqual([]);
+    expect(validatePostcardProject(project)).toContainEqual(expect.objectContaining({ code: 'element-outside-postcard', severity: 'error', postcardId: project.postcards[1].id, elementId: text.id }));
+  });
+  it('uses rotated stroke and shadow bounds instead of checking only unrotated coordinates', () => {
+    const project = createPostcardProject({ count: 1, format: 'square' });
+    const text = createTextElement({ x: 2, y: 10, width: 80, height: 30, rotation: 45, stroke: { color: '#FFFFFF', width: 4 }, shadow: { color: '#000000', offsetX: 2, offsetY: 2, blur: 1 } });
+    project.postcards[0].elements.push(text);
+    expect(validatePostcardProject(project)).toContainEqual(expect.objectContaining({ code: 'element-outside-postcard', elementId: text.id }));
+  });
+  it('shows the three-millimetre and cover-cropped DPI warnings only at preflight', () => {
+    const project = createPostcardProject({ count: 1, format: 'a6-landscape' });
+    const text = createTextElement({ x: 2, y: 5, width: 80, height: 30 });
+    project.postcards[0].elements.push(text);
+    project.postcards[0].background = { kind: 'image', assetId: 'watercolor-winter-sky-snowflakes', color: '#FFFFFF' };
+    expect(validatePostcardProject(project)).toEqual([]);
+    const preflight = validatePostcardProject(project, { preflight: true });
+    expect(preflight).toContainEqual(expect.objectContaining({ code: 'safe-margin', severity: 'warning', elementId: text.id }));
+    expect(preflight).toContainEqual(expect.objectContaining({ code: 'background-resolution', severity: 'warning', postcardId: project.postcards[0].id }));
+  });
+});

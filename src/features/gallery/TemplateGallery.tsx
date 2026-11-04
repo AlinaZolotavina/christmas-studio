@@ -6,7 +6,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import type { TemplateDefinition } from "../../domain/types";
+import type { ProjectDocument, TemplateDefinition } from "../../domain/types";
 import { templates } from "../../content/templates";
 import { assetUrl } from "../../content/assets";
 import { templateHeroArtwork } from "../../data/site-art";
@@ -17,15 +17,24 @@ import { ArtworkPlaceholder } from "../../shared/ui/ArtworkPlaceholder";
 import { BowDivider } from "../../shared/ui/BowDivider";
 import { previewCard } from "./previewCard";
 import { SiteLayout } from "../../shared/layout/SiteLayout";
+import { SavedProjectNotice } from './SavedProjectNotice';
+import { useCatalogScroll } from './useCatalogScroll';
 import "./template-gallery.css";
 
 export function TemplateGallery({
   onCreate,
   hasProject = false,
+  project,
+  onContinue,
+  scrollToTemplates = false,
 }: {
   onCreate: (templateId: string, count: 24 | 31) => void;
   hasProject?: boolean;
+  project: ProjectDocument | null;
+  onContinue: () => void;
+  scrollToTemplates?: boolean;
 }) {
+  const { catalog, scrollToCatalog } = useCatalogScroll(scrollToTemplates);
   const [selected, setSelected] = useState<TemplateDefinition | null>(null);
   const [choosingCount, setChoosingCount] = useState(false);
   const [count, setCount] = useState<24 | 31 | null>(null);
@@ -66,14 +75,10 @@ export function TemplateGallery({
               Красивые наборы тегов для вашего{" "}
               <span className="template-hero__occasion">адвент-календаря</span>
             </p>
-            <ArtworkPlaceholder
-              kind="sprig"
-              slot="templates-hero-sprig"
-              className="template-hero__sprig"
-            />
           </div>
         </section>
-        <div className="template-intro">
+        {project && <SavedProjectNotice className="tag-saved-project" label="Сохранённый проект адвент-тегов" name={project.name} status="Ваши адвент-теги сохранены" description={`Карточек в наборе: ${project.cardCount}`} onContinue={onContinue} onNew={scrollToCatalog} />}
+        <div className="template-intro" ref={catalog} tabIndex={-1}>
           <BowDivider className="template-intro__divider" />
           <h2 id="template-collections-title">Выберите свое настроение</h2>
         </div>
@@ -112,6 +117,8 @@ export function TemplateGallery({
       {selected && (
         <Modal
           title={selected.name}
+          headerless
+          className="template-modal"
           wide
           onClose={() => setSelected(null)}
           footer={
@@ -199,35 +206,28 @@ export function TemplateGallery({
               </div>
             </div>
             <div className="template-preview__info">
-              <div className="eyebrow">{selected.eyebrow}</div>
-              <h3>
-                Маленькая история
-                <br />
-                на каждый день
-              </h3>
+              <h2>{selected.name}</h2>
               <p>{selected.description}</p>
               <p className="muted">
                 Шрифт, иллюстрации и цвета можно изменить в редакторе.
               </p>
-              {choosingCount && (
-                <div className="count-picker">
-                  <h4>Сколько дней до волшебства?</h4>
-                  <div className="count-picker__options">
-                    {([24, 31] as const).map((value) => (
-                      <button
-                        key={value}
-                        className={count === value ? "is-selected" : ""}
-                        onClick={() => setCount(value)}
-                        aria-pressed={count === value}
-                      >
-                        <strong>{value}</strong>
-                        <span>карточки</span>
-                        {count === value && <Check size={16} />}
-                      </button>
-                    ))}
-                  </div>
+              <div className="count-picker" style={{ visibility: choosingCount ? 'visible' : 'hidden' }} aria-hidden={!choosingCount} inert={!choosingCount}>
+                <h4>Сколько карточек хотите создать?</h4>
+                <div className="count-picker__options">
+                  {([24, 31] as const).map((value) => (
+                    <button
+                      key={value}
+                      className={count === value ? "is-selected" : ""}
+                      onClick={() => setCount(value)}
+                      aria-pressed={count === value}
+                    >
+                      <strong>{value}</strong>
+                      <span>{value === 31 ? 'карточка' : 'карточки'}</span>
+                      {count === value && <Check size={16} />}
+                    </button>
+                  ))}
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </Modal>

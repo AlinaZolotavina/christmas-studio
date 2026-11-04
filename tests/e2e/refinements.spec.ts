@@ -36,7 +36,8 @@ test('home keeps the tag collections, opens postcards and gives future products 
   await expect(page.locator('.coming-soon__section')).toHaveText('Идеи · В разработке');
   await page.locator('.public-header nav').getByRole('link', { name: 'О проекте', exact: true }).click();
   await expect(page.locator('.about-project')).toContainText('Проект полностью бесплатный и не требует регистрации.');
-  await expect(page.locator('.about-story__copy')).toContainText('подготовка к праздникам');
+  await expect(page.locator('.about-story__copy')).toContainText('пространство для творчества и подготовки к праздникам');
+  await expect(page.locator('.about-story__copy')).not.toContainText('Я ');
   await page.locator('.about-products [data-product=tags]').click();
   await expect(page.getByRole('heading', { name: 'Хвойная сказка', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Зимние истории', exact: true })).toBeVisible();
@@ -237,6 +238,7 @@ test('Shift preserves a decoration ratio at corners and edges, and all 25 decora
   await expect.poll(async () => (await documentData(page)).cards[0].decorations.length).toBe(25);
   await page.reload();
   await expect(page.locator('.studio')).toBeVisible();
+  await page.getByRole('dialog', { name: 'Продолжить работу над адвент-тегами?', exact: true }).getByRole('button', { name: 'Продолжить', exact: true }).click();
   await page.getByRole('tab', { name: 'Фон', exact: true }).click();
   await expect(page.locator('.count-badge')).toHaveText('25/25');
   await expect(page.getByRole('dialog')).toHaveCount(0);
@@ -267,6 +269,7 @@ test('portrait tablets use the dock and burger, and templates and the home logo 
   await page.locator('.public-header nav').getByRole('button', { name: 'Редактор', exact: true }).click();
   await page.getByRole('menu', { name: 'Редактор: направление', exact: true }).getByRole('menuitem', { name: 'Адвент-теги', exact: true }).click();
   await expect(page).toHaveURL(/#editor\/tags$/);
+  await page.getByRole('dialog', { name: 'Продолжить работу над адвент-тегами?', exact: true }).getByRole('button', { name: 'Продолжить', exact: true }).click();
   await page.locator('.studio-home').click();
   await expect(page).toHaveURL(/#home$/);
   expect((await documentData(page)).id).toBe(saved.id);
@@ -274,6 +277,7 @@ test('portrait tablets use the dock and burger, and templates and the home logo 
   await page.locator('.public-header nav').getByRole('button', { name: 'Редактор', exact: true }).click();
   await page.getByRole('menu', { name: 'Редактор: направление', exact: true }).getByRole('menuitem', { name: 'Адвент-теги', exact: true }).click();
   await expect(page).toHaveURL(/#editor\/tags$/);
+  await page.getByRole('dialog', { name: 'Продолжить работу над адвент-тегами?', exact: true }).getByRole('button', { name: 'Продолжить', exact: true }).click();
   await expect(page.locator('.thumbnail-strip')).toBeVisible();
   await expect(page.locator('.mobile-dock')).not.toBeVisible();
   await page.locator('.studio-nav').getByRole('button', { name: 'Шаблоны', exact: true }).click();

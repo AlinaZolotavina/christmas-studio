@@ -9,7 +9,7 @@ test('all six gallery collections create a complete 31-card project', async ({ b
       await page.goto('/#tags');
       await page.locator(`[data-template-id="${id}"]`).click();
       await page.getByRole('button', { name: 'Выбрать шаблон' }).click();
-      await page.locator('.count-picker__options').getByRole('button', { name: '31 карточки', exact: true }).click();
+      await page.locator('.count-picker__options').getByRole('button', { name: '31 карточка', exact: true }).click();
       await page.getByRole('button', { name: 'Создать проект', exact: false }).click();
       await acceptTermsIfOffered(page);
       const skip = page.getByRole('button', { name: 'Пропустить', exact: true });
@@ -54,8 +54,8 @@ test('the two redesigned bodies load supplied covers and retain geometry for mis
       await page.goto(`/#${route}`);
       await expect(page.locator('main h1')).toBeVisible();
       if (route === 'tags') {
-        await expect(page.locator('.template-hero img')).toHaveCount(3);
-        await expect(page.locator('.template-hero img:visible')).toHaveCount(width <= 1150 ? 1 : 3);
+        await expect(page.locator('.template-hero img')).toHaveCount(2);
+        await expect(page.locator('.template-hero img:visible')).toHaveCount(width <= 1150 ? 1 : 2);
         await expect.poll(() => page.locator('.template-hero img:visible').evaluateAll(images => images.every(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0))).toBe(true);
         if (width <= 1150) await expect(page.locator('.template-hero__scene--right')).toBeVisible();
         const layout = await page.evaluate(() => {

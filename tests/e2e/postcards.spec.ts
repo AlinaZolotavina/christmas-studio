@@ -426,7 +426,7 @@ test('format changes keep absolute geometry and independent postcard copies supp
   await page.getByRole('button', { name: 'Отменить (Ctrl+Z)', exact: true }).click();
   await expect.poll(async () => (await saved(page)).postcards[1].id).toBe(copy.id);
   await page.locator('.thumbnail-strip').getByRole('button', { name: 'Удалить открытку', exact: true }).click();
-  await page.getByRole('dialog', { name: 'Удалить открытку?', exact: true }).getByRole('button', { name: 'Удалить', exact: true }).click();
+  await expect(page.getByRole('dialog', { name: 'Удалить открытку?', exact: true })).toHaveCount(0);
   await expect.poll(async () => (await saved(page)).postcards.length).toBe(2);
   await page.getByRole('button', { name: 'Отменить (Ctrl+Z)', exact: true }).click();
   await expect.poll(async () => (await saved(page)).activePostcardId).toBe(copy.id);
@@ -451,6 +451,7 @@ test('tag and postcard projects survive navigation and reload with one shared te
   expect(await page.evaluate(key => localStorage.getItem(key), acceptanceKey)).toBe(acceptance);
   const postcardId = (await saved(page)).id;
   await page.goto('/#editor');
+  await page.getByRole('dialog', { name: 'Продолжить работу над адвент-тегами?', exact: true }).getByRole('button', { name: 'Продолжить', exact: true }).click();
   await expect(page.getByLabel('Текст на карточке', { exact: true })).toHaveValue('Сохранённый адвент');
   await page.goto('/#editor/postcards');
   await page.getByRole('dialog', { name: 'Продолжить работу над открытками?', exact: true }).getByRole('button', { name: 'Продолжить', exact: true }).click();

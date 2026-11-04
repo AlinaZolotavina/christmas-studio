@@ -31,6 +31,7 @@ test('24 cards: edit, autosave, reload and undo preserve real document data', as
   expect(before.cardCount).toBe(24);
   expect(new Set(before.cards.map((card: { illustration: { assetId: string } }) => card.illustration.assetId)).size).toBe(24);
   await page.reload();
+  await page.getByRole('dialog', { name: 'Продолжить работу над адвент-тегами?', exact: true }).getByRole('button', { name: 'Продолжить', exact: true }).click();
   await expect(page.getByLabel('Текст на карточке', { exact: true })).toHaveValue('Зимнее чудо');
   expect((await saved(page)).cards.map((card: { illustration: { assetId: string } }) => card.illustration.assetId)).toEqual(before.cards.map((card: { illustration: { assetId: string } }) => card.illustration.assetId));
   await page.getByLabel('Текст на карточке', { exact: true }).fill('Мечта');

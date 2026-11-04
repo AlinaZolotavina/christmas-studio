@@ -1,0 +1,7 @@
+.saved-project{width:calc(100% - 2 * var(--template-content-gutter));max-width:1204px;margin:24px auto;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:24px 28px;border:1px solid #d5ddcc;border-radius:18px;background:#f4f6ed}
+.saved-project h2{margin:4px 0 6px;overflow-wrap:anywhere;color:#24482d}
+.saved-project p{margin:0;color:#586453}
+.saved-project__status{font-size:14px;color:#61715a}
+.saved-project__actions{display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap}
+@media(max-width:900px){.saved-project{align-items:flex-start;flex-direction:column;gap:18px}}
+@media(max-width:650px){.saved-project{padding:20px}.saved-project__actions{flex-direction:column;width:100%}}

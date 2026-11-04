@@ -5,7 +5,7 @@ import { IconButton } from './Controls';
 const modalStack: symbol[] = [];
 let originalOverflow = '';
 
-export function Modal({ title, children, onClose, footer, wide = false, className = '', overlayClassName = '' }: { title: string; children: ReactNode; onClose: () => void; footer?: ReactNode; wide?: boolean; className?: string; overlayClassName?: string }) {
+export function Modal({ title, children, onClose, footer, wide = false, headerless = false, className = '', overlayClassName = '' }: { title: string; children: ReactNode; onClose: () => void; footer?: ReactNode; wide?: boolean; headerless?: boolean; className?: string; overlayClassName?: string }) {
   const titleId = useId();
   const panel = useRef<HTMLDivElement>(null);
   const close = useRef(onClose);
@@ -37,5 +37,5 @@ export function Modal({ title, children, onClose, footer, wide = false, classNam
       if (previous?.isConnected) previous.focus();
     };
   }, []);
-  return <div className={`modal-overlay ${overlayClassName}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><div ref={panel} className={`modal ${wide ? 'modal--wide' : ''} ${className}`} role="dialog" aria-modal="true" aria-labelledby={titleId} tabIndex={-1}><header className="modal__header"><h2 id={titleId}>{title}</h2><IconButton label="Закрыть окно" onClick={onClose}><X size={20} /></IconButton></header><div className="modal__body">{children}</div>{footer && <footer className="modal__footer">{footer}</footer>}</div></div>;
+  return <div className={`modal-overlay ${overlayClassName}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><div ref={panel} className={`modal ${wide ? 'modal--wide' : ''} ${headerless ? 'modal--headerless' : ''} ${className}`} role="dialog" aria-modal="true" aria-labelledby={headerless ? undefined : titleId} aria-label={headerless ? title : undefined} tabIndex={-1}>{headerless ? <div className="modal__close"><IconButton label="Закрыть окно" onClick={onClose}><X size={20} /></IconButton></div> : <header className="modal__header"><h2 id={titleId}>{title}</h2><IconButton label="Закрыть окно" onClick={onClose}><X size={20} /></IconButton></header>}<div className="modal__body">{children}</div>{footer && <footer className="modal__footer">{footer}</footer>}</div></div>;
 }

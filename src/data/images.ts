@@ -43,6 +43,7 @@ export const categories: ImageCategory[] = [
 
 /** Empty future motifs are registered now and become visible when art is added. */
 export const motifs: ImageMotif[] = [
+  { id: 'seasonal-objects-windows', category: 'seasonal-objects', name: { ru: 'Зимние окна', en: 'Winter windows' } },
   { id: 'characters-father-frost', category: 'characters', name: { ru: 'Дед Мороз', en: 'Father Frost' } },
   { id: 'characters-snow-maiden', category: 'characters', name: { ru: 'Снегурочка', en: 'Snow Maiden' } },
   { id: 'characters-santa', category: 'characters', name: { ru: 'Санта-Клаус', en: 'Santa Claus' } },
@@ -109,6 +110,843 @@ export const imageAliases: Record<string, string> = { 'watercolor-snowy-alpine-v
 export const resolveImageId = (id: string) => imageAliases[id] ?? id;
 
 export const images: ImageMetadata[] = [
+  {
+    "id": "burgundy-knitted-christmas-bow",
+    "source": "assets/burgundy-knitted-christmas-bow.png",
+    "src": "art/burgundy-knitted-christmas-bow.png",
+    "name": {
+      "ru": "Бордовый вязаный шарф, завязанный бантом",
+      "en": "Burgundy knitted scarf tied in a bow"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-scarves",
+    "tags": [
+      "шарф",
+      "вязание",
+      "бордовый",
+      "бант",
+      "хвоя",
+      "ягоды",
+      "шишка"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "scarf",
+      "knitted",
+      "burgundy",
+      "bow",
+      "evergreen",
+      "berries",
+      "pine cone"
+    ],
+    "aliases": [
+      "вязаный рождественский бант",
+      "knitted scarf bow"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "christmas-gingerbread-and-spice-arrangement",
+    "source": "assets/christmas-gingerbread-and-spice-arrangement.png",
+    "src": "art/christmas-gingerbread-and-spice-arrangement.png",
+    "name": {
+      "ru": "Имбирное печенье с пряностями и апельсином",
+      "en": "Gingerbread cookies with spices and orange"
+    },
+    "category": "treats",
+    "subcategory": "treats-gingerbread-cookies",
+    "tags": [
+      "имбирное печенье",
+      "пряники",
+      "корица",
+      "бадьян",
+      "апельсин",
+      "хвоя",
+      "звёзды"
+    ],
+    "tagsEn": [
+      "treat",
+      "gingerbread-cookie",
+      "gingerbread",
+      "cookies",
+      "cinnamon",
+      "star anise",
+      "orange",
+      "evergreen",
+      "stars"
+    ],
+    "aliases": [
+      "пряная рождественская композиция",
+      "spiced Christmas cookies"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "christmas-gingerbread-reindeer-with-bow",
+    "source": "assets/christmas-gingerbread-reindeer-with-bow.png",
+    "src": "art/christmas-gingerbread-reindeer-with-bow.png",
+    "name": {
+      "ru": "Имбирный пряник-олень с бантом и колокольчиком",
+      "en": "Gingerbread reindeer cookie with a bow and bell"
+    },
+    "category": "treats",
+    "subcategory": "treats-gingerbread",
+    "tags": [
+      "пряник",
+      "печенье",
+      "олень из печенья",
+      "белая глазурь",
+      "красный бант",
+      "колокольчик"
+    ],
+    "tagsEn": [
+      "treat",
+      "gingerbread",
+      "reindeer cookie",
+      "white icing",
+      "red bow",
+      "bell"
+    ],
+    "aliases": [
+      "рождественский пряничный олень",
+      "iced reindeer biscuit"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "festive-tartan-scarf-with-decor",
+    "source": "assets/festive-tartan-scarf-with-decor.png",
+    "src": "art/festive-tartan-scarf-with-decor.png",
+    "name": {
+      "ru": "Зелёный клетчатый шарф с рождественским декором",
+      "en": "Green tartan scarf with Christmas decorations"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-scarves",
+    "tags": [
+      "шарф",
+      "тартан",
+      "клетка",
+      "зелёный",
+      "красный бант",
+      "хвоя",
+      "ягоды",
+      "бахрома"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "scarf",
+      "tartan",
+      "plaid",
+      "green",
+      "red bow",
+      "evergreen",
+      "berries",
+      "fringe"
+    ],
+    "aliases": [
+      "шотландский зимний шарф",
+      "Christmas plaid scarf"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "frost-patterned-snowy-window",
+    "source": "assets/frost-patterned-snowy-window.png",
+    "src": "art/frost-patterned-snowy-window.png",
+    "name": {
+      "ru": "Заснеженное окно с морозными узорами",
+      "en": "Snowy window with frost patterns"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-windows",
+    "tags": [
+      "окно",
+      "морозные узоры",
+      "стекло",
+      "снег",
+      "деревянная рама",
+      "падуб",
+      "бант"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "window",
+      "frost patterns",
+      "glass",
+      "snow",
+      "wooden frame",
+      "holly",
+      "bow"
+    ],
+    "aliases": [
+      "узоры на зимнем окне",
+      "frosted Christmas window"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "gingerbread-heart-with-red-bow",
+    "source": "assets/gingerbread-heart-with-red-bow.png",
+    "src": "art/gingerbread-heart-with-red-bow.png",
+    "name": {
+      "ru": "Пряничное сердечко с красным бантом",
+      "en": "Gingerbread heart with a red bow"
+    },
+    "category": "treats",
+    "subcategory": "treats-gingerbread",
+    "tags": [
+      "пряник",
+      "сердце",
+      "печенье",
+      "белая глазурь",
+      "красный бант",
+      "хвоя",
+      "ягоды"
+    ],
+    "tagsEn": [
+      "treat",
+      "gingerbread",
+      "heart cookie",
+      "white icing",
+      "red bow",
+      "evergreen",
+      "berries"
+    ],
+    "aliases": [
+      "рождественский пряник в форме сердца",
+      "iced heart biscuit"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "knitted-scarf-with-winter-decor",
+    "source": "assets/knitted-scarf-with-winter-decor.png",
+    "src": "art/knitted-scarf-with-winter-decor.png",
+    "name": {
+      "ru": "Кремовый вязаный шарф с красным узором",
+      "en": "Ivory knitted scarf with a red winter pattern"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-scarves",
+    "tags": [
+      "шарф",
+      "кремовый",
+      "вязание",
+      "красный узор",
+      "снежинки",
+      "бант",
+      "хвоя",
+      "бахрома"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "scarf",
+      "ivory",
+      "knitted",
+      "red pattern",
+      "snowflakes",
+      "bow",
+      "evergreen",
+      "fringe"
+    ],
+    "aliases": [
+      "светлый зимний шарф с узором",
+      "patterned Christmas scarf"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "snow-covered-cabin-and-animal-tracks",
+    "source": "assets/snow-covered-cabin-and-animal-tracks.png",
+    "src": "art/snow-covered-cabin-and-animal-tracks.png",
+    "name": {
+      "ru": "Заснеженная избушка и следы на лесной тропе",
+      "en": "Snow-covered cabin and animal tracks on a forest path"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-cottages",
+    "tags": [
+      "домик",
+      "избушка",
+      "снег",
+      "следы",
+      "тропинка",
+      "деревья",
+      "красные ягоды",
+      "тёплое окно"
+    ],
+    "tagsEn": [
+      "landscape",
+      "cottage",
+      "cabin",
+      "snow",
+      "animal tracks",
+      "path",
+      "trees",
+      "red berries",
+      "glowing window"
+    ],
+    "aliases": [
+      "лесной дом со следами на снегу",
+      "woodland cabin tracks"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "snow-covered-oak-with-red-berries",
+    "source": "assets/snow-covered-oak-with-red-berries.png",
+    "src": "art/snow-covered-oak-with-red-berries.png",
+    "name": {
+      "ru": "Заснеженный дуб с красными ягодами у подножия",
+      "en": "Snow-covered oak with red berries at its base"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-winter-trees",
+    "tags": [
+      "дуб",
+      "зимнее дерево",
+      "снег",
+      "голые ветви",
+      "красные ягоды",
+      "сугробы"
+    ],
+    "tagsEn": [
+      "winter-tree",
+      "oak",
+      "snow",
+      "bare branches",
+      "red berries",
+      "snowdrifts"
+    ],
+    "aliases": [
+      "раскидистое дерево в снегу",
+      "snowy oak tree"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "snowy-alpine-cottage-with-sleigh",
+    "source": "assets/snowy-alpine-cottage-with-sleigh.png",
+    "src": "art/snowy-alpine-cottage-with-sleigh.png",
+    "name": {
+      "ru": "Заснеженный альпийский домик с санками",
+      "en": "Snowy Alpine cottage with a sleigh"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-cottages",
+    "tags": [
+      "домик",
+      "шале",
+      "снег",
+      "санки",
+      "ель",
+      "подарки",
+      "красная дверь",
+      "тёплые окна"
+    ],
+    "tagsEn": [
+      "landscape",
+      "cottage",
+      "chalet",
+      "snow",
+      "sleigh",
+      "spruce",
+      "gifts",
+      "red door",
+      "glowing windows"
+    ],
+    "aliases": [
+      "зимний домик с санями",
+      "cozy Alpine cabin"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "snowy-christmas-cottage",
+    "source": "assets/snowy-christmas-cottage.png",
+    "src": "art/snowy-christmas-cottage.png",
+    "name": {
+      "ru": "Рождественский домик с красной дверью и венком",
+      "en": "Snowy Christmas cottage with a red door and wreath"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-cottages",
+    "tags": [
+      "домик",
+      "деревянный дом",
+      "снег",
+      "красная дверь",
+      "венок",
+      "тёплые окна",
+      "подарки",
+      "ель"
+    ],
+    "tagsEn": [
+      "landscape",
+      "cottage",
+      "wooden house",
+      "snow",
+      "red door",
+      "wreath",
+      "glowing windows",
+      "gifts",
+      "spruce"
+    ],
+    "aliases": [
+      "уютная рождественская избушка",
+      "festive winter cabin"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "snowy-evergreen-forest-at-dawn",
+    "source": "assets/snowy-evergreen-forest-at-dawn.png",
+    "src": "art/snowy-evergreen-forest-at-dawn.png",
+    "name": {
+      "ru": "Заснеженный хвойный лес на рассвете",
+      "en": "Snowy evergreen forest at dawn"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-forests",
+    "tags": [
+      "зимний лес",
+      "ель",
+      "рассвет",
+      "снег",
+      "солнечный свет",
+      "красные ягоды",
+      "тропинка"
+    ],
+    "tagsEn": [
+      "landscape",
+      "forest-landscape",
+      "spruce",
+      "dawn",
+      "snow",
+      "sunlight",
+      "red berries",
+      "path"
+    ],
+    "aliases": [
+      "утро в зимнем лесу",
+      "snowy fir forest sunrise"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "snowy-trail-in-winter-forest",
+    "source": "assets/snowy-trail-in-winter-forest.png",
+    "src": "art/snowy-trail-in-winter-forest.png",
+    "name": {
+      "ru": "Заснеженная тропа среди хвойных деревьев",
+      "en": "Snowy trail among winter evergreen trees"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-forests",
+    "tags": [
+      "лес",
+      "тропа",
+      "снег",
+      "сосны",
+      "ели",
+      "солнечный свет",
+      "сугробы"
+    ],
+    "tagsEn": [
+      "landscape",
+      "forest-landscape",
+      "trail",
+      "snow",
+      "pine trees",
+      "spruce",
+      "sunlight",
+      "snowdrifts"
+    ],
+    "aliases": [
+      "зимняя лесная дорожка",
+      "sunlit snowy woodland path"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "vintage-ice-skates-on-red-scarf",
+    "source": "assets/vintage-ice-skates-on-red-scarf.png",
+    "src": "art/vintage-ice-skates-on-red-scarf.png",
+    "name": {
+      "ru": "Винтажные коньки на красном вязаном шарфе",
+      "en": "Vintage ice skates on a red knitted scarf"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-skates",
+    "tags": [
+      "коньки",
+      "кремовый",
+      "красный шарф",
+      "ленты",
+      "хвоя",
+      "ягоды",
+      "шишки"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "ice skates",
+      "ivory",
+      "red scarf",
+      "ribbons",
+      "evergreen",
+      "berries",
+      "pine cones"
+    ],
+    "aliases": [
+      "старинные коньки с зимним декором",
+      "cozy vintage skates"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "watercolor-snowflake-composition",
+    "source": "assets/watercolor-snowflake-composition.png",
+    "src": "art/watercolor-snowflake-composition.png",
+    "name": {
+      "ru": "Акварельная композиция из голубых и кремовых снежинок",
+      "en": "Watercolor composition of blue and ivory snowflakes"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-snowflakes",
+    "tags": [
+      "снежинки",
+      "композиция",
+      "голубой",
+      "кремовый",
+      "золото",
+      "акварель",
+      "зима"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "snowflakes",
+      "composition",
+      "blue",
+      "ivory",
+      "gold",
+      "watercolor",
+      "winter"
+    ],
+    "aliases": [
+      "россыпь ажурных снежинок",
+      "winter snowflake cluster"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "watercolor-snowflake-with-gold-accents",
+    "source": "assets/watercolor-snowflake-with-gold-accents.png",
+    "src": "art/watercolor-snowflake-with-gold-accents.png",
+    "name": {
+      "ru": "Голубая акварельная снежинка с золотыми деталями",
+      "en": "Blue watercolor snowflake with golden accents"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-snowflakes",
+    "tags": [
+      "снежинка",
+      "голубой",
+      "кремовый",
+      "золотые детали",
+      "кристалл",
+      "зима"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "snowflake",
+      "blue",
+      "ivory",
+      "golden accents",
+      "crystal",
+      "winter"
+    ],
+    "aliases": [
+      "снежная звёздочка с золотом",
+      "gilded winter snowflake"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "watercolor-winter-forest-clearing",
+    "source": "assets/watercolor-winter-forest-clearing.png",
+    "src": "art/watercolor-winter-forest-clearing.png",
+    "name": {
+      "ru": "Заснеженная лесная поляна в утреннем свете",
+      "en": "Snowy forest clearing in morning light"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-forests",
+    "tags": [
+      "лесная поляна",
+      "ели",
+      "снег",
+      "утренний свет",
+      "красные ягоды",
+      "тропинка"
+    ],
+    "tagsEn": [
+      "landscape",
+      "forest-landscape",
+      "clearing",
+      "spruce",
+      "snow",
+      "morning light",
+      "red berries",
+      "path"
+    ],
+    "aliases": [
+      "солнечная зимняя поляна",
+      "sunlit winter clearing"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "watercolor-winter-grove-with-berries",
+    "source": "assets/watercolor-winter-grove-with-berries.png",
+    "src": "art/watercolor-winter-grove-with-berries.png",
+    "name": {
+      "ru": "Зимняя роща с голыми ветвями и красными ягодами",
+      "en": "Winter grove with bare branches and red berries"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-forests",
+    "tags": [
+      "роща",
+      "деревья",
+      "голые ветви",
+      "снег",
+      "красные ягоды",
+      "сугробы",
+      "зима"
+    ],
+    "tagsEn": [
+      "landscape",
+      "forest-landscape",
+      "grove",
+      "trees",
+      "bare branches",
+      "snow",
+      "red berries",
+      "winter"
+    ],
+    "aliases": [
+      "лиственная роща зимой",
+      "snowy woodland grove"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "winter-bench-in-snowy-forest",
+    "source": "assets/winter-bench-in-snowy-forest.png",
+    "src": "art/winter-bench-in-snowy-forest.png",
+    "name": {
+      "ru": "Деревянная скамейка с фонарём в заснеженном лесу",
+      "en": "Wooden bench and lantern in a snowy forest"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-forests",
+    "tags": [
+      "скамейка",
+      "фонарь",
+      "лес",
+      "снег",
+      "деревья",
+      "красные ягоды",
+      "солнечный свет"
+    ],
+    "tagsEn": [
+      "landscape",
+      "forest-landscape",
+      "bench",
+      "lantern",
+      "snow",
+      "trees",
+      "red berries",
+      "sunlight"
+    ],
+    "aliases": [
+      "уютная зимняя скамья",
+      "snowy woodland bench"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "winter-birch-grove-with-red-berries",
+    "source": "assets/winter-birch-grove-with-red-berries.png",
+    "src": "art/winter-birch-grove-with-red-berries.png",
+    "name": {
+      "ru": "Зимняя берёзовая роща с красными ягодами",
+      "en": "Winter birch grove with red berries"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-forests",
+    "tags": [
+      "берёзы",
+      "роща",
+      "снег",
+      "белые стволы",
+      "голые ветви",
+      "красные ягоды",
+      "зима"
+    ],
+    "tagsEn": [
+      "landscape",
+      "forest-landscape",
+      "birch",
+      "grove",
+      "snow",
+      "white trunks",
+      "bare branches",
+      "red berries",
+      "winter"
+    ],
+    "aliases": [
+      "берёзки в снегу",
+      "snowy birch woodland"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "winter-garden-with-bird-feeder-and-snow",
+    "source": "assets/winter-garden-with-bird-feeder-and-snow.png",
+    "src": "art/winter-garden-with-bird-feeder-and-snow.png",
+    "name": {
+      "ru": "Зимний сад со скамейкой и кормушкой для птиц",
+      "en": "Snowy winter garden with a bench and bird feeder"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-forests",
+    "tags": [
+      "зимний сад",
+      "скамейка",
+      "кормушка",
+      "дерево",
+      "красные ягоды",
+      "забор",
+      "снег",
+      "фонарь"
+    ],
+    "tagsEn": [
+      "landscape",
+      "forest-landscape",
+      "winter garden",
+      "bench",
+      "bird feeder",
+      "tree",
+      "red berries",
+      "fence",
+      "snow",
+      "lantern"
+    ],
+    "aliases": [
+      "садовая скамья под снежным деревом",
+      "cozy snowy garden"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "winter-watercolor-bridge-with-red-berries",
+    "source": "assets/winter-watercolor-bridge-with-red-berries.png",
+    "src": "art/winter-watercolor-bridge-with-red-berries.png",
+    "name": {
+      "ru": "Заснеженный деревянный мостик с красными ягодами",
+      "en": "Snowy wooden footbridge with red berries"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-forests",
+    "tags": [
+      "мостик",
+      "дерево",
+      "лес",
+      "снег",
+      "ели",
+      "красные ягоды",
+      "тропинка"
+    ],
+    "tagsEn": [
+      "landscape",
+      "forest-landscape",
+      "footbridge",
+      "wooden bridge",
+      "snow",
+      "spruce",
+      "red berries",
+      "path"
+    ],
+    "aliases": [
+      "лесной мост зимой",
+      "snowy woodland bridge"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "wool-scarf-with-winter-decor",
+    "source": "assets/wool-scarf-with-winter-decor.png",
+    "src": "art/wool-scarf-with-winter-decor.png",
+    "name": {
+      "ru": "Кремовый шерстяной шарф с хвойным декором",
+      "en": "Ivory wool scarf with evergreen decorations"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-scarves",
+    "tags": [
+      "шарф",
+      "шерсть",
+      "кремовый",
+      "вязание",
+      "красный бант",
+      "хвоя",
+      "ягоды",
+      "шишки",
+      "бахрома"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "scarf",
+      "wool",
+      "ivory",
+      "knitted",
+      "red bow",
+      "evergreen",
+      "berries",
+      "pine cones",
+      "fringe"
+    ],
+    "aliases": [
+      "тёплый шарф с рождественскими веточками",
+      "cozy wool winter scarf"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
   {
     id: 'santa-gift-stack', source: 'assets/santa-gift-stack.png', src: 'art/santa-gift-stack.png',
     name: { ru: 'Санта со стопкой рождественских подарков', en: 'Santa with a stack of Christmas gifts' }, category: 'characters', subcategory: 'characters-santa',

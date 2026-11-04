@@ -28,7 +28,7 @@ const resource = (entry: Pick<ImageMetadata, 'id' | 'name' | 'category' | 'src'>
 export const postcardIllustrations: PostcardResource[] = assets.map(asset => ({ ...asset, format: 'png' }));
 export const postcardLettering: PostcardResource[] = lettering.map(entry => resource(entry, letteringDimensions, 'lettering'));
 export const postcardBackgrounds: PostcardResource[] = backgrounds.map(entry => resource(entry, backgroundDimensions, 'backgrounds'));
-// The empty catalog is ready for supplied decorations; dimensions are prepared alongside assets.
+// Decorative artwork uses the same original, preview and measured-dimensions contract.
 export const postcardDecorations: PostcardResource[] = decorations.map(entry => resource(entry, decorationDimensions, 'decorations'));
 const collections: Record<PostcardResourceKind, PostcardResource[]> = { image: postcardIllustrations, lettering: postcardLettering, background: postcardBackgrounds, decoration: postcardDecorations };
 export const getPostcardResource = (kind: PostcardResourceKind, id: string): PostcardResource | undefined => collections[kind].find(entry => entry.id === (kind === 'image' ? resolveImageId(id) : id));

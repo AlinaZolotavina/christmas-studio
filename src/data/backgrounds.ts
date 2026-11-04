@@ -14,6 +14,7 @@ export const backgroundCategories: ImageCategory[] = [
 ];
 
 export const backgroundMotifs: ImageMotif[] = [
+  { id: 'frames-hanging-ornaments', category: 'background-frames', name: { ru: 'Подвесные украшения', en: 'Hanging ornaments' } },
   { id: 'patterns-botanical', category: 'background-patterns', name: { ru: 'Падуб и банты', en: 'Holly and bows' } },
   { id: 'patterns-winter-symbols', category: 'background-patterns', name: { ru: 'Зимние символы', en: 'Winter symbols' } },
   { id: 'patterns-gingerbread', category: 'background-patterns', name: { ru: 'Имбирное печенье', en: 'Gingerbread cookies' } },
@@ -27,6 +28,305 @@ export const backgroundMotifs: ImageMotif[] = [
 
 /** Explicit metadata reviewed against the supplied artwork, independent of filenames. */
 export const backgrounds: BackgroundMetadata[] = [
+  {
+    "id": "dreamy-golden-winter-snowfall",
+    "source": "assets/backgrounds/dreamy-golden-winter-snowfall.png",
+    "src": "backgrounds/dreamy-golden-winter-snowfall.png",
+    "name": {
+      "ru": "Голубой снегопад с тёплым золотым боке",
+      "en": "Blue snowfall with warm golden bokeh"
+    },
+    "category": "background-textures",
+    "subcategory": "textures-snowflakes",
+    "tags": [
+      "снегопад",
+      "голубой",
+      "золото",
+      "боке",
+      "снежинки",
+      "сияние"
+    ],
+    "tagsEn": [
+      "snowfall",
+      "blue",
+      "gold",
+      "bokeh",
+      "snowflakes",
+      "glow"
+    ],
+    "aliases": [
+      "зимнее золотистое сияние",
+      "dreamy golden snowfall"
+    ],
+    "style": "watercolor-paper",
+    "background": "opaque",
+    "composition": "texture"
+  },
+  {
+    "id": "dreamy-pastel-winter-sparkle",
+    "source": "assets/backgrounds/dreamy-pastel-winter-sparkle.png",
+    "src": "backgrounds/dreamy-pastel-winter-sparkle.png",
+    "name": {
+      "ru": "Пастельный зимний фон с мерцающими огнями",
+      "en": "Pastel winter background with sparkling lights"
+    },
+    "category": "background-textures",
+    "subcategory": "textures-stars",
+    "tags": [
+      "пастельный",
+      "голубой",
+      "розовый",
+      "кремовый",
+      "боке",
+      "искры",
+      "снежинки",
+      "зима"
+    ],
+    "tagsEn": [
+      "pastel",
+      "blue",
+      "pink",
+      "cream",
+      "bokeh",
+      "sparkles",
+      "snowflakes",
+      "winter"
+    ],
+    "aliases": [
+      "нежное зимнее мерцание",
+      "pastel winter lights"
+    ],
+    "style": "watercolor-paper",
+    "background": "opaque",
+    "composition": "texture"
+  },
+  {
+    "id": "dreamy-winter-snowflake-bokeh",
+    "source": "assets/backgrounds/dreamy-winter-snowflake-bokeh.png",
+    "src": "backgrounds/dreamy-winter-snowflake-bokeh.png",
+    "name": {
+      "ru": "Морозный голубой фон со снежинками и боке",
+      "en": "Frosty blue snowflake and bokeh background"
+    },
+    "category": "background-textures",
+    "subcategory": "textures-snowflakes",
+    "tags": [
+      "голубой",
+      "синий",
+      "снежинки",
+      "снег",
+      "боке",
+      "мороз",
+      "свет"
+    ],
+    "tagsEn": [
+      "blue",
+      "snowflakes",
+      "snow",
+      "bokeh",
+      "frost",
+      "light"
+    ],
+    "aliases": [
+      "холодное зимнее сияние",
+      "icy blue snowflake glow"
+    ],
+    "style": "watercolor-paper",
+    "background": "opaque",
+    "composition": "texture"
+  },
+  {
+    "id": "elegant-gold-winter-watercolour-background",
+    "source": "assets/backgrounds/elegant-gold-winter-watercolour-background.png",
+    "src": "backgrounds/elegant-gold-winter-watercolour-background.png",
+    "name": {
+      "ru": "Пастельная акварельная бумага с золотыми звёздами",
+      "en": "Pastel watercolor paper with golden stars"
+    },
+    "category": "background-textures",
+    "subcategory": "textures-stars",
+    "tags": [
+      "акварель",
+      "пастельный",
+      "розовый",
+      "голубой",
+      "кремовый",
+      "золото",
+      "звёзды",
+      "завитки"
+    ],
+    "tagsEn": [
+      "watercolor",
+      "pastel",
+      "pink",
+      "blue",
+      "cream",
+      "gold",
+      "stars",
+      "flourishes"
+    ],
+    "aliases": [
+      "нежная золотая зимняя бумага",
+      "elegant golden winter wash"
+    ],
+    "style": "watercolor-paper",
+    "background": "opaque",
+    "composition": "texture"
+  },
+  {
+    "id": "vintage-botanical-christmas-snowflakes",
+    "source": "assets/backgrounds/vintage-botanical-christmas-snowflakes.png",
+    "src": "backgrounds/vintage-botanical-christmas-snowflakes.png",
+    "name": {
+      "ru": "Винтажная кремовая рамка с хвойными веточками и снежинками",
+      "en": "Vintage cream border with evergreen sprigs and snowflakes"
+    },
+    "category": "background-frames",
+    "subcategory": "frames-botanical",
+    "tags": [
+      "винтаж",
+      "кремовый",
+      "бумага",
+      "хвоя",
+      "шишки",
+      "снежинки",
+      "рамка",
+      "сепия"
+    ],
+    "tagsEn": [
+      "vintage",
+      "cream",
+      "paper",
+      "evergreen",
+      "pine cones",
+      "snowflakes",
+      "frame",
+      "sepia"
+    ],
+    "aliases": [
+      "старинная рождественская бумага с хвоей",
+      "antique botanical Christmas border"
+    ],
+    "style": "watercolor-paper",
+    "background": "opaque",
+    "composition": "frame"
+  },
+  {
+    "id": "vintage-icy-blue-snowflake-paper-texture",
+    "source": "assets/backgrounds/vintage-icy-blue-snowflake-paper-texture.png",
+    "src": "backgrounds/vintage-icy-blue-snowflake-paper-texture.png",
+    "name": {
+      "ru": "Состаренная голубая бумага со снежинками",
+      "en": "Vintage icy blue paper with snowflakes"
+    },
+    "category": "background-textures",
+    "subcategory": "textures-snowflakes",
+    "tags": [
+      "винтаж",
+      "голубой",
+      "бумага",
+      "текстура",
+      "снежинки",
+      "снег",
+      "акварель"
+    ],
+    "tagsEn": [
+      "vintage",
+      "icy blue",
+      "paper",
+      "texture",
+      "snowflakes",
+      "snow",
+      "watercolor"
+    ],
+    "aliases": [
+      "морозная винтажная бумага",
+      "antique snowy blue stationery"
+    ],
+    "style": "watercolor-paper",
+    "background": "opaque",
+    "composition": "texture"
+  },
+  {
+    "id": "vintage-sepia-christmas-stationery",
+    "source": "assets/backgrounds/vintage-sepia-christmas-stationery.png",
+    "src": "backgrounds/vintage-sepia-christmas-stationery.png",
+    "name": {
+      "ru": "Винтажная бумага с подвесными игрушками и бантиками",
+      "en": "Vintage stationery with hanging ornaments and bows"
+    },
+    "category": "background-frames",
+    "subcategory": "frames-hanging-ornaments",
+    "tags": [
+      "винтаж",
+      "сепия",
+      "кремовый",
+      "бумага",
+      "ёлочные шары",
+      "подвески",
+      "бантики",
+      "звёзды",
+      "рамка"
+    ],
+    "tagsEn": [
+      "vintage",
+      "sepia",
+      "cream",
+      "paper",
+      "baubles",
+      "hanging ornaments",
+      "bows",
+      "stars",
+      "frame"
+    ],
+    "aliases": [
+      "старинная рождественская канцелярская бумага",
+      "antique Christmas stationery"
+    ],
+    "style": "watercolor-paper",
+    "background": "opaque",
+    "composition": "frame"
+  },
+  {
+    "id": "vintage-winter-botanical-watercolour-background",
+    "source": "assets/backgrounds/vintage-winter-botanical-watercolour-background.png",
+    "src": "backgrounds/vintage-winter-botanical-watercolour-background.png",
+    "name": {
+      "ru": "Розовая винтажная бумага с зимними веточками",
+      "en": "Rose vintage paper with winter botanical sprigs"
+    },
+    "category": "background-frames",
+    "subcategory": "frames-botanical",
+    "tags": [
+      "винтаж",
+      "розовый",
+      "бумага",
+      "веточки",
+      "хвоя",
+      "ягоды",
+      "снежинки",
+      "завитки",
+      "рамка"
+    ],
+    "tagsEn": [
+      "vintage",
+      "rose",
+      "paper",
+      "sprigs",
+      "evergreen",
+      "berries",
+      "snowflakes",
+      "flourishes",
+      "frame"
+    ],
+    "aliases": [
+      "нежная розовая зимняя рамка",
+      "blush botanical winter paper"
+    ],
+    "style": "watercolor-paper",
+    "background": "opaque",
+    "composition": "frame"
+  },
   {
     id: 'watercolor-winter-sky-snowflakes',
     source: 'assets/backgrounds/watercolor-winter-sky-snowflakes.png', src: 'backgrounds/watercolor-winter-sky-snowflakes.png',

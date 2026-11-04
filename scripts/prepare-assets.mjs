@@ -65,7 +65,7 @@ for (const catalog of catalogs) await validateCatalog(catalog);
 // Compare decoded pixels rather than PNG metadata or filenames. Transparent RGB is invisible.
 const sourceFingerprints = new Map();
 for (const catalog of catalogs) for (const image of catalog.records) {
-  const { data, info } = await sharp(image.source).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  const { data, info } = await sharp(image.source).toColourspace('srgb').ensureAlpha().raw().toBuffer({ resolveWithObject: true });
   for (let offset = 0; offset < data.length; offset += 4) if (data[offset + 3] === 0) data.fill(0, offset, offset + 3);
   const fingerprint = createHash('sha256').update(`${info.width}x${info.height}:`).update(data).digest('hex');
   const duplicate = sourceFingerprints.get(fingerprint);

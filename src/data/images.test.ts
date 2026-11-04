@@ -1,8 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { readdirSync } from 'node:fs';
+import { postcardIllustrationIds } from './postcard-illustrations';
 import { categories, getAvailableMotifs, getImage, imageMatchesCategory, images, motifs, searchImages, subcategories } from './images';
 
 describe('explicit illustration metadata', () => {
+  it('reuses existing resources for the postcard collection without duplicate records', () => {
+    expect(new Set(postcardIllustrationIds).size).toBe(postcardIllustrationIds.length);
+    expect(postcardIllustrationIds.every(id => getImage(id)?.id === id)).toBe(true);
+  });
   it('keeps one unique kebab ID and source per image with valid taxonomy', () => {
     expect(images.length).toBeGreaterThanOrEqual(31);
     expect(new Set(images.map(i => i.id)).size).toBe(images.length);

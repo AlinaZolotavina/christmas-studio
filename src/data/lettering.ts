@@ -30,6 +30,24 @@ export const letteringMotifs: ImageMotif[] = [
 /** Explicit metadata: source PNGs stay full resolution; src is the public print path. */
 export const lettering: LetteringMetadata[] = [
   {
+    id: 'golden-glitter-merry-christmas', source: 'assets/lettering/golden-glitter-merry-christmas.png', src: 'lettering/golden-glitter-merry-christmas.png',
+    name: { ru: 'Золотая надпись «Merry Christmas!» с блёстками', en: 'Golden glitter Merry Christmas calligraphy' },
+    text: 'Merry Christmas!', language: 'en', category: 'christmas', subcategory: 'christmas-merry-christmas',
+    tags: ['с рождеством', 'рождество', 'золото', 'блёстки', 'каллиграфия', 'одна строка', 'росчерки'], tagsEn: ['merry christmas', 'christmas', 'gold', 'glitter', 'calligraphy', 'single line', 'flourishes'], aliases: ['золотое рождественское поздравление', 'золотая надпись для открытки с эльфом', 'gold christmas greeting', 'elf workshop greeting'], style: 'glitter-calligraphy', background: 'transparent',
+  },
+  {
+    id: 'red-brush-calligraphy-merry-christmas', source: 'assets/lettering/red-brush-calligraphy-merry-christmas.png', src: 'lettering/red-brush-calligraphy-merry-christmas.png',
+    name: { ru: 'Красная кистевая каллиграфия «Merry Christmas!»', en: 'Red brush Merry Christmas calligraphy' },
+    text: 'Merry Christmas!', language: 'en', category: 'christmas', subcategory: 'christmas-merry-christmas',
+    tags: ['с рождеством', 'рождество', 'красный', 'кисть', 'каллиграфия', 'две строки', 'росчерк'], tagsEn: ['merry christmas', 'christmas', 'red', 'brush', 'calligraphy', 'two lines', 'flourish'], aliases: ['красное рождественское поздравление', 'красная надпись для открытки с белочками', 'red christmas script', 'squirrel christmas greeting'], style: 'watercolor-brush-lettering', background: 'transparent',
+  },
+  {
+    id: 'vintage-watercolour-ho-ho-ho', source: 'assets/lettering/vintage-watercolour-ho-ho-ho.png', src: 'lettering/vintage-watercolour-ho-ho-ho.png',
+    name: { ru: 'Красная винтажная надпись «Ho Ho Ho»', en: 'Red vintage watercolor Ho Ho Ho lettering' },
+    text: 'Ho Ho Ho', language: 'en', category: 'christmas', subcategory: 'christmas-ho-ho-ho',
+    tags: ['хо-хо-хо', 'рождество', 'санта', 'красный', 'акварель', 'винтаж', 'росчерки'], tagsEn: ['ho ho ho', 'christmas', 'santa', 'red', 'watercolor', 'vintage', 'flourishes'], aliases: ['смех санты', 'красная надпись для открытки с сантой', 'santa laugh', 'vintage santa greeting'], style: 'vintage-watercolor-lettering', background: 'transparent',
+  },
+  {
     id: 'believe-in-magic-calligraphy', source: 'assets/lettering/believe-in-magic-calligraphy.png', src: 'lettering/believe-in-magic-calligraphy.png',
     name: { ru: 'Голубая каллиграфия «Believe in Magic»', en: 'Blue Believe in Magic calligraphy' },
     text: 'Believe in Magic', language: 'en', category: 'magic', subcategory: 'magic-believe-in-magic',

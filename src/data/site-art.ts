@@ -33,6 +33,12 @@ export const templateCoverArtwork = [
   { id: 'template-classic-christmas-cover', source: 'assets/site/templates/classic-christmas.png', src: 'site/classic-christmas.webp', width: 1536, height: 1024 },
 ] as const;
 
+export const postcardTemplateArtwork = [
+  { id: 'postcard-template-santa-cover', templateId: 'santa-christmas-a6-portrait', source: 'assets/site/templates/santa-christmas-postcard.jpg', src: 'site/santa-christmas-postcard.webp', width: 1536, height: 1024 },
+  { id: 'postcard-template-elf-cover', templateId: 'elf-workshop-a6-landscape', source: 'assets/site/templates/elf-workshop-postcard.jpg', src: 'site/elf-workshop-postcard.webp', width: 1536, height: 1024 },
+  { id: 'postcard-template-squirrels-cover', templateId: 'squirrel-christmas-square', source: 'assets/site/templates/squirrel-christmas-postcard.jpg', src: 'site/squirrel-christmas-postcard.webp', width: 1536, height: 1024 },
+] as const;
+
 export const aboutArtwork = [
   { id: 'about-hero-branch', source: 'assets/site/hero/branch-and-evergreen-berries.png', src: 'site/branch-and-evergreen-berries.webp', width: 951, height: 526 },
   { id: 'about-gift', source: 'assets/site/decorations/christmas-gift-box-with-pinecone.png', src: 'site/christmas-gift-box-with-pinecone.webp', width: 1536, height: 1024 },
@@ -60,4 +66,4 @@ export const languageArtwork = {
   id: 'language-settings', source: 'assets/site/icons/language-settings-icon.svg', src: 'site/icons/language-settings-icon.svg', width: 300, height: 300,
 } as const;
 
-export const pageArtwork = [homeHeroArtwork, ...Object.values(templateHeroArtwork), ...templateCoverArtwork, ...aboutArtwork, ...productArtwork, brandArtwork, ...Object.values(helpStepArtwork), languageArtwork];
+export const pageArtwork = [homeHeroArtwork, ...Object.values(templateHeroArtwork), ...templateCoverArtwork, ...postcardTemplateArtwork, ...aboutArtwork, ...productArtwork, brandArtwork, ...Object.values(helpStepArtwork), languageArtwork];

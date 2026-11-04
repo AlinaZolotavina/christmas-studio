@@ -13,6 +13,12 @@ async function saved(page: Page): Promise<PostcardProject> {
   return page.evaluate(key => JSON.parse(localStorage.getItem(key) ?? 'null'), postcardKey);
 }
 async function activeCard(page: Page) { const project = await saved(page); return project.postcards.find(card => card.id === project.activePostcardId)!; }
+async function previewGeometry(page: Page) {
+  return page.locator('.postcard-create-preview svg').evaluate(svg => ({
+    width: (svg as SVGSVGElement).viewBox.baseVal.width, height: (svg as SVGSVGElement).viewBox.baseVal.height,
+    elements: Array.from(svg.querySelectorAll('[data-element-id] > rect'), rect => ({ x: Number(rect.getAttribute('x')), y: Number(rect.getAttribute('y')), width: Number(rect.getAttribute('width')), height: Number(rect.getAttribute('height')) })),
+  }));
+}
 async function dismissNotices(page: Page) {
   const notice = page.getByRole('button', { name: 'Понятно', exact: true });
   if (await notice.count()) await notice.click();
@@ -54,9 +60,140 @@ test.beforeEach(async ({ page }) => {
   await page.routeWebSocket('**/*', () => {});
 });
 
+for (const [id, name, format, imageId, letteringId, coverName, pixels] of [
+  ['santa-christmas-a6-portrait', 'Санта с подарками', 'a6-portrait', 'santa-gift-sack', 'vintage-watercolour-ho-ho-ho', 'santa-christmas-postcard', [1240, 1748]],
+  ['elf-workshop-a6-landscape', 'Мастерская эльфа', 'a6-landscape', 'elf-painting-ornaments', 'golden-glitter-merry-christmas', 'elf-workshop-postcard', [1748, 1240]],
+  ['squirrel-christmas-square', 'Рождество у белочек', 'square', 'squirrel-pair-nut-basket', 'red-brush-calligraphy-merry-christmas', 'squirrel-christmas-postcard', [1240, 1240]],
+] as const) test(`ready composition ${format} creates independent editable cards and exports its real artwork`, async ({ page }) => {
+  await page.goto('/#postcards');
+  const catalog = page.locator('.postcard-artistic-catalog');
+  await expect(catalog.locator('.postcard-start-card')).toHaveCount(3);
+  const cover = catalog.locator(`[data-postcard-template="${id}"]`);
+  await expect(cover.locator('img')).toHaveAttribute('src', new RegExp(`/site/${coverName}\\.webp$`));
+  await cover.scrollIntoViewIfNeeded();
+  await expect.poll(() => cover.locator('img').evaluate(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0)).toBe(true);
+  await cover.click();
+  const setup = page.getByRole('dialog', { name, exact: true });
+  await expect(setup.getByRole('combobox', { name: 'Формат открытки', exact: true })).toHaveValue(format);
+  await expect(setup.locator(`option[value="${format}"]`)).toContainText('(Рекомендуется)');
+  const nativePreview = await previewGeometry(page);
+  for (const target of ['a6-portrait', 'a6-landscape', 'square'] as const) {
+    if (target === format) continue;
+    await setup.getByRole('combobox', { name: 'Формат открытки', exact: true }).selectOption(target);
+    const fitted = await previewGeometry(page);
+    const left = Math.min(...fitted.elements.map(element => element.x)), right = Math.max(...fitted.elements.map(element => element.x + element.width));
+    const top = Math.min(...fitted.elements.map(element => element.y)), bottom = Math.max(...fitted.elements.map(element => element.y + element.height));
+    expect((left + right) / 2).toBeCloseTo(fitted.width / 2, 6); expect((top + bottom) / 2).toBeCloseTo(fitted.height / 2, 6);
+    expect(left).toBeGreaterThanOrEqual(3 - 1e-6); expect(top).toBeGreaterThanOrEqual(3 - 1e-6);
+    expect(right).toBeLessThanOrEqual(fitted.width - 3 + 1e-6); expect(bottom).toBeLessThanOrEqual(fitted.height - 3 + 1e-6);
+  }
+  await setup.getByRole('combobox', { name: 'Формат открытки', exact: true }).selectOption(format);
+  expect(await previewGeometry(page)).toEqual(nativePreview);
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    const gap = await setup.locator('.postcard-create-preview > span').evaluate(paper => paper.getBoundingClientRect().bottom - paper.querySelector('svg')!.getBoundingClientRect().bottom);
+    expect(Math.abs(gap)).toBeLessThan(0.1);
+  }
+  await setup.getByLabel('Количество открыток', { exact: true }).fill('2');
+  await setup.getByLabel('Применение шаблона открыток', { exact: true }).selectOption('all');
+  await setup.getByRole('button', { name: 'Создать проект', exact: true }).click();
+  await acceptTermsIfOffered(page); await expect(page.locator('.postcard-studio')).toBeVisible(); await dismissNotices(page);
+  await expect.poll(async () => (await saved(page))?.postcards.length).toBe(2);
+  const project = await saved(page), [first, second] = project.postcards;
+  for (const card of project.postcards) {
+    expect(card.format).toBe(format); expect(card.background.kind).toBe('image');
+    expect(card.elements).toHaveLength(2);
+    expect(card.elements[0]).toMatchObject({ type: 'image', assetId: imageId, locked: false });
+    expect(card.elements[1]).toMatchObject({ type: 'lettering', assetId: letteringId, locked: false, opacity: 1 });
+    if (format === 'square') {
+      const [illustration, greeting] = card.elements;
+      expect(greeting.y + greeting.height + 3).toBeLessThanOrEqual(illustration.y);
+      expect(illustration.y + illustration.height).toBeLessThan(105);
+    }
+  }
+  expect(new Set(project.postcards.flatMap(card => [card.id, ...card.elements.map(element => element.id)])).size).toBe(6);
+  await tab(page, 'Слои'); await page.locator('.postcard-layer-choice').first().click();
+  await expect(page.getByRole('button', { name: 'Готовые надписи', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await number(page, 'Непрозрачность', 80);
+  await expect.poll(async () => (await activeCard(page)).elements[1]).toMatchObject({ opacity: 0.8 });
+  expect((await saved(page)).postcards[1]).toEqual(second);
+  await page.getByRole('button', { name: 'Отменить (Ctrl+Z)', exact: true }).click();
+  await expect.poll(async () => (await activeCard(page))).toEqual(first);
+  await page.getByRole('button', { name: 'Предпросмотр и экспорт', exact: true }).click();
+  const preview = page.getByRole('dialog', { name: 'Предпросмотр открыток', exact: true });
+  await preview.getByLabel('Формат экспорта открыток', { exact: true }).selectOption('png');
+  await expect(preview.locator('.print-status')).toBeVisible();
+  await expect(preview.locator('.print-issue--error')).toHaveCount(0);
+  const consent = preview.getByRole('checkbox'); if (await consent.count()) await consent.check();
+  const downloadButton = preview.getByRole('button', { name: 'Скачать PNG', exact: true }); await expect(downloadButton).toBeEnabled();
+  const promised = page.waitForEvent('download'); await downloadButton.click();
+  const download = await promised; const bytes = await readFile((await download.path())!);
+  expect(await sharp(bytes).metadata()).toMatchObject({ width: pixels[0], height: pixels[1], density: 300 });
+  const stats = await sharp(bytes).stats(); expect(stats.isOpaque).toBe(true); expect(stats.channels.some(channel => channel.stdev > 20)).toBe(true);
+  await download.saveAs(`artifacts/${id}-300dpi.png`);
+});
+
+test('ready compositions use their native format when added or applied to a differently shaped postcard', async ({ page }) => {
+  await create(page, 1, 'square');
+  await page.goto('/#postcards');
+  await page.locator('[data-postcard-template="elf-workshop-a6-landscape"]').click();
+  const setup = page.locator('.postcard-create-modal');
+  await expect(setup.getByRole('combobox', { name: 'Формат открытки', exact: true })).toHaveValue('a6-landscape');
+  await setup.getByRole('radio', { name: 'Добавить в проект', exact: true }).check();
+  await expect(setup.getByRole('combobox', { name: 'Формат открытки', exact: true })).toHaveValue('a6-landscape');
+  await setup.getByRole('button', { name: 'Добавить открытку', exact: true }).click();
+  await expect.poll(async () => (await saved(page)).postcards.length).toBe(2);
+  const elf = await activeCard(page); expect(elf.format).toBe('a6-landscape');
+  await page.goto('/#postcards');
+  await page.locator('[data-postcard-template="santa-christmas-a6-portrait"]').click();
+  await expect(setup.getByRole('combobox', { name: 'Формат открытки', exact: true })).toHaveValue('a6-portrait');
+  await setup.getByRole('button', { name: 'Заменить дизайн', exact: true }).click();
+  await expect.poll(async () => (await activeCard(page)).format).toBe('a6-portrait');
+  expect((await activeCard(page)).id).toBe(elf.id);
+  expect((await activeCard(page)).elements[0]).toMatchObject({ assetId: 'santa-gift-sack' });
+  await page.getByRole('button', { name: 'Отменить (Ctrl+Z)', exact: true }).click();
+  await expect.poll(async () => activeCard(page)).toEqual(elf);
+});
+
+test('fitted template previews persist unchanged on create, add and replace, with Undo', async ({ page }) => {
+  const geometry = (card: Awaited<ReturnType<typeof activeCard>>) => card.elements.map(({ x, y, width, height }) => ({ x, y, width, height }));
+  await page.goto('/#postcards');
+  await page.locator('[data-postcard-template="santa-christmas-a6-portrait"]').click();
+  const setup = page.locator('.postcard-create-modal');
+  await expect(setup.locator('.postcard-create-note')).toHaveCSS('font-size', '12px');
+  await setup.getByRole('combobox', { name: 'Формат открытки', exact: true }).selectOption('square');
+  const createdPreview = await previewGeometry(page);
+  await setup.getByRole('button', { name: 'Создать проект', exact: true }).click();
+  await acceptTermsIfOffered(page); await expect(page.locator('.postcard-studio')).toBeVisible(); await dismissNotices(page);
+  await expect.poll(async () => geometry(await activeCard(page))).toEqual(createdPreview.elements);
+  expect((await activeCard(page)).format).toBe('square');
+
+  await page.goto('/#postcards');
+  await page.locator('[data-postcard-template="elf-workshop-a6-landscape"]').click();
+  await setup.getByRole('radio', { name: 'Добавить в проект', exact: true }).check();
+  await setup.getByRole('combobox', { name: 'Формат открытки', exact: true }).selectOption('a6-portrait');
+  const addedPreview = await previewGeometry(page);
+  await setup.getByRole('button', { name: 'Добавить открытку', exact: true }).click();
+  await expect.poll(async () => (await saved(page)).postcards.length).toBe(2);
+  const added = await activeCard(page);
+  expect(added.format).toBe('a6-portrait'); expect(geometry(added)).toEqual(addedPreview.elements);
+
+  await page.goto('/#postcards');
+  await page.locator('[data-postcard-template="squirrel-christmas-square"]').click();
+  await expect(setup.locator('.postcard-replace-warning')).toHaveCSS('font-size', '12px');
+  await setup.getByRole('combobox', { name: 'Формат открытки', exact: true }).selectOption('a6-landscape');
+  const replacedPreview = await previewGeometry(page);
+  await setup.getByRole('button', { name: 'Заменить дизайн', exact: true }).click();
+  await expect.poll(async () => (await activeCard(page)).format).toBe('a6-landscape');
+  expect((await activeCard(page)).id).toBe(added.id); expect(geometry(await activeCard(page))).toEqual(replacedPreview.elements);
+  await page.getByRole('button', { name: 'Отменить (Ctrl+Z)', exact: true }).click();
+  await expect.poll(async () => activeCard(page)).toEqual(added);
+});
+
 test('postcards offer three real starts, validate creation limits and preserve a project on cancelled replacement', async ({ page }) => {
   await page.goto('/#postcards');
-  await expect(page.locator('.postcard-start-card')).toHaveCount(3);
+  await expect(page.locator('.template-catalog .postcard-start-card')).toHaveCount(3);
+  await expect(page.locator('.postcard-artistic-catalog .postcard-start-card')).toHaveCount(3);
   await expect(page.getByRole('heading', { name: 'Начните с чистой открытки', exact: true })).toBeVisible();
   await page.locator('[data-postcard-template="blank-square"]').click();
   const count = page.getByLabel('Количество открыток', { exact: true });
@@ -115,7 +252,7 @@ test('catalog replacement can be cancelled or undone and adding a start respects
   await text(page, 'Сохранить эту историю');
   const original = await activeCard(page);
   await page.goto('/#postcards');
-  await expect(page.locator('.postcard-artistic-catalog')).toContainText('Коллекция пока пуста');
+  await expect(page.locator('.postcard-artistic-catalog .postcard-start-card')).toHaveCount(3);
   await page.locator('[data-postcard-template="blank-square"]').click();
   const design = page.locator('.postcard-create-modal');
   await expect(design).toContainText('Дизайн текущей открытки будет заменён');
@@ -557,7 +694,8 @@ test('direction menus support keyboard focus and generic creation opens the sele
   await page.getByRole('button', { name: 'Шаблоны', exact: true }).click();
   await page.getByRole('menu', { name: 'Шаблоны: направление', exact: true }).getByRole('menuitem', { name: 'Открытки', exact: true }).click();
   await expect(page).toHaveURL(/#postcards$/);
-  await expect(page.locator('.postcard-start-card')).toHaveCount(3);
+  await expect(page.locator('.template-catalog .postcard-start-card')).toHaveCount(3);
+  await expect(page.locator('.postcard-artistic-catalog .postcard-start-card')).toHaveCount(3);
   await page.goto('/#home');
   await page.locator('.public-header__create').click();
   await page.getByRole('dialog', { name: 'Что будем создавать?', exact: true }).getByRole('button', { name: 'Открытки', exact: true }).click();

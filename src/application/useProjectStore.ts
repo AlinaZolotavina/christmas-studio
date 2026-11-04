@@ -16,7 +16,10 @@ function getBrowserStore(): ProjectStore {
 export function useProjectStore() {
   const store = getBrowserStore();
   const state = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot);
-  useEffect(() => store.attachBrowserLifecycle(window, document), [store]);
+  useEffect(() => {
+    const cleanup = store.attachBrowserLifecycle(window, document);
+    return () => { store.flush(); cleanup(); };
+  }, [store]);
   return {
     ...state,
     dispatch: store.dispatch, create: store.create, undo: store.undo, redo: store.redo,

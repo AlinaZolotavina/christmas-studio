@@ -87,5 +87,7 @@ test('public routes share navigation, a responsive footer and PT Sans typography
   await page.reload();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Политика конфиденциальности');
   await expect(page.locator('.legal-page')).toContainText('Золотавина Алина');
-  await expect(page.locator('.legal-page__draft')).toBeVisible();
+  await expect(page.locator('.legal-page a[href="mailto:albekmerus@gmail.com"]')).toHaveCount(2);
+  await expect(page.locator('.legal-page')).not.toContainText('Проект политики');
+  await expect(page.locator('.legal-page')).not.toContainText('Германия');
 });

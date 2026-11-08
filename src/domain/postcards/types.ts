@@ -9,6 +9,7 @@ export const FORMAT_SIZES: Record<PostcardFormat, { width: number; height: numbe
 };
 export const MAX_POSTCARDS = 20;
 export const MAX_POSTCARD_ELEMENTS = 100;
+export const MAX_POSTCARD_CORNER_RADIUS = 20;
 export type PostcardBackground = Background | { kind: 'image'; assetId: string; color: string };
 export interface PostcardElementBase extends Box { id: string; rotation: number; locked: boolean }
 export interface PostcardTextElement extends PostcardElementBase {
@@ -47,13 +48,22 @@ export type PostcardElementPatch = Partial<Omit<PostcardTextElement, 'id' | 'typ
   | Partial<Omit<PostcardLetteringElement, 'id' | 'type' | 'locked'>>
   | Partial<Omit<PostcardDecorationElement, 'id' | 'type' | 'locked'>>;
 export type PostcardSelection = string | null;
-export interface Postcard { id: string; format: PostcardFormat; background: PostcardBackground; elements: PostcardElement[] }
+export interface Postcard {
+  id: string;
+  format: PostcardFormat;
+  /** Millimetres; omitted in older v1 documents, equivalent to zero. */
+  cornerRadius?: number;
+  background: PostcardBackground;
+  elements: PostcardElement[];
+}
 export interface PostcardProject {
   schemaVersion: 1;
   product: 'postcards';
   id: string;
   name: string;
   defaultFormat: PostcardFormat;
+  /** Millimetres, for newly added postcards; older v1 documents default to zero. */
+  defaultCornerRadius?: number;
   postcards: Postcard[];
   activePostcardId: string;
 }
@@ -65,5 +75,5 @@ export interface PostcardTemplate {
   background: PostcardBackground;
   elements: PostcardElement[];
 }
-export interface CreatePostcardProjectOptions { name?: string; count: number; format: PostcardFormat; template?: PostcardTemplate; applyToAll?: boolean }
+export interface CreatePostcardProjectOptions { name?: string; count: number; format: PostcardFormat; cornerRadius?: number; template?: PostcardTemplate; applyToAll?: boolean }
 export const getPostcardSize = (postcard: Pick<Postcard, 'format'>) => FORMAT_SIZES[postcard.format];

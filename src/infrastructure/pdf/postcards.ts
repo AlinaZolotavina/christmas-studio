@@ -4,6 +4,7 @@ import { jsPDF } from 'jspdf';
 import { Zip, ZipPassThrough } from 'fflate';
 import type { Postcard, PostcardProject } from '../../domain/postcards/types';
 import { getPostcardSize } from '../../domain/postcards/types';
+import { postcardOutlinePath } from '../../domain/postcards/geometry';
 import { ptToMm } from '../../domain/types';
 import { containBox, ellipsePath, pathToSvg, starPoints, type PathOperation } from '../../domain/geometry';
 import { getPostcardResource, type PostcardResource, type PostcardResourceKind } from '../../content/postcard-assets';
@@ -186,7 +187,7 @@ async function drawPostcard(doc: jsPDF, prepared: PreparedPostcardExport, card: 
   const backgroundGraphic = card.background.kind === 'image' ? prepared.resources.get(resourceKey('background', card.background.assetId)) : undefined;
   const backgroundBytes = backgroundGraphic ? await printableGraphic(backgroundGraphic, scene.width, scene.height, signal) : undefined;
   signal?.throwIfAborted();
-  doc.saveGraphicsState(); doc.rect(0, 0, scene.width, scene.height); doc.clip(); doc.discardPath();
+  doc.saveGraphicsState(); doc.path(postcardOutlinePath(card)); doc.clip(); doc.discardPath();
   if (card.background.kind === 'image') {
     doc.setFillColor(...rgb(card.background.color)); doc.rect(0, 0, scene.width, scene.height, 'F');
     if (backgroundGraphic && backgroundBytes) {

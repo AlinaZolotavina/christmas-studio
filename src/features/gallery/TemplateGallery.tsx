@@ -18,6 +18,7 @@ import { BowDivider } from "../../shared/ui/BowDivider";
 import { previewCard } from "./previewCard";
 import { SiteLayout } from "../../shared/layout/SiteLayout";
 import { SavedProjectNotice } from './SavedProjectNotice';
+import { CreateProjectLink } from '../../shared/ui/CreateProjectLink';
 import { useCatalogScroll } from './useCatalogScroll';
 import "./template-gallery.css";
 
@@ -75,6 +76,7 @@ export function TemplateGallery({
               Красивые наборы тегов для вашего{" "}
               <span className="template-hero__occasion">адвент-календаря</span>
             </p>
+            {!project && <CreateProjectLink className="template-hero__create" direction="tags" onClick={event => { event.preventDefault(); scrollToCatalog(); }} />}
           </div>
         </section>
         {project && <SavedProjectNotice className="tag-saved-project" label="Сохранённый проект адвент-тегов" name={project.name} status="Ваши адвент-теги сохранены" description={`Карточек в наборе: ${project.cardCount}`} onContinue={onContinue} onNew={scrollToCatalog} />}

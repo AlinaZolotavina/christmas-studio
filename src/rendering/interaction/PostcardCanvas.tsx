@@ -36,7 +36,7 @@ export function PostcardCanvas({ postcard, selection, onSelectionChange, onCommi
       const element = postcard.elements.find(item => item.id === elementId);
       if (element && !element.locked) { onCommit({ type: 'remove-element', postcardId: postcard.id, elementId: element.id }); onSelectionChange(null); }
     },
-    render: value => <PostcardSvg postcard={value} idPrefix="editable-postcard" />,
+    render: value => <PostcardSvg postcard={value} quality="print" idPrefix="editable-postcard" />,
     issues(value) {
       const issues = validatePostcard(value);
       return value.elements.flatMap(element => {

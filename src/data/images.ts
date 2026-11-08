@@ -111,6 +111,956 @@ export const resolveImageId = (id: string) => imageAliases[id] ?? id;
 
 export const images: ImageMetadata[] = [
   {
+    "id": "christmas-bauble-with-snowy-village",
+    "source": "assets/christmas-bauble-with-snowy-village.png",
+    "src": "art/christmas-bauble-with-snowy-village.png",
+    "name": {
+      "ru": "Ёлочный шар с заснеженной деревней и красным бантом",
+      "en": "Christmas bauble with a snowy village and red bow"
+    },
+    "category": "ornaments",
+    "subcategory": "ornaments-baubles",
+    "tags": [
+      "шар",
+      "деревня",
+      "снег",
+      "красный бант",
+      "золото"
+    ],
+    "tagsEn": [
+      "ornament",
+      "bauble",
+      "snowy village",
+      "red bow",
+      "gold"
+    ],
+    "aliases": [
+      "игрушка с зимним пейзажем",
+      "winter village bauble"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "christmas-clock-ornament-with-snowy-branches",
+    "source": "assets/christmas-clock-ornament-with-snowy-branches.png",
+    "src": "art/christmas-clock-ornament-with-snowy-branches.png",
+    "name": {
+      "ru": "Ёлочные часы с заснеженными ветвями и бантом",
+      "en": "Christmas clock ornament with snowy branches and bow"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-clocks",
+    "tags": [
+      "часы",
+      "куранты",
+      "хвоя",
+      "красный бант",
+      "золото"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "clock",
+      "ornament",
+      "evergreen",
+      "red bow",
+      "gold"
+    ],
+    "aliases": [
+      "новогодние часики",
+      "christmas clock"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "christmas-gift-with-evergreen-sprigs-and-bow",
+    "source": "assets/christmas-gift-with-evergreen-sprigs-and-bow.png",
+    "src": "art/christmas-gift-with-evergreen-sprigs-and-bow.png",
+    "name": {
+      "ru": "Красный подарок с золотым бантом и хвойными веточками",
+      "en": "Red Christmas gift with a golden bow and evergreen sprigs"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-gifts",
+    "tags": [
+      "подарок",
+      "красный",
+      "золотая лента",
+      "хвоя",
+      "шишки"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "gift",
+      "red",
+      "golden ribbon",
+      "evergreen",
+      "pine cones"
+    ],
+    "aliases": [
+      "коробка с золотым бантом",
+      "gold bow present"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "christmas-heart-with-bow-and-berries",
+    "source": "assets/christmas-heart-with-bow-and-berries.png",
+    "src": "art/christmas-heart-with-bow-and-berries.png",
+    "name": {
+      "ru": "Пряничное сердце с красным бантом и ягодами",
+      "en": "Gingerbread heart with a red bow and berries"
+    },
+    "category": "treats",
+    "subcategory": "treats-gingerbread",
+    "tags": [
+      "пряник",
+      "сердце",
+      "глазурь",
+      "красный бант",
+      "ягоды"
+    ],
+    "tagsEn": [
+      "treat",
+      "gingerbread",
+      "heart",
+      "icing",
+      "red bow",
+      "berries"
+    ],
+    "aliases": [
+      "пряничное сердечко",
+      "iced gingerbread heart"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "christmas-keepsake-box-with-kremlin-tower",
+    "source": "assets/christmas-keepsake-box-with-kremlin-tower.png",
+    "src": "art/christmas-keepsake-box-with-kremlin-tower.png",
+    "name": {
+      "ru": "Красная подарочная коробка с кремлёвской башней",
+      "en": "Red Christmas keepsake box with a Kremlin tower"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-gifts",
+    "tags": [
+      "подарок",
+      "коробка",
+      "кремль",
+      "башня",
+      "звезда",
+      "золотая лента"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "gift",
+      "keepsake box",
+      "kremlin",
+      "tower",
+      "russian-symbol",
+      "russian-traditions",
+      "gold ribbon"
+    ],
+    "aliases": [
+      "подарок с курантами",
+      "kremlin gift box"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "christmas-star-cookie-with-evergreen",
+    "source": "assets/christmas-star-cookie-with-evergreen.png",
+    "src": "art/christmas-star-cookie-with-evergreen.png",
+    "name": {
+      "ru": "Пряничная звезда с глазурью, бантом и хвоей",
+      "en": "Iced gingerbread star with a bow and evergreen"
+    },
+    "category": "treats",
+    "subcategory": "treats-gingerbread-cookies",
+    "tags": [
+      "печенье",
+      "пряник",
+      "звезда",
+      "глазурь",
+      "хвоя",
+      "бант"
+    ],
+    "tagsEn": [
+      "treat",
+      "gingerbread-cookie",
+      "star",
+      "icing",
+      "evergreen",
+      "bow"
+    ],
+    "aliases": [
+      "звёздочка из печенья",
+      "christmas star cookie"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "christmas-stollen-with-red-ribbon",
+    "source": "assets/christmas-stollen-with-red-ribbon.png",
+    "src": "art/christmas-stollen-with-red-ribbon.png",
+    "name": {
+      "ru": "Рождественский штоллен с красной лентой и дольками апельсина",
+      "en": "Christmas stollen with a red ribbon and orange slices"
+    },
+    "category": "treats",
+    "subcategory": "treats-baking",
+    "tags": [
+      "штоллен",
+      "выпечка",
+      "сухофрукты",
+      "апельсин",
+      "красная лента"
+    ],
+    "tagsEn": [
+      "treat",
+      "christmas-baking",
+      "stollen",
+      "dried fruit",
+      "orange",
+      "red ribbon"
+    ],
+    "aliases": [
+      "рождественский кекс с сухофруктами",
+      "fruit stollen"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "christmas-troika-in-snowy-forest",
+    "source": "assets/christmas-troika-in-snowy-forest.png",
+    "src": "art/christmas-troika-in-snowy-forest.png",
+    "name": {
+      "ru": "Дед Мороз на белой тройке в заснеженном лесу",
+      "en": "Father Frost riding a white troika in a snowy forest"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-sleighs",
+    "tags": [
+      "тройка",
+      "лошади",
+      "сани",
+      "дед мороз",
+      "лес",
+      "снег"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "sleigh",
+      "troika",
+      "horses",
+      "father frost",
+      "russian-traditions",
+      "forest",
+      "snow"
+    ],
+    "aliases": [
+      "тройка с Дедом Морозом",
+      "father frost horse sleigh"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "festive-champagne-and-greenery-arrangement",
+    "source": "assets/festive-champagne-and-greenery-arrangement.png",
+    "src": "art/festive-champagne-and-greenery-arrangement.png",
+    "name": {
+      "ru": "Два широких бокала шампанского с хвоей и бантом",
+      "en": "Two champagne coupe glasses with evergreen and bow"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-drinks",
+    "tags": [
+      "шампанское",
+      "бокалы",
+      "купе",
+      "хвоя",
+      "ягоды",
+      "бант"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "champagne",
+      "coupe glasses",
+      "evergreen",
+      "berries",
+      "bow"
+    ],
+    "aliases": [
+      "праздничные бокалы купе",
+      "sparkling wine coupes"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "festive-fruitcake-with-icing",
+    "source": "assets/festive-fruitcake-with-icing.png",
+    "src": "art/festive-fruitcake-with-icing.png",
+    "name": {
+      "ru": "Рождественский кекс с глазурью, падубом и апельсином",
+      "en": "Christmas fruitcake with icing, holly and orange"
+    },
+    "category": "treats",
+    "subcategory": "treats-baking",
+    "tags": [
+      "кекс",
+      "выпечка",
+      "сухофрукты",
+      "глазурь",
+      "падуб",
+      "апельсин"
+    ],
+    "tagsEn": [
+      "treat",
+      "christmas-baking",
+      "fruitcake",
+      "icing",
+      "holly",
+      "orange"
+    ],
+    "aliases": [
+      "фруктовый рождественский кекс",
+      "iced festive cake"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "festive-glasses-with-evergreen-decor",
+    "source": "assets/festive-glasses-with-evergreen-decor.png",
+    "src": "art/festive-glasses-with-evergreen-decor.png",
+    "name": {
+      "ru": "Два высоких бокала с шампанским и золотыми звёздами",
+      "en": "Two champagne flutes with evergreen and golden stars"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-drinks",
+    "tags": [
+      "бокалы",
+      "шампанское",
+      "звёзды",
+      "золото",
+      "хвоя",
+      "ленты"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "champagne",
+      "flutes",
+      "golden stars",
+      "evergreen",
+      "ribbons"
+    ],
+    "aliases": [
+      "высокие новогодние фужеры",
+      "festive champagne flutes"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "festive-panettone-with-evergreen-decor",
+    "source": "assets/festive-panettone-with-evergreen-decor.png",
+    "src": "art/festive-panettone-with-evergreen-decor.png",
+    "name": {
+      "ru": "Панеттоне с красной лентой, апельсином и хвоей",
+      "en": "Panettone with a red ribbon, orange and evergreen"
+    },
+    "category": "treats",
+    "subcategory": "treats-baking",
+    "tags": [
+      "панеттоне",
+      "выпечка",
+      "кекс",
+      "апельсин",
+      "красная лента"
+    ],
+    "tagsEn": [
+      "treat",
+      "christmas-baking",
+      "panettone",
+      "orange",
+      "red ribbon"
+    ],
+    "aliases": [
+      "итальянский рождественский кекс",
+      "italian christmas cake"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "festive-sparkling-wine-bottle-with-bow",
+    "source": "assets/festive-sparkling-wine-bottle-with-bow.png",
+    "src": "art/festive-sparkling-wine-bottle-with-bow.png",
+    "name": {
+      "ru": "Бутылка игристого вина с красным бантом и хвойным декором",
+      "en": "Sparkling wine bottle with a red bow and evergreen decor"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-drinks",
+    "tags": [
+      "шампанское",
+      "игристое вино",
+      "бутылка",
+      "красный бант",
+      "хвоя"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "champagne",
+      "sparkling wine",
+      "bottle",
+      "red bow",
+      "evergreen"
+    ],
+    "aliases": [
+      "новогодняя бутылка шампанского",
+      "festive wine bottle"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "gingerbread-angel-with-evergreen-sprigs",
+    "source": "assets/gingerbread-angel-with-evergreen-sprigs.png",
+    "src": "art/gingerbread-angel-with-evergreen-sprigs.png",
+    "name": {
+      "ru": "Пряничный ангел с глазурью, бантом и хвоей",
+      "en": "Gingerbread angel with icing, a bow and evergreen sprigs"
+    },
+    "category": "treats",
+    "subcategory": "treats-gingerbread",
+    "tags": [
+      "пряник",
+      "ангел",
+      "глазурь",
+      "хвоя",
+      "красный бант"
+    ],
+    "tagsEn": [
+      "treat",
+      "gingerbread",
+      "angel",
+      "icing",
+      "evergreen",
+      "red bow"
+    ],
+    "aliases": [
+      "рождественский пряничный ангелочек",
+      "christmas cookie angel"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "gingerbread-arrangement-with-evergreen-and-ribbon",
+    "source": "assets/gingerbread-arrangement-with-evergreen-and-ribbon.png",
+    "src": "art/gingerbread-arrangement-with-evergreen-and-ribbon.png",
+    "name": {
+      "ru": "Пряничные домик, сердце и ангел с лентой и хвоей",
+      "en": "Gingerbread house, heart and angel with ribbon and evergreen"
+    },
+    "category": "treats",
+    "subcategory": "treats-gingerbread",
+    "tags": [
+      "пряники",
+      "домик",
+      "сердце",
+      "ангел",
+      "глазурь",
+      "хвоя"
+    ],
+    "tagsEn": [
+      "treat",
+      "gingerbread",
+      "house",
+      "heart",
+      "angel",
+      "icing",
+      "evergreen"
+    ],
+    "aliases": [
+      "композиция из рождественских пряников",
+      "christmas gingerbread arrangement"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "gingerbread-house-in-snow",
+    "source": "assets/gingerbread-house-in-snow.png",
+    "src": "art/gingerbread-house-in-snow.png",
+    "name": {
+      "ru": "Пряничный домик в снегу с леденцом и ёлочками",
+      "en": "Snowy gingerbread house with a candy cane and little trees"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-gingerbread-houses",
+    "tags": [
+      "пряничный домик",
+      "снег",
+      "глазурь",
+      "леденец",
+      "ёлочки"
+    ],
+    "tagsEn": [
+      "gingerbread-house",
+      "treat",
+      "snow",
+      "icing",
+      "candy cane",
+      "christmas trees"
+    ],
+    "aliases": [
+      "сказочный домик из пряника",
+      "snowy candy house"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "gingerbread-house-under-snow",
+    "source": "assets/gingerbread-house-under-snow.png",
+    "src": "art/gingerbread-house-under-snow.png",
+    "name": {
+      "ru": "Заснеженный пряничный домик с корицей и дольками апельсина",
+      "en": "Snow-covered gingerbread house with cinnamon and orange slices"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-gingerbread-houses",
+    "tags": [
+      "пряничный домик",
+      "снег",
+      "корица",
+      "апельсин",
+      "глазурь"
+    ],
+    "tagsEn": [
+      "gingerbread-house",
+      "treat",
+      "snow",
+      "cinnamon",
+      "orange",
+      "icing"
+    ],
+    "aliases": [
+      "пряничный дом со специями",
+      "spiced gingerbread cottage"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "gingerbread-house-with-christmas-decor",
+    "source": "assets/gingerbread-house-with-christmas-decor.png",
+    "src": "art/gingerbread-house-with-christmas-decor.png",
+    "name": {
+      "ru": "Пряничный домик с красной дверью, колокольчиками и бантом",
+      "en": "Gingerbread house with a red door, bells and a bow"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-gingerbread-houses",
+    "tags": [
+      "пряничный домик",
+      "красная дверь",
+      "колокольчики",
+      "бант",
+      "глазурь"
+    ],
+    "tagsEn": [
+      "gingerbread-house",
+      "treat",
+      "red door",
+      "bells",
+      "bow",
+      "icing"
+    ],
+    "aliases": [
+      "пряничный дом с колокольчиками",
+      "bell decorated gingerbread house"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "gingerbread-house-with-icing-and-winter-decor",
+    "source": "assets/gingerbread-house-with-icing-and-winter-decor.png",
+    "src": "art/gingerbread-house-with-icing-and-winter-decor.png",
+    "name": {
+      "ru": "Пряничный домик с сердцем над дверью и новогодними подарками",
+      "en": "Iced gingerbread house with a heart above the door and Christmas gifts"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-gingerbread-houses",
+    "tags": [
+      "пряничный домик",
+      "сердце",
+      "подарки",
+      "глазурь",
+      "звёздочки"
+    ],
+    "tagsEn": [
+      "gingerbread-house",
+      "treat",
+      "heart",
+      "gifts",
+      "icing",
+      "stars"
+    ],
+    "aliases": [
+      "домик из пряника с подарками",
+      "gingerbread gift cottage"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "new-year-champagne-and-evergreen-arrangement",
+    "source": "assets/new-year-champagne-and-evergreen-arrangement.png",
+    "src": "art/new-year-champagne-and-evergreen-arrangement.png",
+    "name": {
+      "ru": "Шампанское с двумя бокалами, золотой лентой и хвоей",
+      "en": "Champagne bottle and two glasses with a golden ribbon and evergreen"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-drinks",
+    "tags": [
+      "шампанское",
+      "бутылка",
+      "бокалы",
+      "золотая лента",
+      "хвоя"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "champagne",
+      "bottle",
+      "glasses",
+      "golden ribbon",
+      "evergreen"
+    ],
+    "aliases": [
+      "новогодний набор шампанского с бокалами",
+      "new year champagne arrangement"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "snowy-alpine-chalet",
+    "source": "assets/snowy-alpine-chalet.png",
+    "src": "art/snowy-alpine-chalet.png",
+    "name": {
+      "ru": "Заснеженное альпийское шале у подножия гор",
+      "en": "Snowy alpine chalet beneath the mountains"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-cottages",
+    "tags": [
+      "шале",
+      "домик",
+      "альпы",
+      "горы",
+      "снег",
+      "ели"
+    ],
+    "tagsEn": [
+      "landscape",
+      "cottage",
+      "chalet",
+      "alps",
+      "mountains",
+      "snow",
+      "fir trees"
+    ],
+    "aliases": [
+      "зимний домик в горах",
+      "winter mountain chalet"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "snowy-alpine-valley-with-stream",
+    "source": "assets/snowy-alpine-valley-with-stream.png",
+    "src": "art/snowy-alpine-valley-with-stream.png",
+    "name": {
+      "ru": "Заснеженная альпийская долина с ручьём и елями",
+      "en": "Snowy alpine valley with a stream and fir trees"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-mountains",
+    "tags": [
+      "долина",
+      "горы",
+      "альпы",
+      "ручей",
+      "снег",
+      "ели"
+    ],
+    "tagsEn": [
+      "landscape",
+      "valley",
+      "mountains",
+      "alps",
+      "stream",
+      "snow",
+      "fir trees"
+    ],
+    "aliases": [
+      "зимний горный ручей",
+      "winter alpine stream"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "snowy-window-with-christmas-decor",
+    "source": "assets/snowy-window-with-christmas-decor.png",
+    "src": "art/snowy-window-with-christmas-decor.png",
+    "name": {
+      "ru": "Арочное морозное окно с хвоей, ягодами и бантом",
+      "en": "Arched frosty window with evergreen, berries and a bow"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-windows",
+    "tags": [
+      "окно",
+      "арка",
+      "морозный узор",
+      "хвоя",
+      "ягоды",
+      "бант"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "window",
+      "arch",
+      "frost",
+      "evergreen",
+      "berries",
+      "bow"
+    ],
+    "aliases": [
+      "зимнее арочное окошко",
+      "arched winter window"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "watercolor-champagne-glasses-with-winter-decor",
+    "source": "assets/watercolor-champagne-glasses-with-winter-decor.png",
+    "src": "art/watercolor-champagne-glasses-with-winter-decor.png",
+    "name": {
+      "ru": "Два бокала шампанского с зимним декором и красной лентой",
+      "en": "Two champagne glasses with winter decor and a red ribbon"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-drinks",
+    "tags": [
+      "шампанское",
+      "бокалы",
+      "хвоя",
+      "ягоды",
+      "красная лента"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "champagne",
+      "glasses",
+      "evergreen",
+      "berries",
+      "red ribbon"
+    ],
+    "aliases": [
+      "зимние бокалы с шампанским",
+      "winter champagne glasses"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "watercolor-christmas-gift-arrangement",
+    "source": "assets/watercolor-christmas-gift-arrangement.png",
+    "src": "art/watercolor-christmas-gift-arrangement.png",
+    "name": {
+      "ru": "Три новогодних подарка с красными и золотыми лентами",
+      "en": "Three Christmas gifts with red and golden ribbons"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-gifts",
+    "tags": [
+      "подарки",
+      "коробки",
+      "красная лента",
+      "золотая лента",
+      "хвоя"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "gift",
+      "boxes",
+      "red ribbon",
+      "golden ribbon",
+      "evergreen"
+    ],
+    "aliases": [
+      "композиция из трёх подарков",
+      "three festive presents"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "watercolor-gingerbread-house-in-snow",
+    "source": "assets/watercolor-gingerbread-house-in-snow.png",
+    "src": "art/watercolor-gingerbread-house-in-snow.png",
+    "name": {
+      "ru": "Пряничный домик с тёплыми окнами и двумя пряничными ёлками",
+      "en": "Gingerbread house with warm windows and two gingerbread trees"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-gingerbread-houses",
+    "tags": [
+      "пряничный домик",
+      "тёплые окна",
+      "ёлочки",
+      "снег",
+      "леденец"
+    ],
+    "tagsEn": [
+      "gingerbread-house",
+      "treat",
+      "warm windows",
+      "gingerbread trees",
+      "snow",
+      "candy cane"
+    ],
+    "aliases": [
+      "сказочный домик с пряничными ёлочками",
+      "gingerbread tree cottage"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "watercolor-winter-alpine-village",
+    "source": "assets/watercolor-winter-alpine-village.png",
+    "src": "art/watercolor-winter-alpine-village.png",
+    "name": {
+      "ru": "Зимняя альпийская деревня с церковью и заснеженными вершинами",
+      "en": "Winter alpine village with a church and snowy peaks"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-villages",
+    "tags": [
+      "деревня",
+      "альпы",
+      "горы",
+      "церковь",
+      "снег",
+      "домики"
+    ],
+    "tagsEn": [
+      "landscape",
+      "snowy-village",
+      "alps",
+      "mountains",
+      "church",
+      "snow",
+      "cottages"
+    ],
+    "aliases": [
+      "альпийская деревушка зимой",
+      "snowy alpine village with church"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "winter-alpine-cottage-in-snow",
+    "source": "assets/winter-alpine-cottage-in-snow.png",
+    "src": "art/winter-alpine-cottage-in-snow.png",
+    "name": {
+      "ru": "Зимний альпийский домик у ели на фоне гор",
+      "en": "Winter alpine cottage beside a fir tree and mountains"
+    },
+    "category": "landscapes",
+    "subcategory": "landscapes-cottages",
+    "tags": [
+      "домик",
+      "шале",
+      "альпы",
+      "горы",
+      "ель",
+      "снег"
+    ],
+    "tagsEn": [
+      "landscape",
+      "cottage",
+      "chalet",
+      "alps",
+      "mountains",
+      "fir tree",
+      "snow"
+    ],
+    "aliases": [
+      "заснеженный домик возле ели",
+      "snowy cottage beside fir"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
+    "id": "winter-horse-troika",
+    "source": "assets/winter-horse-troika.png",
+    "src": "art/winter-horse-troika.png",
+    "name": {
+      "ru": "Зимняя тройка лошадей с красными узорчатыми санями",
+      "en": "Winter horse troika with red patterned sleigh"
+    },
+    "category": "seasonal-objects",
+    "subcategory": "seasonal-objects-sleighs",
+    "tags": [
+      "тройка",
+      "лошади",
+      "сани",
+      "красный",
+      "снег",
+      "узор"
+    ],
+    "tagsEn": [
+      "festive-object",
+      "troika",
+      "horses",
+      "sleigh",
+      "red",
+      "snow",
+      "russian-traditions"
+    ],
+    "aliases": [
+      "русская зимняя тройка",
+      "russian winter horse troika"
+    ],
+    "style": "vintage-watercolor",
+    "background": "transparent"
+  },
+  {
     "id": "burgundy-knitted-christmas-bow",
     "source": "assets/burgundy-knitted-christmas-bow.png",
     "src": "art/burgundy-knitted-christmas-bow.png",

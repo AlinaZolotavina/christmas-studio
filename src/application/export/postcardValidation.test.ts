@@ -3,6 +3,18 @@ import { createDecorationElement, createPostcardProject, createTextElement } fro
 import { validatePostcardProject } from './postcardValidation';
 
 describe('postcard scoped live and preflight checks', () => {
+  it('detects artwork in trimmed corners and checks the inset around a rounded edge', () => {
+    const project = createPostcardProject({ count: 1, format: 'square', cornerRadius: 20 });
+    const artwork = createDecorationElement({ x: 3, y: 3, width: 2, height: 2, stroke: null });
+    project.postcards[0].elements.push(artwork);
+    expect(validatePostcardProject(project)).toContainEqual(expect.objectContaining({ code: 'element-outside-postcard', elementId: artwork.id }));
+    project.postcards[0] = { ...project.postcards[0], elements: [{ ...artwork, x: 7, y: 7 }] };
+    expect(validatePostcardProject(project)).toEqual([]);
+    expect(validatePostcardProject(project, { preflight: true })).toContainEqual(expect.objectContaining({ code: 'safe-margin', elementId: artwork.id }));
+    project.postcards[0] = { ...project.postcards[0], elements: [{ ...artwork, x: 12, y: 12 }] };
+    expect(validatePostcardProject(project, { preflight: true })).toEqual([]);
+  });
+
   it.each([
     ['completely outside', -20, 'element-outside-postcard'],
     ['partially outside', -1, 'element-outside-postcard'],

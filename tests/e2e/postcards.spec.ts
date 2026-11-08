@@ -2,8 +2,9 @@ import { expect, test, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import sharp from 'sharp';
 import type { PostcardFormat, PostcardProject } from '../../src/domain/postcards/types';
-import { postcardIllustrationIds } from '../../src/data/postcard-illustrations';
+import { images } from '../../src/data/images';
 import { decorations } from '../../src/data/decorations';
+import { lettering } from '../../src/data/lettering';
 import { acceptTermsIfOffered } from './support/terms';
 
 const postcardKey = 'christmas-studio:postcards:project';
@@ -74,6 +75,7 @@ for (const [id, name, format, imageId, letteringId, coverName, pixels] of [
   await expect.poll(() => cover.locator('img').evaluate(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0)).toBe(true);
   await cover.click();
   const setup = page.getByRole('dialog', { name, exact: true });
+  await expect(setup.locator('.postcard-create-preview image[href$="-preview.webp"]')).toHaveCount(0);
   await expect(setup.getByRole('combobox', { name: 'Формат открытки', exact: true })).toHaveValue(format);
   await expect(setup.locator(`option[value="${format}"]`)).toContainText('(Рекомендуется)');
   const nativePreview = await previewGeometry(page);
@@ -324,10 +326,73 @@ test('all custom text settings, frame fitting and effects survive undo, redo and
   await expect(page.getByRole('textbox', { name: 'Текст на открытке', exact: true })).toHaveValue(expected.content);
 });
 
+test('rounded corners survive creation, per-card edits, defaults, Undo, reload and real image export', async ({ page }) => {
+  await page.goto('/#postcards');
+  for (const id of ['a6-portrait', 'a6-landscape', 'square']) {
+    const tile = page.locator(`[data-postcard-template="blank-${id}"]`);
+    await expect(tile.locator('img')).toHaveAttribute('src', new RegExp(`/site/blank-${id}-postcard\\.webp$`));
+    await tile.scrollIntoViewIfNeeded(); await tile.locator('img').evaluate(image => (image as HTMLImageElement).decode());
+  }
+  await page.locator('[data-postcard-template="blank-square"]').click();
+  const setup = page.locator('.postcard-create-modal');
+  await setup.getByLabel('Количество открыток', { exact: true }).fill('2');
+  await number(page, 'Скругление углов', 6);
+  await expect(setup.locator('[data-element="card"]')).toHaveAttribute('d', /^M 6 0/);
+  const { data: previewPixels } = await sharp(await setup.locator('.postcard-create-preview > span').screenshot()).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+  expect([...previewPixels.subarray(0, 3)].every(value => value < 250)).toBe(true);
+  await setup.getByRole('button', { name: 'Создать проект', exact: true }).click();
+  await acceptTermsIfOffered(page); await expect(page.locator('.postcard-studio')).toBeVisible(); await dismissNotices(page);
+  await expect.poll(async () => (await saved(page))?.postcards.map(card => card.cornerRadius)).toEqual([6, 6]);
+  expect((await saved(page)).defaultCornerRadius).toBe(6);
+  await tab(page, 'Формат и фон'); await number(page, 'Скругление углов', 12);
+  await expect.poll(async () => (await saved(page)).postcards.map(card => card.cornerRadius)).toEqual([12, 6]);
+  await expect(page.locator('.canvas-artboard [data-element="card"]')).toHaveAttribute('d', /^M 12 0/);
+  await page.getByRole('button', { name: 'Отменить (Ctrl+Z)', exact: true }).click();
+  await expect(page.getByLabel('Скругление углов', { exact: true })).toHaveValue('6');
+  await page.getByRole('button', { name: 'Повторить (Ctrl+Shift+Z)', exact: true }).click();
+  await expect.poll(async () => (await activeCard(page)).cornerRadius).toBe(12);
+
+  await page.getByRole('button', { name: 'Настройки', exact: true }).click();
+  const settings = page.getByRole('dialog', { name: 'Настройки проекта открыток', exact: true });
+  const settingsRadius = settings.getByLabel('Скругление углов', { exact: true });
+  await settingsRadius.fill('9'); await settingsRadius.press('Enter');
+  expect((await saved(page)).defaultCornerRadius).toBe(6);
+  await settings.getByRole('button', { name: 'Сохранить', exact: true }).click();
+  await expect.poll(async () => (await saved(page)).defaultCornerRadius).toBe(9);
+  expect((await saved(page)).postcards.map(card => card.cornerRadius)).toEqual([12, 6]);
+  await page.getByRole('button', { name: 'Настройки', exact: true }).click();
+  await settingsRadius.fill('15'); await settingsRadius.press('Enter');
+  await settings.getByRole('button', { name: 'Отмена', exact: true }).click();
+  await page.getByRole('button', { name: 'Добавить открытку', exact: true }).click();
+  await page.getByRole('button', { name: 'Чистая открытка', exact: true }).click();
+  await expect.poll(async () => (await saved(page)).postcards.map(card => card.cornerRadius)).toEqual([12, 9, 6]);
+  await page.reload();
+  await page.getByRole('dialog', { name: 'Продолжить работу над открытками?', exact: true }).getByRole('button', { name: 'Продолжить', exact: true }).click();
+  await expect(page.locator('.postcard-studio')).toBeVisible();
+  await tab(page, 'Формат и фон');
+  await expect(page.getByLabel('Скругление углов', { exact: true })).toHaveValue('9');
+  await page.locator('.postcard-color-setting').filter({ has: page.getByRole('heading', { name: 'Цвет бумаги', exact: true }) }).getByRole('button', { name: 'Цвет #315C4C', exact: true }).click();
+  await page.getByRole('button', { name: 'Предпросмотр и экспорт', exact: true }).click();
+  const print = page.getByRole('dialog', { name: 'Предпросмотр открыток', exact: true });
+  await expect(print.locator('.print-status')).toBeVisible();
+  for (const format of ['png', 'jpg']) {
+    await print.getByLabel('Формат экспорта открыток', { exact: true }).selectOption(format);
+    const downloadEvent = page.waitForEvent('download');
+    await print.getByRole('button', { name: `Скачать ${format.toUpperCase()}`, exact: true }).click();
+    const bytes = await readFile((await (await downloadEvent).path())!);
+    expect(await sharp(bytes).metadata()).toMatchObject({ width: 1240, height: 1240, density: 300 });
+    expect((await sharp(bytes).stats()).isOpaque).toBe(true);
+    const { data, info } = await sharp(bytes).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+    expect([...data.subarray(0, 3)].every(value => value > 250)).toBe(true);
+    const center = (Math.floor(info.height / 2) * info.width + Math.floor(info.width / 2)) * 3;
+    [...data.subarray(center, center + 3)].forEach((value, index) => expect(Math.abs(value - [49, 92, 76][index])).toBeLessThan(4));
+  }
+});
+
 test('background and shape contains every background mode and keeps card backgrounds independent', async ({ page }) => {
   await create(page);
   const original = await saved(page), first = original.postcards[0].id, second = original.postcards[1].id;
-  await tab(page, 'Фон и форма');
+  await tab(page, 'Формат и фон');
   await expect(page.getByRole('combobox', { name: 'Формат открытки', exact: true })).toBeVisible();
   const kind = page.getByRole('combobox', { name: 'Тип фона', exact: true });
   const color = async (heading: string, hex: string) => page.locator('.postcard-color-setting').filter({ has: page.getByRole('heading', { name: heading, exact: true }) }).getByRole('button', { name: `Цвет ${hex}`, exact: true }).click();
@@ -448,6 +513,47 @@ test('touchscreen gestures commit one edit each, preserve graphic proportions an
   } finally { await context.close(); }
 });
 
+test('new bilingual SVG greetings and illustrations are searchable, editable and exported in PNG and PDF', async ({ page }) => {
+  await create(page, 1);
+  await tab(page, 'Иллюстрации');
+  const illustration = page.getByRole('button', { name: 'Добавить: Рождественский штоллен с красной лентой и дольками апельсина', exact: true });
+  for (const query of ['штоллен', 'stollen']) {
+    await page.getByLabel('Поиск: иллюстрации', { exact: true }).fill(query);
+    await expect(illustration).toBeVisible();
+  }
+  await illustration.click(); await number(page, 'Ширина', 55); await number(page, 'По горизонтали', 25); await number(page, 'По вертикали', 96);
+  await tab(page, 'Текст');
+  await page.getByRole('button', { name: 'Готовые надписи', exact: true }).click();
+  const ids = ['merry-christmas-red-playful', 'new-year-miracles-russian-black-calligraphy'];
+  for (const [index, id] of ids.entries()) {
+    const resource = lettering.find(entry => entry.id === id)!;
+    await page.getByLabel('Поиск: надписи', { exact: true }).fill(index ? 'Miracles in the New Year' : 'Merry Christmas');
+    const choice = page.getByRole('button', { name: `Добавить: ${resource.name.ru}`, exact: true });
+    await expect(choice).toBeVisible(); await choice.click();
+    await number(page, 'Ширина', index ? 70 : 75); await number(page, 'По горизонтали', index ? 17.5 : 15); await number(page, 'По вертикали', index ? 48 : 5);
+    const original = await page.request.get(`/${resource.src}`);
+    expect(original.ok()).toBe(true); expect(await original.text()).toContain('<svg');
+  }
+  await expect.poll(async () => (await activeCard(page)).elements.map(element => element.type)).toEqual(['image', 'lettering', 'lettering']);
+  expect((await activeCard(page)).elements.slice(1).map(element => 'assetId' in element ? element.assetId : '')).toEqual(ids);
+  await page.getByRole('button', { name: 'Предпросмотр и экспорт', exact: true }).click();
+  const preview = page.getByRole('dialog', { name: 'Предпросмотр открыток', exact: true });
+  await expect(preview.locator('.print-status')).toBeVisible();
+  await expect(preview.locator('.print-issue--error')).toHaveCount(0);
+  const consent = preview.getByRole('checkbox'); if (await consent.count()) await consent.check();
+  for (const format of ['png', 'pdf']) {
+    await preview.getByLabel('Формат экспорта открыток', { exact: true }).selectOption(format);
+    const event = page.waitForEvent('download');
+    await preview.getByRole('button', { name: `Скачать ${format.toUpperCase()}`, exact: true }).click();
+    const bytes = await readFile((await (await event).path())!);
+    if (format === 'pdf') expect(bytes.toString('latin1').startsWith('%PDF-')).toBe(true);
+    else {
+      expect(await sharp(bytes).metadata()).toMatchObject({ width: 1240, height: 1748, density: 300 });
+      expect((await sharp(bytes).stats()).channels.some(channel => channel.stdev > 20)).toBe(true);
+    }
+  }
+});
+
 test('multiple texts, illustration and lettering keep their layer identity, aspect ratio, locks and history', async ({ page }) => {
   await create(page);
   await text(page, 'Первая история'); await text(page, 'Вторая история');
@@ -499,6 +605,29 @@ test('multiple texts, illustration and lettering keep their layer identity, aspe
   await page.screenshot({ path: 'artifacts/postcards-layers-1440.png' });
 });
 
+test('canvas and large previews use original background and decor files without rotating portrait backgrounds', async ({ page }) => {
+  await page.goto('/#postcards');
+  await page.locator('[data-postcard-template="elf-workshop-a6-landscape"]').click();
+  const setup = page.locator('.postcard-create-modal');
+  const background = setup.locator('.postcard-create-preview image[href*="backgrounds/"]');
+  await expect(background).toHaveAttribute('href', /backgrounds\/delicate-golden-star-sparkle\.png$/);
+  expect(await background.getAttribute('transform')).toBeNull();
+  const dimensions = await background.evaluate(async node => { const image = new Image(); image.src = node.getAttribute('href')!; await image.decode(); return { width: image.naturalWidth, height: image.naturalHeight }; });
+  expect(dimensions).toEqual({ width: 1024, height: 1536 });
+  await setup.getByRole('button', { name: 'Создать проект', exact: true }).click();
+  await acceptTermsIfOffered(page); await expect(page.locator('.postcard-studio')).toBeVisible(); await dismissNotices(page);
+  const canvasBackground = page.locator('.canvas-artboard image[href*="backgrounds/"]');
+  await expect(canvasBackground).toHaveAttribute('href', /backgrounds\/delicate-golden-star-sparkle\.png$/);
+  expect(await canvasBackground.getAttribute('transform')).toBeNull();
+  await tab(page, 'Декор');
+  await page.getByRole('button', { name: 'Добавить: Бордовый бархатный бант с золотым кантом', exact: true }).click();
+  const decor = page.locator('.canvas-artboard image[href*="decorations/burgundy-velvet-bow-with-gold-trim"]');
+  await expect(decor).toHaveAttribute('href', /decorations\/burgundy-velvet-bow-with-gold-trim\.png$/);
+  expect(await decor.evaluate(async node => { const image = new Image(); image.src = node.getAttribute('href')!; await image.decode(); return image.naturalWidth; })).toBe(1312);
+  await page.getByRole('button', { name: 'Приблизить', exact: true }).click();
+  await expect(page.locator('.canvas-artboard image[href$="-preview.webp"]')).toHaveCount(0);
+});
+
 test('decorative artwork keeps its original proportions and appears in opaque 300 DPI PNG and PDF', async ({ page }) => {
   await create(page, 1);
   await tab(page, 'Декор');
@@ -509,6 +638,7 @@ test('decorative artwork keeps its original proportions and appears in opaque 30
   expect(artwork).toMatchObject({ type: 'decoration', assetId: 'burgundy-velvet-bow-with-gold-trim' });
   expect(artwork.width / artwork.height).toBeCloseTo(1312 / 1199, 6);
   await expect(page.locator('.canvas-artboard image[href*="decorations/burgundy-velvet-bow-with-gold-trim"]')).toHaveCount(1);
+  await expect(page.locator('.canvas-artboard image[href*="decorations/burgundy-velvet-bow-with-gold-trim"]')).toHaveAttribute('href', /burgundy-velvet-bow-with-gold-trim\.png$/);
   await number(page, 'По горизонтали', 20); await number(page, 'По вертикали', 35);
   await number(page, 'Ширина', 60); await number(page, 'Поворот', 30); await number(page, 'Непрозрачность', 70);
   await expect.poll(async () => { const element = (await activeCard(page)).elements[0]; return { width: element.width, rotation: element.rotation, opacity: element.type !== 'text' ? element.opacity : null }; }).toEqual({ width: 60, rotation: 30, opacity: 0.7 });
@@ -537,7 +667,7 @@ test('format changes keep absolute geometry and independent postcard copies supp
   await create(page, 2, 'square');
   await text(page, 'Оригинальная история');
   const original = await activeCard(page), geometry = original.elements;
-  await tab(page, 'Фон и форма');
+  await tab(page, 'Формат и фон');
   await page.getByRole('combobox', { name: 'Формат открытки', exact: true }).selectOption('a6-landscape');
   const format = page.getByRole('dialog', { name: 'Изменить формат открытки?', exact: true });
   await expect(format).toContainText('Координаты, размеры и повороты элементов сохранятся');
@@ -640,16 +770,18 @@ test('all five mobile tools remain reachable and edits survive phone, tablet and
   await page.getByRole('button', { name: 'Закрыть панель', exact: true }).click();
   await page.screenshot({ path: 'artifacts/postcards-editor-390.png' });
   await page.setViewportSize({ width: 320, height: 800 });
-  for (const label of ['Текст', 'Иллюстрации', 'Декор', 'Фон и форма', 'Слои']) {
+  for (const label of ['Текст', 'Иллюстрации', 'Декор', 'Формат и фон', 'Слои']) {
     const control = page.getByRole('navigation', { name: 'Инструменты открытки', exact: true }).getByRole('button', { name: label, exact: true });
     await control.scrollIntoViewIfNeeded();
     const box = await control.boundingBox();
     expect(box!.width).toBeGreaterThanOrEqual(44); expect(box!.height).toBeGreaterThanOrEqual(44);
     await control.click();
     await expect(page.getByRole('dialog', { name: label, exact: true })).toBeVisible();
-    if (label === 'Фон и форма') {
+    if (label === 'Формат и фон') {
       await expect(page.getByRole('combobox', { name: 'Тип фона', exact: true })).toBeVisible();
       await expect(page.getByRole('combobox', { name: 'Формат открытки', exact: true })).toBeVisible();
+      await number(page, 'Скругление углов', 4);
+      await expect.poll(async () => (await activeCard(page)).cornerRadius).toBe(4);
     }
     await expect(page.locator('.workspace')).toHaveAttribute('inert', '');
     await page.getByRole('button', { name: 'Закрыть панель', exact: true }).click();
@@ -675,6 +807,7 @@ test('all five mobile tools remain reachable and edits survive phone, tablet and
   await page.screenshot({ path: 'artifacts/postcards-editor-1024-landscape.png' });
   await page.setViewportSize({ width: 1440, height: 900 });
   await expect(page.locator('.thumbnail-strip')).toBeVisible();
+  expect((await activeCard(page)).cornerRadius).toBe(4);
   expect((await activeCard(page)).elements).toEqual(design);
   await page.screenshot({ path: 'artifacts/postcards-editor-1440.png' });
 });
@@ -697,7 +830,7 @@ test('direction menus support keyboard focus and generic creation opens the sele
   await expect(page.locator('.template-catalog .postcard-start-card')).toHaveCount(3);
   await expect(page.locator('.postcard-artistic-catalog .postcard-start-card')).toHaveCount(3);
   await page.goto('/#home');
-  await page.locator('.public-header__create').click();
+  await page.locator('.home-hero').getByRole('link', { name: 'Создать проект', exact: true }).click();
   await page.getByRole('dialog', { name: 'Что будем создавать?', exact: true }).getByRole('button', { name: 'Открытки', exact: true }).click();
   await expect(page).toHaveURL(/#postcards$/);
   expect(await page.evaluate(keys => keys.map(key => localStorage.getItem(key)), [postcardKey, tagKey])).toEqual([null, null]);
@@ -707,12 +840,9 @@ test('a failed requested font shows its local fallback and keeps export consent 
   await page.route('**/fonts/PTSerif-Regular.ttf', async route => { await new Promise(resolve => setTimeout(resolve, 500)); await route.fulfill({ status: 404, body: '' }); });
   await create(page, 1);
   await tab(page, 'Иллюстрации');
-  const collection = page.getByRole('combobox', { name: 'Коллекция иллюстраций', exact: true });
-  await collection.selectOption('postcards');
-  await expect(page.locator('.image-library button')).toHaveCount(postcardIllustrationIds.length);
+  await expect(page.getByRole('combobox', { name: 'Коллекция иллюстраций', exact: true })).toHaveCount(0);
+  await expect(page.locator('.image-library button')).toHaveCount(images.length);
   await page.getByLabel('Поиск: иллюстрации', { exact: true }).fill('rustic-wooden-star');
-  await expect(page.locator('.image-library button')).toHaveCount(0);
-  await collection.selectOption('all');
   await expect(page.getByRole('button', { name: 'Добавить: Деревянная звезда с хвоей', exact: true })).toBeVisible();
   await text(page, 'С Новым годом!');
   await page.getByRole('combobox', { name: 'Шрифт', exact: true }).selectOption('serif');

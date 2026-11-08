@@ -5,6 +5,7 @@
 .template-hero h1{color:#24482d;margin:0 0 20px}
 .template-hero p{color:#26392f;margin:0;text-wrap:balance}
 .template-hero__occasion{white-space:nowrap}
+.template-hero__create{margin-top:24px}
 .template-hero__scene{grid-row:1;align-self:end;width:100%;height:clamp(320px,28vw,400px);max-width:100%;pointer-events:none;object-fit:cover;object-position:left bottom}
 .template-hero__scene--left{grid-column:1;mask-image:linear-gradient(to left,transparent,#000 24px)}
 .template-hero__scene--right{grid-column:3;object-position:right bottom;mask-image:linear-gradient(to right,transparent,#000 32px)}

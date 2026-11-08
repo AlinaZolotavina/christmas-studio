@@ -1,5 +1,6 @@
 import { getPostcardResource } from '../../content/postcard-assets';
 import { getPostcardSize, type Postcard, type PostcardElement, type PostcardProject } from '../../domain/postcards/types';
+import { postcardContainsBox } from '../../domain/postcards/geometry';
 import { createPostcardScene, type PostcardSceneOptions } from '../../rendering/scene';
 import { getPostcardFontState, getPostcardMissingGlyphs } from '../../rendering/postcard-fonts';
 import type { PostcardExportScope } from './postcardLayout';
@@ -32,9 +33,9 @@ function validatePostcards(cards: Postcard[], options: PostcardValidationOptions
     for (const node of scene.nodes) {
       const element = node.element;
       const bounds = node.bounds;
-      const outside = bounds.x < -0.001 || bounds.y < -0.001 || bounds.x + bounds.width > width + 0.001 || bounds.y + bounds.height > height + 0.001;
+      const outside = !postcardContainsBox(postcard, bounds);
       if (outside) issue('element-outside-postcard', 'error', 'Элемент выходит за границы открытки. Переместите или уменьшите его.', element);
-      else if (options.preflight && (bounds.x < 3 || bounds.y < 3 || bounds.x + bounds.width > width - 3 || bounds.y + bounds.height > height - 3)) issue('safe-margin', 'warning', 'Элемент расположен ближе 3 мм к краю открытки и может пострадать при обрезке.', element);
+      else if (options.preflight && !postcardContainsBox(postcard, bounds, 3)) issue('safe-margin', 'warning', 'Элемент расположен ближе 3 мм к краю открытки и может пострадать при обрезке.', element);
       if (node.type === 'text') {
         if (node.layout.overflow) issue('text-overflow', 'error', 'Текст не помещается в блок. Измените размер блока или размер шрифта.', element);
         const original = postcard.elements.find(item => item.id === node.id);

@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { unzlibSync } from 'fflate';
+import sharp from 'sharp';
 import { createImageElement, createLetteringElement, createPostcardProject, createTextElement } from '../../domain/postcards/project';
 import { generatePostcardPdf, postcardExportSvg, preparePostcardExport } from './postcards';
 
@@ -14,6 +15,27 @@ function localFetch() {
 }
 
 describe('postcard PDF and immutable export scene', () => {
+  it.each(['a6-portrait', 'a6-landscape', 'square'] as const)('uses the rounded outline in vector PDF and raster SVG for %s', async format => {
+    localFetch();
+    const project = createPostcardProject({ count: 1, format, cornerRadius: 10 });
+    project.postcards[0].background = { kind: 'solid', colors: ['#315C4C'], angle: 90, centerX: 0.5, centerY: 0.5 };
+    const prepared = await preparePostcardExport(project);
+    expect(prepared.issues).toEqual([]);
+    expect(prepared.scenes.get(project.activePostcardId)?.shape).toMatch(/^M 10 0/);
+    const svg = postcardExportSvg(prepared, project.activePostcardId);
+    const { data, info } = await sharp(Buffer.from(svg)).flatten({ background: '#FFFFFF' }).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    const pixel = (x: number, y: number) => [...data.subarray((y * info.width + x) * 4, (y * info.width + x) * 4 + 4)];
+    expect(pixel(0, 0)).toEqual([255, 255, 255, 255]);
+    expect(pixel(info.width - 1, info.height - 1)).toEqual([255, 255, 255, 255]);
+    expect(pixel(Math.floor(info.width / 2), 2)).toEqual([49, 92, 76, 255]);
+    expect(pixel(Math.floor(info.width / 2), Math.floor(info.height / 2))).toEqual([49, 92, 76, 255]);
+    const bytes = new Uint8Array(await (await generatePostcardPdf(prepared)).arrayBuffer());
+    const stream = /stream\r?\n([\s\S]*?)\r?\nendstream/.exec(Buffer.from(bytes).toString('latin1'))![1];
+    const content = new TextDecoder().decode(unzlibSync(Buffer.from(stream, 'latin1')));
+    const clipping = content.slice(0, content.indexOf('\nW\n'));
+    expect(clipping.match(/ c\n/g)).toHaveLength(4);
+  });
+
   it.each(['a6-portrait', 'a6-landscape', 'square'] as const)('prints Cyrillic/Latin as vector paths at exact %s physical dimensions without PDF fonts', async format => {
     localFetch();
     const project = createPostcardProject({ name: 'Зимние открытки', count: 1, format });

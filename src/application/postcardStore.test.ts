@@ -24,6 +24,19 @@ const setup = () => {
 afterEach(() => vi.useRealTimers());
 
 describe('shared store with independent postcard persistence', () => {
+  it('opens older v1 projects without rounding fields and keeps invalid new values out', () => {
+    const { store } = setup();
+    const legacy = structuredClone(store.getSnapshot().project!);
+    delete legacy.defaultCornerRadius;
+    for (const card of legacy.postcards) delete card.cornerRadius;
+    expect(decodePostcardProject(JSON.stringify(legacy))).toEqual(legacy);
+    for (const cornerRadius of [-1, 21, null, '5']) {
+      const raw = { ...legacy, postcards: [{ ...legacy.postcards[0], cornerRadius }] };
+      expect(() => decodePostcardProject(JSON.stringify(raw))).toThrow();
+      expect(() => decodePostcardProject(JSON.stringify({ ...legacy, defaultCornerRadius: cornerRadius }))).toThrow();
+    }
+  });
+
   it('keeps saved tag and postcard documents, colors and history in separate namespaces', () => {
     vi.useFakeTimers();
     const { store, storage } = setup();

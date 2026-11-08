@@ -3,7 +3,7 @@ import { backgrounds } from '../../data/backgrounds';
 import { lettering } from '../../data/lettering';
 import { decorations } from '../../data/decorations';
 import { MAX_TEXT_LENGTH } from '../types';
-import { FORMAT_SIZES, MAX_POSTCARDS, MAX_POSTCARD_ELEMENTS } from './types';
+import { FORMAT_SIZES, MAX_POSTCARDS, MAX_POSTCARD_ELEMENTS, MAX_POSTCARD_CORNER_RADIUS } from './types';
 import type { Postcard, PostcardBackground, PostcardElement, PostcardProject } from './types';
 
 const imageIds = new Set([...images.map(image => image.id), ...Object.keys(imageAliases)]);
@@ -17,6 +17,7 @@ const isId = (value: unknown): value is string => typeof value === 'string' && v
 const color = (value: unknown): value is string => typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value);
 export function assert(condition: unknown, message: string): asserts condition { if (!condition) throw new Error(message); }
 export const isPostcardFormat = (value: unknown) => typeof value === 'string' && Object.hasOwn(FORMAT_SIZES, value);
+const validCornerRadius = (value: unknown) => value === undefined || finite(value) && value >= 0 && value <= MAX_POSTCARD_CORNER_RADIUS;
 
 export function validatePostcardBackground(value: unknown): PostcardBackground {
   assert(isRecord(value), 'Отсутствует фон открытки.');
@@ -64,6 +65,7 @@ export function validatePostcardElement(value: unknown): PostcardElement {
 export function validatePostcard(value: unknown): Postcard {
   assert(isRecord(value) && isId(value.id), 'Некорректный идентификатор открытки.');
   assert(isPostcardFormat(value.format), 'Выберите A6 вертикальную, A6 горизонтальную или квадратную открытку.');
+  assert(validCornerRadius(value.cornerRadius), `Скругление углов должно быть от 0 до ${MAX_POSTCARD_CORNER_RADIUS} мм.`);
   validatePostcardBackground(value.background);
   assert(Array.isArray(value.elements) && value.elements.length <= MAX_POSTCARD_ELEMENTS, `На открытке может быть не более ${MAX_POSTCARD_ELEMENTS} элементов.`);
   const ids = new Set<string>();
@@ -82,6 +84,7 @@ export function validatePostcardProject(value: unknown): PostcardProject {
   assert(isId(value.id), 'Отсутствует идентификатор проекта открыток.');
   assert(typeof value.name === 'string' && value.name.trim().length > 0 && value.name.length <= 120, 'Название должно содержать от 1 до 120 символов.');
   assert(isPostcardFormat(value.defaultFormat), 'Некорректный формат по умолчанию.');
+  assert(validCornerRadius(value.defaultCornerRadius), 'Некорректное скругление углов по умолчанию.');
   assert(Array.isArray(value.postcards) && value.postcards.length >= 1 && value.postcards.length <= MAX_POSTCARDS, `В проекте должно быть от 1 до ${MAX_POSTCARDS} открыток.`);
   const cardIds = new Set<string>();
   const elementIds = new Set<string>();

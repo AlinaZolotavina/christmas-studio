@@ -39,8 +39,8 @@ export function createDecorationElement(patch: Patch<PostcardDecorationElement> 
   return validatePostcardElement(element) as PostcardDecorationElement;
 }
 export const clonePostcardElement = (element: PostcardElement): PostcardElement => ({ ...structuredClone(element), id: makeId() });
-export function createPostcard(format: PostcardFormat, template?: PostcardTemplate): Postcard {
-  const card: Postcard = { id: makeId(), format, background: template ? structuredClone(template.background) : blankPostcardBackground(), elements: template ? template.elements.map(element => ({ ...clonePostcardElement(element), locked: false })) : [] };
+export function createPostcard(format: PostcardFormat, template?: PostcardTemplate, cornerRadius = 0): Postcard {
+  const card: Postcard = { id: makeId(), format, cornerRadius, background: template ? structuredClone(template.background) : blankPostcardBackground(), elements: template ? template.elements.map(element => ({ ...clonePostcardElement(element), locked: false })) : [] };
   return validatePostcard(card);
 }
 export function clonePostcard(card: Postcard): Postcard {
@@ -48,6 +48,7 @@ export function clonePostcard(card: Postcard): Postcard {
 }
 export function createPostcardProject(options: CreatePostcardProjectOptions): PostcardProject {
   if (!Number.isInteger(options.count) || options.count < 1 || options.count > 20) throw new Error('В проекте должно быть от 1 до 20 открыток.');
-  const postcards = Array.from({ length: options.count }, (_, index) => createPostcard(options.format, index === 0 || options.applyToAll ? options.template : undefined));
-  return validatePostcardProject({ schemaVersion: 1, product: 'postcards', id: makeId(), name: options.name ?? 'Мои открытки', defaultFormat: options.format, postcards, activePostcardId: postcards[0].id });
+  const cornerRadius = options.cornerRadius ?? 0;
+  const postcards = Array.from({ length: options.count }, (_, index) => createPostcard(options.format, index === 0 || options.applyToAll ? options.template : undefined, cornerRadius));
+  return validatePostcardProject({ schemaVersion: 1, product: 'postcards', id: makeId(), name: options.name ?? 'Мои открытки', defaultFormat: options.format, defaultCornerRadius: cornerRadius, postcards, activePostcardId: postcards[0].id });
 }

@@ -5,7 +5,6 @@ import { languageArtwork } from '../../data/site-art';
 import type { PublicRoute } from '../navigation/routes';
 import { BrandMark } from '../ui/BrandMark';
 import { BrandName } from '../ui/BrandName';
-import { CreateProjectLink } from '../ui/CreateProjectLink';
 import './site-layout.css';
 
 function Brand() {
@@ -45,7 +44,7 @@ export function SiteHeader({ current = 'home', hasProject = false }: { current?:
       <a href="#ideas" aria-current={current === 'ideas' ? 'page' : undefined} onClick={() => setOpen(false)}>Идеи</a>
       <a href="#about" aria-current={current === 'about' ? 'page' : undefined} onClick={() => setOpen(false)}>О проекте</a>
     </nav>
-    <div className="public-header__actions"><span className="public-locale" title="Язык интерфейса — русский"><img className="public-locale__icon" src={assetUrl(languageArtwork.src)} width={18} height={18} alt="" aria-hidden="true" draggable={false} /> RU</span><CreateProjectLink className="public-header__create" direction={current === 'tags' || current === 'postcards' ? current : undefined} /><button className="public-menu-button" aria-label={open ? 'Закрыть навигацию' : 'Открыть навигацию'} aria-expanded={open} onClick={() => setOpen(value => !value)}>{open ? <X size={23} /> : <Menu size={23} />}</button></div>
+    <div className="public-header__actions"><span className="public-locale" title="Язык интерфейса — русский"><img className="public-locale__icon" src={assetUrl(languageArtwork.src)} width={18} height={18} alt="" aria-hidden="true" draggable={false} /> RU</span><button className="public-menu-button" aria-label={open ? 'Закрыть навигацию' : 'Открыть навигацию'} aria-expanded={open} onClick={() => setOpen(value => !value)}>{open ? <X size={23} /> : <Menu size={23} />}</button></div>
   </div></header>;
 }
 

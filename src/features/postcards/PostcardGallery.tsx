@@ -24,6 +24,8 @@ import { BowDivider } from "../../shared/ui/BowDivider";
 import { Button, Field } from "../../shared/ui/Controls";
 import { Modal } from "../../shared/ui/Modal";
 import { SavedProjectNotice } from "../gallery/SavedProjectNotice";
+import { CreateProjectLink } from "../../shared/ui/CreateProjectLink";
+import { PostcardCornerRadiusField } from "./PostcardCornerRadiusField";
 import { useCatalogScroll } from "../gallery/useCatalogScroll";
 import "../gallery/template-gallery.css";
 import "./postcard-gallery.css";
@@ -34,8 +36,8 @@ export interface PostcardGalleryProps {
   project: PostcardProject | null;
   onContinue: () => void;
   onCreate: (options: CreatePostcardProjectOptions) => void;
-  onApply: (template: PostcardTemplate, format: PostcardFormat) => void;
-  onAdd: (template: PostcardTemplate, format: PostcardFormat) => void;
+  onApply: (template: PostcardTemplate, format: PostcardFormat, cornerRadius: number) => void;
+  onAdd: (template: PostcardTemplate, format: PostcardFormat, cornerRadius: number) => void;
   scrollToTemplates?: boolean;
 }
 const formatLabels: Record<PostcardFormat, string> = {
@@ -43,9 +45,10 @@ const formatLabels: Record<PostcardFormat, string> = {
   "a6-landscape": "A6 · горизонтальная · 148 × 105 мм",
   square: "Квадрат · 105 × 105 мм",
 };
-const preview = (template: PostcardTemplate): Postcard => ({
+const preview = (template: PostcardTemplate, cornerRadius = 0): Postcard => ({
   id: `preview-${template.id}`,
   format: template.format,
+  cornerRadius,
   background: template.background,
   elements: template.elements,
 });
@@ -59,12 +62,13 @@ export function PostcardGallery({
   onAdd,
   scrollToTemplates = false,
 }: PostcardGalleryProps) {
-  const { catalog } = useCatalogScroll(scrollToTemplates);
+  const { catalog, scrollToCatalog } = useCatalogScroll(scrollToTemplates);
   const [selected, setSelected] = useState<PostcardTemplate | null>(null);
   const [mode, setMode] = useState<GalleryMode>("new");
   const [name, setName] = useState("Мои открытки");
   const [count, setCount] = useState(1);
   const [format, setFormat] = useState<PostcardFormat>("a6-portrait");
+  const [cornerRadius, setCornerRadius] = useState(0);
   const [applyToAll, setApplyToAll] = useState(false);
   const fittedTemplate = selected && fitPostcardTemplate(selected, format);
   const active = project?.postcards.find(
@@ -78,6 +82,7 @@ export function PostcardGallery({
     setMode(action);
     setCount(1);
     setApplyToAll(false);
+    setCornerRadius(action === 'replace' && active ? active.cornerRadius ?? 0 : project?.defaultCornerRadius ?? 0);
     setFormat(
       template.elements.length
         ? template.format
@@ -90,6 +95,7 @@ export function PostcardGallery({
   };
   const changeMode = (value: GalleryMode) => {
     setMode(value);
+    setCornerRadius(value === 'replace' && active ? active.cornerRadius ?? 0 : project?.defaultCornerRadius ?? 0);
     setFormat(
       selected?.elements.length
         ? selected.format
@@ -109,11 +115,12 @@ export function PostcardGallery({
         name: name.trim(),
         count,
         format,
+        cornerRadius,
         template: fittedTemplate,
         applyToAll,
       });
-    } else if (mode === "replace") onApply(fittedTemplate, format);
-    else onAdd(fittedTemplate, format);
+    } else if (mode === "replace") onApply(fittedTemplate, format, cornerRadius);
+    else onAdd(fittedTemplate, format, cornerRadius);
     setSelected(null);
   };
   const templateCard = (template: PostcardTemplate, blank: boolean) => {
@@ -191,6 +198,7 @@ export function PostcardGallery({
           <div className="template-hero__copy">
             <h1 id="postcards-title">Открытки</h1>
             <p>Тёплые слова и зимние истории, которые хочется подарить</p>
+            {!project && <CreateProjectLink className="template-hero__create" direction="postcards" onClick={event => { event.preventDefault(); scrollToCatalog(); }} />}
           </div>
           <img
             src={assetUrl(templateHeroArtwork.right.src)}
@@ -293,7 +301,8 @@ export function PostcardGallery({
                 }}
               >
                 <PostcardSvg
-                  postcard={preview(fittedTemplate)}
+                  postcard={preview(fittedTemplate, cornerRadius)}
+                  quality="print"
                   idPrefix="postcard-create-preview"
                 />
               </span>
@@ -370,6 +379,7 @@ export function PostcardGallery({
                   ))}
                 </select>
               </Field>
+              <PostcardCornerRadiusField value={cornerRadius} onChange={setCornerRadius} />
               {mode === "new" && (
                 <Field label="Применить стартовый дизайн">
                   <select

@@ -35,6 +35,41 @@ async function editorAction(page: Page, label: 'Шаблоны' | 'Справк�
 }
 test.beforeEach(async ({ page }) => { await page.routeWebSocket('**/*', () => {}); });
 
+for (const width of [1440, 390]) test(`hero creation at ${width} follows independent tag and postcard projects`, async ({ page }) => {
+  await page.setViewportSize({ width, height: 900 });
+  const created = new Set<Product>();
+  const homeAction = async () => {
+    await page.goto('/#home');
+    await expect(page.locator('.home-hero').getByRole('link', { name: 'Создать проект', exact: true })).toBeVisible();
+    await expect(page.locator('.public-header').getByRole('link', { name: 'Создать проект', exact: true })).toHaveCount(0);
+  };
+  const galleryAction = async (product: Product) => {
+    await page.goto(`/#${product}`);
+    await expect(page.locator('.template-hero')).toBeVisible();
+    const action = page.locator('.template-hero').getByRole('link', { name: 'Создать проект', exact: true });
+    await expect(action).toHaveCount(created.has(product) ? 0 : 1);
+    await expect(page.locator('.saved-project')).toHaveCount(created.has(product) ? 1 : 0);
+    await expect(page.locator('.public-header').getByRole('link', { name: 'Создать проект', exact: true })).toHaveCount(0);
+    if (!created.has(product)) {
+      await action.click();
+      await expect(page.locator('.template-intro')).toBeInViewport();
+      await expect(page.locator('.template-intro')).toBeFocused();
+      expect(await saved(page, product)).toBeNull();
+    }
+  };
+  await homeAction();
+  await galleryAction('tags'); await galleryAction('postcards');
+  await create(page, 'tags'); created.add('tags');
+  const originalTags = await saved(page, 'tags');
+  await homeAction();
+  await galleryAction('tags'); await galleryAction('postcards');
+  expect(await saved(page, 'tags')).toEqual(originalTags);
+  await create(page, 'postcards'); created.add('postcards');
+  await homeAction();
+  await galleryAction('tags'); await galleryAction('postcards');
+  expect(await saved(page, 'tags')).toEqual(originalTags);
+});
+
 for (const width of [1440, 390]) for (const product of ['tags', 'postcards'] as const) {
   test(`${product} at ${width}: saved-project choices preserve data and editor navigation scrolls to the catalog`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
@@ -165,7 +200,7 @@ for (const width of [1440, 390]) test(`postcard help at ${width} shares guide, F
   await help.locator('summary').filter({ hasText: 'Как добавить готовую надпись?' }).click();
   await expect(help).toContainText('«Текст» и выберите «Готовые надписи»');
   await help.locator('summary').filter({ hasText: 'Где изменить формат и фон?' }).click();
-  await expect(help).toContainText('«Фон и форма»');
+  await expect(help).toContainText('«Формат и фон»');
   await expect(help).not.toContainText('Количество 24 или 31');
   await help.getByRole('tab', { name: 'Помощь', exact: true }).click();
   await expect(help).toContainText('Без содержимого открыток');

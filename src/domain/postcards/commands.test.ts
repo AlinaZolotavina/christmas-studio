@@ -10,6 +10,40 @@ const template = (): PostcardTemplate => ({ id: 'test-editable-template', name: 
 const addText = (project: PostcardProject) => executePostcardCommand(project, { type: 'add-element', postcardId: project.postcards[0].id, element: createTextElement() }).project;
 
 describe('postcard document invariants', () => {
+  it('inherits rounding only for new cards, preserves it on copies and replacements, and accepts an explicit override', () => {
+    let project = createPostcardProject({ count: 2, format: 'square', cornerRadius: 6.5 });
+    expect(project.defaultCornerRadius).toBe(6.5);
+    expect(project.postcards.map(card => card.cornerRadius)).toEqual([6.5, 6.5]);
+    project = executePostcardCommand(project, { type: 'set-default-corner-radius', cornerRadius: 10 }).project;
+    expect(project.postcards.map(card => card.cornerRadius)).toEqual([6.5, 6.5]);
+    project = executePostcardCommand(project, { type: 'set-corner-radius', postcardId: project.activePostcardId, cornerRadius: 4 }).project;
+    project = executePostcardCommand(project, { type: 'duplicate-postcard', postcardId: project.activePostcardId }).project;
+    expect(project.postcards[1].cornerRadius).toBe(4);
+    project = executePostcardCommand(project, { type: 'add-postcard' }).project;
+    const added = project.postcards.find(card => card.id === project.activePostcardId)!;
+    expect(added.cornerRadius).toBe(10);
+    project = executePostcardCommand(project, { type: 'apply-template', postcardId: added.id, template: template() }).project;
+    expect(project.postcards.find(card => card.id === added.id)?.cornerRadius).toBe(10);
+    project = executePostcardCommand(project, { type: 'apply-template', postcardId: added.id, template: template(), cornerRadius: 2 }).project;
+    expect(project.postcards.find(card => card.id === added.id)?.cornerRadius).toBe(2);
+    project = executePostcardCommand(project, { type: 'add-postcard', cornerRadius: 0 }).project;
+    expect(project.postcards.find(card => card.id === project.activePostcardId)?.cornerRadius).toBe(0);
+  });
+
+  it.each([-1, 20.01, NaN, Infinity])('rejects invalid rounding %s atomically', cornerRadius => {
+    const project = fixture(1);
+    expect(() => createPostcardProject({ count: 1, format: 'square', cornerRadius })).toThrow();
+    for (const command of [
+      { type: 'set-corner-radius' as const, postcardId: project.activePostcardId, cornerRadius },
+      { type: 'set-default-corner-radius' as const, cornerRadius },
+      { type: 'add-postcard' as const, cornerRadius },
+      { type: 'apply-template' as const, postcardId: project.activePostcardId, template: template(), cornerRadius },
+    ]) {
+      const outcome = executePostcardCommand(project, command);
+      expect(outcome.result.error).toBeTruthy(); expect(outcome.project).toBe(project);
+    }
+  });
+
   it('supports the three physical formats and changes a canvas without moving its design', () => {
     expect(FORMAT_SIZES).toEqual({ 'a6-portrait': { width: 105, height: 148 }, 'a6-landscape': { width: 148, height: 105 }, square: { width: 105, height: 105 } });
     let project = addText(fixture());

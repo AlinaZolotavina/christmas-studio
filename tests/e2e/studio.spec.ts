@@ -106,6 +106,18 @@ test('damaged local data stays downloadable and is not silently replaced', async
   expect((await download).suggestedFilename()).toBe('Advent-Tags-recovery.json');
 });
 
+test('new illustrations are available in the tag editor and survive saving', async ({ page }) => {
+  await create(page);
+  await page.getByRole('tab', { name: 'Изображение', exact: true }).click();
+  const query = page.getByRole('textbox', { name: 'Поиск иллюстраций' });
+  const choice = page.getByRole('button', { name: 'Заменить иллюстрацию: Пряничный ангел с глазурью, бантом и хвоей', exact: true });
+  for (const search of ['пряничный ангел', 'gingerbread angel']) {
+    await query.fill(search); await expect(choice).toBeVisible();
+  }
+  await choice.click();
+  await expect.poll(async () => (await saved(page)).cards[0].illustration.assetId).toBe('gingerbread-angel-with-evergreen-sprigs');
+});
+
 test('image library searches both languages and combines taxonomy filters', async ({ page }) => {
   await create(page);
   await page.getByRole('tab', { name: 'Изображение', exact: true }).click();
@@ -141,7 +153,7 @@ test('image library searches both languages and combines taxonomy filters', asyn
   await expect(motif.locator('option[value="characters-elves"]')).toHaveCount(1);
   await expect(motif.locator('option[value="characters-snowmen"]')).toHaveCount(1);
   await category.selectOption('seasonal-objects');
-  await expect(motif.locator('option[value="seasonal-objects-drinks"]')).toHaveCount(0);
+  await expect(motif.locator('option[value="seasonal-objects-drinks"]')).toHaveCount(1);
   await expect(motif.locator('option[value="seasonal-objects-fireworks"]')).toHaveCount(0);
 });
 

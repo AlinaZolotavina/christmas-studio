@@ -133,9 +133,9 @@ export default function App() {
     if (!termsAcceptance.hasAccepted()) { setPendingPostcardTerms(options); return; }
     if (postcardStore.project) setPendingPostcardCreate(options); else createPostcards(options);
   };
-  const applyPostcardTemplate = (template: PostcardTemplate, format: PostcardFormat, adding: boolean) => {
+  const applyPostcardTemplate = (template: PostcardTemplate, format: PostcardFormat, cornerRadius: number, adding: boolean) => {
     const project = postcardStore.project; if (!project) return;
-    const result = executePostcard(adding ? { type: 'add-postcard', template, format } : { type: 'apply-template', postcardId: project.activePostcardId, template, format });
+    const result = executePostcard(adding ? { type: 'add-postcard', template, format, cornerRadius } : { type: 'apply-template', postcardId: project.activePostcardId, template, format, cornerRadius });
     if (!result.error) navigate('editor/postcards', true);
   };
   const postcardContext = view === 'postcards' || view === 'editor/postcards';
@@ -151,7 +151,7 @@ export default function App() {
     {(view === 'home' || view === 'create') && <HomePage hasProject={hasProject} />}
     {view === 'tags' && <TemplateGallery hasProject={hasProject} project={store.project} onContinue={() => navigate('editor', true)} scrollToTemplates={scrollToTemplates === 'tags'} onCreate={requestCreate} />}
     {view === 'about' && <AboutPage hasProject={hasProject} />}
-    {view === 'postcards' && <Suspense fallback={<p className="public-loading" role="status">Загружаем открытки…</p>}><PostcardGallery hasProject={hasProject} project={postcardStore.project} scrollToTemplates={scrollToTemplates === 'postcards'} onContinue={() => { setPostcardEntry(false); navigate('editor/postcards', true); }} onCreate={requestPostcardCreate} onApply={(template, format) => applyPostcardTemplate(template, format, false)} onAdd={(template, format) => applyPostcardTemplate(template, format, true)} /></Suspense>}
+    {view === 'postcards' && <Suspense fallback={<p className="public-loading" role="status">Загружаем открытки…</p>}><PostcardGallery hasProject={hasProject} project={postcardStore.project} scrollToTemplates={scrollToTemplates === 'postcards'} onContinue={() => { setPostcardEntry(false); navigate('editor/postcards', true); }} onCreate={requestPostcardCreate} onApply={(template, format, cornerRadius) => applyPostcardTemplate(template, format, cornerRadius, false)} onAdd={(template, format, cornerRadius) => applyPostcardTemplate(template, format, cornerRadius, true)} /></Suspense>}
     {view === 'editor/postcards' && postcardStore.project && <Suspense fallback={<p className="public-loading" role="status">Загружаем редактор открыток…</p>}><PostcardShell key={postcardStore.project.id} project={postcardStore.project} saveStatus={postcardStore.saveStatus} canUndo={postcardStore.canUndo} canRedo={postcardStore.canRedo} onUndo={postcardStore.undo} onRedo={postcardStore.redo} onCommand={executePostcard} onSelectPostcard={postcardStore.selectPostcard} onHome={() => navigate('home')} onTemplates={() => navigate('postcards', false, true)} onExport={() => setPostcardPreview(true)} onStartTour={() => setPostcardTourActive(true)} focusTarget={postcardFocus} /></Suspense>}
     {(view === 'stickers' || view === 'ideas') && <ComingSoonPage page={view} hasProject={hasProject} />}
     {(view === 'privacy' || view === 'terms') && <Suspense fallback={<SiteLayout current={view} hasProject={hasProject}><main className="public-content-page" aria-busy="true"><p>Загружаем документ…</p></main></SiteLayout>}><LegalPage document={view} hasProject={hasProject} /></Suspense>}

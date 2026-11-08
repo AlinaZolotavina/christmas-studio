@@ -2,7 +2,8 @@ import type { Box, Card } from '../domain/types';
 import { ptToMm } from '../domain/types';
 import type { Postcard, PostcardBackground, PostcardDecorationElement, PostcardElement, PostcardImageElement, PostcardLetteringElement, PostcardTextElement } from '../domain/postcards/types';
 import { getPostcardSize } from '../domain/postcards/types';
-import { boxPoints, holeDiameter, shapePath } from '../domain/geometry';
+import { postcardOutlinePath } from '../domain/postcards/geometry';
+import { boxPoints, holeDiameter, pathToSvg, shapePath } from '../domain/geometry';
 import { assetUrl } from '../content/assets';
 import { getPostcardResource } from '../content/postcard-assets';
 import { getPostcardFontState, getPostcardTextInkBounds, getPostcardTextMeasurer } from './postcard-fonts';
@@ -105,7 +106,7 @@ export function createPostcardScene(postcard: Postcard, options: PostcardSceneOp
     id: postcard.id, width, height, background: postcard.background,
     backgroundImage: resource ? { href: options.quality === 'print' ? printHref : previewHref, previewHref, printHref } : undefined,
     nodes: postcard.elements.map(element => sceneNode(element, options)),
-    shape: `M 0 0 H ${width} V ${height} H 0 Z`, product: 'postcards', label: 'Открытка',
+    shape: pathToSvg(postcardOutlinePath(postcard)), product: 'postcards', label: 'Открытка',
   };
   if (cacheable) sceneCache.set(postcard, scene);
   return scene;

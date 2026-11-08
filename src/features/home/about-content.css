@@ -14,11 +14,11 @@
 .about-product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:25px}
 .about-product{display:block;min-width:0;overflow:hidden;background:#fffdf8;border:1px solid #ebe5da;border-radius:18px;text-decoration:none;box-shadow:0 6px 14px #5847290a;transition:transform .18s,box-shadow .18s}
 .about-product:hover{transform:translateY(-3px);box-shadow:0 9px 20px #58472916}
-.about-product__art{aspect-ratio:1.65;background:#bbc6a9}
+.about-product__art{aspect-ratio:3/2;background:#bbc6a9}
 .about-product--postcards .about-product__art{background:#ead3ca}
 .about-product--stickers .about-product__art{background:#f0dfc5}
 .about-product__art>.artwork-placeholder{height:100%;width:100%}
-.about-product__art>.artwork-placeholder--image{object-fit:cover}
+.about-product__art>.artwork-placeholder--image{object-fit:contain}
 .about-product__caption{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:68px;padding:16px 18px}
 .about-product__caption h3{color:#1c2c23;margin:0}
 .about-product__caption svg{color:#365e44;flex-shrink:0}
@@ -36,7 +36,7 @@
 @media(max-width:1150px){.about-heading{min-height:120px}.about-heading__art{display:none}}
 @media(max-width:1000px){.about-content .about-overview{--about-story-gap:26px;padding:0 32px 45px}.about-heading{min-height:120px}.about-overview .about-heading h1{}.about-heading__art{right:-35px;height:195px}.about-hero{margin-bottom:38px}.about-overview p{}.about-story__art{height:280px}.about-product-grid{gap:18px}.about-product__caption{padding:14px;min-height:64px}.about-product__caption h3{}.about-feedback{grid-template-columns:155px minmax(0,1fr);gap:23px;padding:24px;margin-top:65px}.about-feedback h2{}.about-feedback p{}.about-feedback__actions{gap:12px}.about-feedback__actions .public-button{padding:11px 18px;font-size:13px}}
 @media(max-width:700px){.about-content .about-overview{--about-story-columns:minmax(0,1fr);--about-story-gap:4px;padding:0 24px 35px}.about-heading{min-height:0}.about-heading__copy{grid-column:1;padding:28px 0 12px}.about-overview .about-heading h1{}.about-hero{margin:0 0 31px}.about-story__art{height:225px;max-width:350px;margin:0 auto}.about-story__copy{padding-top:8px}.about-story__copy p+p{margin-top:17px}.about-overview p{}.about-divider{margin:0 0 20px;gap:13px}.about-products>h2{margin-bottom:24px}.about-product-grid{gap:14px}.about-product__caption{padding:12px;gap:7px}.about-product__caption h3{}.about-product__caption svg{width:16px}.about-feedback{grid-template-columns:1fr;padding:23px;gap:13px;margin-top:44px;text-align:center}.about-feedback__art{max-width:155px;height:125px;margin:auto}.about-feedback h2{}.about-feedback p{}.about-feedback__actions{justify-content:center;margin-top:20px;gap:12px}}
-@media(max-width:540px){.about-product-grid{grid-template-columns:1fr;max-width:390px;margin:auto;gap:21px}.about-product__art{aspect-ratio:1.75}.about-product__caption{min-height:68px;padding:16px 19px}.about-product__caption h3{}.about-product__caption span{font-size:11px}.about-product__caption svg{width:20px;height:20px}.about-feedback__actions{flex-direction:column}.about-feedback__actions .public-button{width:100%;min-height:48px;font-size:14px}.about-feedback{padding:24px 22px}.about-content .about-overview{padding-inline:22px}}
+@media(max-width:540px){.about-product-grid{grid-template-columns:1fr;max-width:390px;margin:auto;gap:21px}.about-product__caption{min-height:68px;padding:16px 19px}.about-product__caption h3{}.about-product__caption span{font-size:11px}.about-product__caption svg{width:20px;height:20px}.about-feedback__actions{flex-direction:column}.about-feedback__actions .public-button{width:100%;min-height:48px;font-size:14px}.about-feedback{padding:24px 22px}.about-content .about-overview{padding-inline:22px}}
 @media(prefers-reduced-motion:reduce){.about-product{transition:none}.about-product:hover{transform:none}}
 @media(max-width:760px),(max-width:1150px) and (orientation:portrait){
   .about-hero{grid-template-columns:minmax(0,1fr);grid-template-areas:"art" "heading" "copy";row-gap:12px;margin-top:28px}

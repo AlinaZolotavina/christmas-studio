@@ -34,6 +34,9 @@ export const templateCoverArtwork = [
 ] as const;
 
 export const postcardTemplateArtwork = [
+  { id: 'postcard-blank-portrait-cover', templateId: 'blank-a6-portrait', source: 'assets/site/products/blank-a6-portrait-postcard.png', src: 'site/blank-a6-portrait-postcard.webp', width: 1536, height: 1024 },
+  { id: 'postcard-blank-landscape-cover', templateId: 'blank-a6-landscape', source: 'assets/site/products/blank-a6-landscape-postcard.png', src: 'site/blank-a6-landscape-postcard.webp', width: 1536, height: 1024 },
+  { id: 'postcard-blank-square-cover', templateId: 'blank-square', source: 'assets/site/products/blank-square-postcard.png', src: 'site/blank-square-postcard.webp', width: 1536, height: 1024 },
   { id: 'postcard-template-santa-cover', templateId: 'santa-christmas-a6-portrait', source: 'assets/site/templates/santa-christmas-postcard.jpg', src: 'site/santa-christmas-postcard.webp', width: 1536, height: 1024 },
   { id: 'postcard-template-elf-cover', templateId: 'elf-workshop-a6-landscape', source: 'assets/site/templates/elf-workshop-postcard.jpg', src: 'site/elf-workshop-postcard.webp', width: 1536, height: 1024 },
   { id: 'postcard-template-squirrels-cover', templateId: 'squirrel-christmas-square', source: 'assets/site/templates/squirrel-christmas-postcard.jpg', src: 'site/squirrel-christmas-postcard.webp', width: 1536, height: 1024 },

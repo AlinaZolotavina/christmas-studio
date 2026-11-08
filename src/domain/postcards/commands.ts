@@ -9,12 +9,14 @@ interface ElementTarget extends CardTarget { elementId: string }
 export type PostcardCommand =
   | { type: 'rename-project'; name: string }
   | { type: 'set-default-format'; format: PostcardFormat }
-  | { type: 'add-postcard'; format?: PostcardFormat; template?: PostcardTemplate; afterId?: string }
+  | { type: 'set-default-corner-radius'; cornerRadius: number }
+  | { type: 'add-postcard'; format?: PostcardFormat; cornerRadius?: number; template?: PostcardTemplate; afterId?: string }
   | ({ type: 'duplicate-postcard' } & CardTarget)
   | ({ type: 'remove-postcard' } & CardTarget)
   | ({ type: 'reorder-postcard'; index: number } & CardTarget)
   | ({ type: 'set-format'; format: PostcardFormat } & CardTarget)
-  | ({ type: 'apply-template'; template: PostcardTemplate; format?: PostcardFormat } & CardTarget)
+  | ({ type: 'set-corner-radius'; cornerRadius: number } & CardTarget)
+  | ({ type: 'apply-template'; template: PostcardTemplate; format?: PostcardFormat; cornerRadius?: number } & CardTarget)
   | ({ type: 'update-background'; background: PostcardBackground } & CardTarget)
   | ({ type: 'add-element'; element: PostcardElement } & CardTarget)
   | ({ type: 'update-element'; patch: PostcardElementPatch } & ElementTarget)
@@ -59,9 +61,10 @@ export function executePostcardCommand(project: PostcardProject, command: Postca
     const next: PostcardProject = { ...project, postcards: [...project.postcards] };
     if (command.type === 'rename-project') next.name = command.name;
     else if (command.type === 'set-default-format') next.defaultFormat = command.format;
+    else if (command.type === 'set-default-corner-radius') next.defaultCornerRadius = command.cornerRadius;
     else if (command.type === 'add-postcard') {
       assert(next.postcards.length < MAX_POSTCARDS, `В проекте может быть не более ${MAX_POSTCARDS} открыток.`);
-      const card = createPostcard(command.format ?? command.template?.format ?? project.defaultFormat, command.template);
+      const card = createPostcard(command.format ?? command.template?.format ?? project.defaultFormat, command.template, command.cornerRadius ?? project.defaultCornerRadius ?? 0);
       const after = command.afterId ? next.postcards.findIndex(item => item.id === command.afterId) : next.postcards.length - 1;
       assert(after >= 0, 'Открытка для добавления не найдена.');
       next.postcards.splice(after + 1, 0, card);
@@ -83,7 +86,8 @@ export function executePostcardCommand(project: PostcardProject, command: Postca
       else {
         let card: Postcard = { ...original, elements: [...original.elements] };
         if (command.type === 'set-format') card.format = command.format;
-        else if (command.type === 'apply-template') card = { ...createPostcard(command.format ?? card.format, command.template), id: original.id };
+        else if (command.type === 'set-corner-radius') card.cornerRadius = command.cornerRadius;
+        else if (command.type === 'apply-template') card = { ...createPostcard(command.format ?? card.format, command.template, command.cornerRadius ?? card.cornerRadius ?? 0), id: original.id };
         else if (command.type === 'update-background') card.background = structuredClone(command.background);
         else if (command.type === 'add-element') {
           assert(card.elements.length < MAX_POSTCARD_ELEMENTS, `На открытке может быть не более ${MAX_POSTCARD_ELEMENTS} элементов.`);

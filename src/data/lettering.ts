@@ -1,6 +1,6 @@
 import type { ImageCategory, ImageMetadata, ImageMotif } from './images';
 
-/** Visually reviewed greeting artwork; text records the words drawn in the PNG. */
+/** Visually reviewed greeting artwork; text records the words drawn in the PNG/SVG. */
 export interface LetteringMetadata extends ImageMetadata {
   text: string;
   /** Language of the artwork itself, independently of the metadata labels. */
@@ -16,6 +16,78 @@ export const letteringCategories: ImageCategory[] = [
 ];
 
 export const letteringMotifs: ImageMotif[] = [
+  {
+    "id": "wishes-holiday-greetings",
+    "category": "wishes",
+    "name": {
+      "ru": "Праздничные поздравления",
+      "en": "Holiday Greetings"
+    }
+  },
+  {
+    "id": "wishes-peace-on-earth",
+    "category": "wishes",
+    "name": {
+      "ru": "Мира на земле",
+      "en": "Peace on Earth"
+    }
+  },
+  {
+    "id": "wishes-kind-wishes",
+    "category": "wishes",
+    "name": {
+      "ru": "Добрые пожелания",
+      "en": "Kind Wishes"
+    }
+  },
+  {
+    "id": "christmas-joy-to-the-world",
+    "category": "christmas",
+    "name": {
+      "ru": "Радость миру",
+      "en": "Joy to the World"
+    }
+  },
+  {
+    "id": "new-year-wishes",
+    "category": "new-year",
+    "name": {
+      "ru": "Пожелания в новом году",
+      "en": "New Year Wishes"
+    }
+  },
+  {
+    "id": "new-year-father-frost-letter",
+    "category": "new-year",
+    "name": {
+      "ru": "Письмо Деду Морозу",
+      "en": "Letter to Father Frost"
+    }
+  },
+  {
+    "id": "magic-wishes-come-true",
+    "category": "magic",
+    "name": {
+      "ru": "Исполнения желаний",
+      "en": "Wishes Come True"
+    }
+  },
+  {
+    "id": "magic-winter-magic",
+    "category": "magic",
+    "name": {
+      "ru": "Зимнее волшебство",
+      "en": "Winter Magic"
+    }
+  },
+  {
+    "id": "winter-fairytale",
+    "category": "winter",
+    "name": {
+      "ru": "Зимняя сказка",
+      "en": "Winter Fairytale"
+    }
+  },
   { id: 'christmas-merry-christmas', category: 'christmas', name: { ru: 'С Рождеством', en: 'Merry Christmas' } },
   { id: 'christmas-sweet-christmas', category: 'christmas', name: { ru: 'Сладкого Рождества', en: 'Sweet Christmas' } },
   { id: 'christmas-ho-ho-ho', category: 'christmas', name: { ru: 'Хо-хо-хо', en: 'Ho Ho Ho' } },
@@ -27,8 +99,1163 @@ export const letteringMotifs: ImageMotif[] = [
   { id: 'wishes-warmest-wishes', category: 'wishes', name: { ru: 'Самые тёплые пожелания', en: 'Warmest Wishes' } },
 ];
 
-/** Explicit metadata: source PNGs stay full resolution; src is the public print path. */
+/** Explicit metadata: PNG/SVG originals remain unchanged; src is the public print path. */
 export const lettering: LetteringMetadata[] = [
+  {
+    "id": "merry-christmas-red-playful",
+    "source": "assets/lettering/merry-christmas-red-playful.svg",
+    "src": "lettering/merry-christmas-red-playful.svg",
+    "name": {
+      "ru": "Красная кистевая надпись «Merry Christmas!»",
+      "en": "Red playful brush lettering: Merry Christmas"
+    },
+    "text": "Merry Christmas!",
+    "language": "en",
+    "category": "christmas",
+    "subcategory": "christmas-merry-christmas",
+    "tags": [
+      "Merry Christmas!",
+      "рождество",
+      "красная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "merry christmas",
+      "christmas",
+      "red",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Merry Christmas",
+      "английская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "happy-holidays-green-playful",
+    "source": "assets/lettering/happy-holidays-green-playful.svg",
+    "src": "lettering/happy-holidays-green-playful.svg",
+    "name": {
+      "ru": "Зелёная кистевая надпись «Happy Holidays!»",
+      "en": "Green playful brush lettering: Happy Holidays"
+    },
+    "text": "Happy Holidays!",
+    "language": "en",
+    "category": "wishes",
+    "subcategory": "wishes-holiday-greetings",
+    "tags": [
+      "Happy Holidays!",
+      "пожелания",
+      "зелёная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "happy holidays",
+      "wishes",
+      "green",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Happy Holidays",
+      "английская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "let-it-snow-blue-playful",
+    "source": "assets/lettering/let-it-snow-blue-playful.svg",
+    "src": "lettering/let-it-snow-blue-playful.svg",
+    "name": {
+      "ru": "Голубая кистевая надпись «Let It Snow!»",
+      "en": "Blue playful brush lettering: Let It Snow"
+    },
+    "text": "Let It Snow!",
+    "language": "en",
+    "category": "winter",
+    "subcategory": "winter-let-it-snow",
+    "tags": [
+      "Let It Snow!",
+      "зима",
+      "голубая",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "let it snow",
+      "winter",
+      "blue",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Let It Snow",
+      "английская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "joy-to-the-world-red-playful",
+    "source": "assets/lettering/joy-to-the-world-red-playful.svg",
+    "src": "lettering/joy-to-the-world-red-playful.svg",
+    "name": {
+      "ru": "Красная кистевая надпись «Joy to the World!»",
+      "en": "Red playful brush lettering: Joy to the World"
+    },
+    "text": "Joy to the World!",
+    "language": "en",
+    "category": "christmas",
+    "subcategory": "christmas-joy-to-the-world",
+    "tags": [
+      "Joy to the World!",
+      "рождество",
+      "красная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "joy to the world",
+      "christmas",
+      "red",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Joy to the World",
+      "английская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "happy-new-year-red-playful",
+    "source": "assets/lettering/happy-new-year-red-playful.svg",
+    "src": "lettering/happy-new-year-red-playful.svg",
+    "name": {
+      "ru": "Красная кистевая надпись «Happy New Year!»",
+      "en": "Red playful brush lettering: Happy New Year"
+    },
+    "text": "Happy New Year!",
+    "language": "en",
+    "category": "new-year",
+    "subcategory": "new-year-happy-new-year",
+    "tags": [
+      "Happy New Year!",
+      "новый год",
+      "красная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "happy new year",
+      "new year",
+      "red",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Happy New Year",
+      "английская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "seasons-greetings-red-playful",
+    "source": "assets/lettering/seasons-greetings-red-playful.svg",
+    "src": "lettering/seasons-greetings-red-playful.svg",
+    "name": {
+      "ru": "Красная кистевая надпись «Season’s Greetings!»",
+      "en": "Red playful brush lettering: Season’s Greetings"
+    },
+    "text": "Season’s Greetings!",
+    "language": "en",
+    "category": "wishes",
+    "subcategory": "wishes-holiday-greetings",
+    "tags": [
+      "Season’s Greetings!",
+      "пожелания",
+      "красная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "season’s greetings",
+      "wishes",
+      "red",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Season’s Greetings",
+      "английская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "ho-ho-ho-green-playful",
+    "source": "assets/lettering/ho-ho-ho-green-playful.svg",
+    "src": "lettering/ho-ho-ho-green-playful.svg",
+    "name": {
+      "ru": "Зелёная кистевая надпись «Ho Ho Ho!»",
+      "en": "Green playful brush lettering: Ho Ho Ho"
+    },
+    "text": "Ho Ho Ho!",
+    "language": "en",
+    "category": "christmas",
+    "subcategory": "christmas-ho-ho-ho",
+    "tags": [
+      "Ho Ho Ho!",
+      "рождество",
+      "зелёная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "ho ho ho",
+      "christmas",
+      "green",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Ho Ho Ho",
+      "английская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "peace-on-earth-green-playful",
+    "source": "assets/lettering/peace-on-earth-green-playful.svg",
+    "src": "lettering/peace-on-earth-green-playful.svg",
+    "name": {
+      "ru": "Зелёная кистевая надпись «Peace on Earth!»",
+      "en": "Green playful brush lettering: Peace on Earth"
+    },
+    "text": "Peace on Earth!",
+    "language": "en",
+    "category": "wishes",
+    "subcategory": "wishes-peace-on-earth",
+    "tags": [
+      "Peace on Earth!",
+      "пожелания",
+      "зелёная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "peace on earth",
+      "wishes",
+      "green",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Peace on Earth",
+      "английская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "warm-winter-wishes-blue-playful",
+    "source": "assets/lettering/warm-winter-wishes-blue-playful.svg",
+    "src": "lettering/warm-winter-wishes-blue-playful.svg",
+    "name": {
+      "ru": "Голубая кистевая надпись «Warm Winter Wishes!»",
+      "en": "Blue playful brush lettering: Warm Winter Wishes"
+    },
+    "text": "Warm Winter Wishes!",
+    "language": "en",
+    "category": "wishes",
+    "subcategory": "wishes-warmest-wishes",
+    "tags": [
+      "Warm Winter Wishes!",
+      "пожелания",
+      "голубая",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "warm winter wishes",
+      "wishes",
+      "blue",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Warm Winter Wishes",
+      "английская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "happy-new-year-russian-red-playful",
+    "source": "assets/lettering/happy-new-year-russian-red-playful.svg",
+    "src": "lettering/happy-new-year-russian-red-playful.svg",
+    "name": {
+      "ru": "Красная кистевая надпись «С Новым годом!»",
+      "en": "Red playful brush lettering: Happy New Year"
+    },
+    "text": "С Новым годом!",
+    "language": "ru",
+    "category": "new-year",
+    "subcategory": "new-year-happy-new-year",
+    "tags": [
+      "С Новым годом!",
+      "новый год",
+      "красная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "happy new year",
+      "new year",
+      "red",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Happy New Year",
+      "русская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "merry-christmas-russian-green-playful",
+    "source": "assets/lettering/merry-christmas-russian-green-playful.svg",
+    "src": "lettering/merry-christmas-russian-green-playful.svg",
+    "name": {
+      "ru": "Зелёная кистевая надпись «С Рождеством Христовым!»",
+      "en": "Green playful brush lettering: Merry Christmas"
+    },
+    "text": "С Рождеством Христовым!",
+    "language": "ru",
+    "category": "christmas",
+    "subcategory": "christmas-merry-christmas",
+    "tags": [
+      "С Рождеством Христовым!",
+      "рождество",
+      "зелёная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "merry christmas",
+      "christmas",
+      "green",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Merry Christmas",
+      "русская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "magical-holiday-russian-green-playful",
+    "source": "assets/lettering/magical-holiday-russian-green-playful.svg",
+    "src": "lettering/magical-holiday-russian-green-playful.svg",
+    "name": {
+      "ru": "Зелёная кистевая надпись «Волшебного праздника!»",
+      "en": "Green playful brush lettering: Have a Magical Holiday"
+    },
+    "text": "Волшебного праздника!",
+    "language": "ru",
+    "category": "wishes",
+    "subcategory": "wishes-holiday-greetings",
+    "tags": [
+      "Волшебного праздника!",
+      "пожелания",
+      "зелёная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "have a magical holiday",
+      "wishes",
+      "green",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Have a Magical Holiday",
+      "русская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "health-joy-kindness-russian-green-playful",
+    "source": "assets/lettering/health-joy-kindness-russian-green-playful.svg",
+    "src": "lettering/health-joy-kindness-russian-green-playful.svg",
+    "name": {
+      "ru": "Зелёная кистевая надпись «Здоровья, радости и добра!»",
+      "en": "Green playful brush lettering: Health Joy and Kindness"
+    },
+    "text": "Здоровья, радости и добра!",
+    "language": "ru",
+    "category": "wishes",
+    "subcategory": "wishes-kind-wishes",
+    "tags": [
+      "Здоровья, радости и добра!",
+      "пожелания",
+      "зелёная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "health joy and kindness",
+      "wishes",
+      "green",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Health Joy and Kindness",
+      "русская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "warmth-and-comfort-russian-red-playful",
+    "source": "assets/lettering/warmth-and-comfort-russian-red-playful.svg",
+    "src": "lettering/warmth-and-comfort-russian-red-playful.svg",
+    "name": {
+      "ru": "Красная кистевая надпись «Тепла и уюта!»",
+      "en": "Red playful brush lettering: Warmth and Comfort"
+    },
+    "text": "Тепла и уюта!",
+    "language": "ru",
+    "category": "wishes",
+    "subcategory": "wishes-warmest-wishes",
+    "tags": [
+      "Тепла и уюта!",
+      "пожелания",
+      "красная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "warmth and comfort",
+      "wishes",
+      "red",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Warmth and Comfort",
+      "русская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "new-year-happiness-russian-green-playful",
+    "source": "assets/lettering/new-year-happiness-russian-green-playful.svg",
+    "src": "lettering/new-year-happiness-russian-green-playful.svg",
+    "name": {
+      "ru": "Зелёная кистевая надпись «Счастья в новом году!»",
+      "en": "Green playful brush lettering: Happiness in the New Year"
+    },
+    "text": "Счастья в новом году!",
+    "language": "ru",
+    "category": "new-year",
+    "subcategory": "new-year-wishes",
+    "tags": [
+      "Счастья в новом году!",
+      "новый год",
+      "зелёная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "happiness in the new year",
+      "new year",
+      "green",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Happiness in the New Year",
+      "русская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "wishes-come-true-russian-green-playful",
+    "source": "assets/lettering/wishes-come-true-russian-green-playful.svg",
+    "src": "lettering/wishes-come-true-russian-green-playful.svg",
+    "name": {
+      "ru": "Зелёная кистевая надпись «Исполнения желаний!»",
+      "en": "Green playful brush lettering: May Your Wishes Come True"
+    },
+    "text": "Исполнения желаний!",
+    "language": "ru",
+    "category": "magic",
+    "subcategory": "magic-wishes-come-true",
+    "tags": [
+      "Исполнения желаний!",
+      "волшебство",
+      "зелёная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "may your wishes come true",
+      "magic",
+      "green",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "May Your Wishes Come True",
+      "русская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "new-year-miracles-russian-green-playful",
+    "source": "assets/lettering/new-year-miracles-russian-green-playful.svg",
+    "src": "lettering/new-year-miracles-russian-green-playful.svg",
+    "name": {
+      "ru": "Зелёная кистевая надпись «Чудес в новом году!»",
+      "en": "Green playful brush lettering: Miracles in the New Year"
+    },
+    "text": "Чудес в новом году!",
+    "language": "ru",
+    "category": "new-year",
+    "subcategory": "new-year-wishes",
+    "tags": [
+      "Чудес в новом году!",
+      "новый год",
+      "зелёная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "miracles in the new year",
+      "new year",
+      "green",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Miracles in the New Year",
+      "русская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "happy-christmas-russian-red-playful",
+    "source": "assets/lettering/happy-christmas-russian-red-playful.svg",
+    "src": "lettering/happy-christmas-russian-red-playful.svg",
+    "name": {
+      "ru": "Красная кистевая надпись «Счастливого Рождества!»",
+      "en": "Red playful brush lettering: Happy Christmas"
+    },
+    "text": "Счастливого Рождества!",
+    "language": "ru",
+    "category": "christmas",
+    "subcategory": "christmas-merry-christmas",
+    "tags": [
+      "Счастливого Рождества!",
+      "рождество",
+      "красная",
+      "кистевая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "happy christmas",
+      "christmas",
+      "red",
+      "playful brush lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Happy Christmas",
+      "русская надпись"
+    ],
+    "style": "vector-playful",
+    "background": "transparent"
+  },
+  {
+    "id": "merry-christmas-russian-red-script",
+    "source": "assets/lettering/merry-christmas-russian-red-script.svg",
+    "src": "lettering/merry-christmas-russian-red-script.svg",
+    "name": {
+      "ru": "Красная рукописная надпись «С Рождеством!»",
+      "en": "Red script lettering: Merry Christmas"
+    },
+    "text": "С Рождеством!",
+    "language": "ru",
+    "category": "christmas",
+    "subcategory": "christmas-merry-christmas",
+    "tags": [
+      "С Рождеством!",
+      "рождество",
+      "красная",
+      "рукописная надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "merry christmas",
+      "christmas",
+      "red",
+      "script lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Merry Christmas",
+      "русская надпись"
+    ],
+    "style": "vector-script",
+    "background": "transparent"
+  },
+  {
+    "id": "believe-in-miracles-russian-red-script",
+    "source": "assets/lettering/believe-in-miracles-russian-red-script.svg",
+    "src": "lettering/believe-in-miracles-russian-red-script.svg",
+    "name": {
+      "ru": "Красная рукописная надпись «Верь в чудеса!»",
+      "en": "Red script lettering: Believe in Miracles"
+    },
+    "text": "Верь в чудеса!",
+    "language": "ru",
+    "category": "magic",
+    "subcategory": "magic-believe-in-magic",
+    "tags": [
+      "Верь в чудеса!",
+      "волшебство",
+      "красная",
+      "рукописная надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "believe in miracles",
+      "magic",
+      "red",
+      "script lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Believe in Miracles",
+      "русская надпись"
+    ],
+    "style": "vector-script",
+    "background": "transparent"
+  },
+  {
+    "id": "happy-new-year-russian-red-handwritten",
+    "source": "assets/lettering/happy-new-year-russian-red-handwritten.svg",
+    "src": "lettering/happy-new-year-russian-red-handwritten.svg",
+    "name": {
+      "ru": "Красная рукописная надпись «С Новым годом!»",
+      "en": "Red handwritten lettering: Happy New Year"
+    },
+    "text": "С Новым годом!",
+    "language": "ru",
+    "category": "new-year",
+    "subcategory": "new-year-happy-new-year",
+    "tags": [
+      "С Новым годом!",
+      "новый год",
+      "красная",
+      "рукописная надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "happy new year",
+      "new year",
+      "red",
+      "handwritten lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Happy New Year",
+      "русская надпись"
+    ],
+    "style": "vector-handwritten",
+    "background": "transparent"
+  },
+  {
+    "id": "magical-holidays-russian-red-handwritten",
+    "source": "assets/lettering/magical-holidays-russian-red-handwritten.svg",
+    "src": "lettering/magical-holidays-russian-red-handwritten.svg",
+    "name": {
+      "ru": "Красная рукописная надпись «Волшебных праздников!»",
+      "en": "Red handwritten lettering: Magical Holidays"
+    },
+    "text": "Волшебных праздников!",
+    "language": "ru",
+    "category": "wishes",
+    "subcategory": "wishes-holiday-greetings",
+    "tags": [
+      "Волшебных праздников!",
+      "пожелания",
+      "красная",
+      "рукописная надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "magical holidays",
+      "wishes",
+      "red",
+      "handwritten lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Magical Holidays",
+      "русская надпись"
+    ],
+    "style": "vector-handwritten",
+    "background": "transparent"
+  },
+  {
+    "id": "new-year-happiness-russian-red-script",
+    "source": "assets/lettering/new-year-happiness-russian-red-script.svg",
+    "src": "lettering/new-year-happiness-russian-red-script.svg",
+    "name": {
+      "ru": "Красная рукописная надпись «Счастья в новом году!»",
+      "en": "Red script lettering: Happiness in the New Year"
+    },
+    "text": "Счастья в новом году!",
+    "language": "ru",
+    "category": "new-year",
+    "subcategory": "new-year-wishes",
+    "tags": [
+      "Счастья в новом году!",
+      "новый год",
+      "красная",
+      "рукописная надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "happiness in the new year",
+      "new year",
+      "red",
+      "script lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Happiness in the New Year",
+      "русская надпись"
+    ],
+    "style": "vector-script",
+    "background": "transparent"
+  },
+  {
+    "id": "winter-fairytale-russian-red-script",
+    "source": "assets/lettering/winter-fairytale-russian-red-script.svg",
+    "src": "lettering/winter-fairytale-russian-red-script.svg",
+    "name": {
+      "ru": "Красная рукописная надпись «Зимняя сказка»",
+      "en": "Red script lettering: Winter Fairytale"
+    },
+    "text": "Зимняя сказка",
+    "language": "ru",
+    "category": "winter",
+    "subcategory": "winter-fairytale",
+    "tags": [
+      "Зимняя сказка",
+      "зима",
+      "красная",
+      "рукописная надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "winter fairytale",
+      "winter",
+      "red",
+      "script lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Winter Fairytale",
+      "русская надпись"
+    ],
+    "style": "vector-script",
+    "background": "transparent"
+  },
+  {
+    "id": "cozy-christmas-russian-red-handwritten",
+    "source": "assets/lettering/cozy-christmas-russian-red-handwritten.svg",
+    "src": "lettering/cozy-christmas-russian-red-handwritten.svg",
+    "name": {
+      "ru": "Красная рукописная надпись «Уютного Рождества!»",
+      "en": "Red handwritten lettering: Cozy Christmas"
+    },
+    "text": "Уютного Рождества!",
+    "language": "ru",
+    "category": "christmas",
+    "subcategory": "christmas-merry-christmas",
+    "tags": [
+      "Уютного Рождества!",
+      "рождество",
+      "красная",
+      "рукописная надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "cozy christmas",
+      "christmas",
+      "red",
+      "handwritten lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Cozy Christmas",
+      "русская надпись"
+    ],
+    "style": "vector-handwritten",
+    "background": "transparent"
+  },
+  {
+    "id": "letter-to-father-frost-russian-red-handwritten",
+    "source": "assets/lettering/letter-to-father-frost-russian-red-handwritten.svg",
+    "src": "lettering/letter-to-father-frost-russian-red-handwritten.svg",
+    "name": {
+      "ru": "Красная рукописная надпись «Письмо Деду Морозу»",
+      "en": "Red handwritten lettering: Letter to Father Frost"
+    },
+    "text": "Письмо Деду Морозу",
+    "language": "ru",
+    "category": "new-year",
+    "subcategory": "new-year-father-frost-letter",
+    "tags": [
+      "Письмо Деду Морозу",
+      "новый год",
+      "красная",
+      "рукописная надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "letter to father frost",
+      "new year",
+      "red",
+      "handwritten lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Letter to Father Frost",
+      "русская надпись"
+    ],
+    "style": "vector-handwritten",
+    "background": "transparent"
+  },
+  {
+    "id": "christmas-magic-russian-red-script",
+    "source": "assets/lettering/christmas-magic-russian-red-script.svg",
+    "src": "lettering/christmas-magic-russian-red-script.svg",
+    "name": {
+      "ru": "Красная рукописная надпись «Рождественское волшебство»",
+      "en": "Red script lettering: Christmas Magic"
+    },
+    "text": "Рождественское волшебство",
+    "language": "ru",
+    "category": "magic",
+    "subcategory": "magic-christmas-magic",
+    "tags": [
+      "Рождественское волшебство",
+      "волшебство",
+      "красная",
+      "рукописная надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "christmas magic",
+      "magic",
+      "red",
+      "script lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Christmas Magic",
+      "русская надпись"
+    ],
+    "style": "vector-script",
+    "background": "transparent"
+  },
+  {
+    "id": "happy-holidays-russian-green-calligraphy",
+    "source": "assets/lettering/happy-holidays-russian-green-calligraphy.svg",
+    "src": "lettering/happy-holidays-russian-green-calligraphy.svg",
+    "name": {
+      "ru": "Зелёная каллиграфическая надпись «Счастливых праздников!»",
+      "en": "Green calligraphic lettering: Happy Holidays"
+    },
+    "text": "Счастливых праздников!",
+    "language": "ru",
+    "category": "wishes",
+    "subcategory": "wishes-holiday-greetings",
+    "tags": [
+      "Счастливых праздников!",
+      "пожелания",
+      "зелёная",
+      "каллиграфическая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "happy holidays",
+      "wishes",
+      "green",
+      "calligraphic lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Happy Holidays",
+      "русская надпись"
+    ],
+    "style": "vector-calligraphy",
+    "background": "transparent"
+  },
+  {
+    "id": "joy-and-prosperity-russian-green-calligraphy",
+    "source": "assets/lettering/joy-and-prosperity-russian-green-calligraphy.svg",
+    "src": "lettering/joy-and-prosperity-russian-green-calligraphy.svg",
+    "name": {
+      "ru": "Зелёная каллиграфическая надпись «Радости и благополучия!»",
+      "en": "Green calligraphic lettering: Joy and Prosperity"
+    },
+    "text": "Радости и благополучия!",
+    "language": "ru",
+    "category": "wishes",
+    "subcategory": "wishes-kind-wishes",
+    "tags": [
+      "Радости и благополучия!",
+      "пожелания",
+      "зелёная",
+      "каллиграфическая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "joy and prosperity",
+      "wishes",
+      "green",
+      "calligraphic lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Joy and Prosperity",
+      "русская надпись"
+    ],
+    "style": "vector-calligraphy",
+    "background": "transparent"
+  },
+  {
+    "id": "happy-new-year-russian-black-calligraphy",
+    "source": "assets/lettering/happy-new-year-russian-black-calligraphy.svg",
+    "src": "lettering/happy-new-year-russian-black-calligraphy.svg",
+    "name": {
+      "ru": "Чёрная каллиграфическая надпись «С Новым годом!»",
+      "en": "Black calligraphic lettering: Happy New Year"
+    },
+    "text": "С Новым годом!",
+    "language": "ru",
+    "category": "new-year",
+    "subcategory": "new-year-happy-new-year",
+    "tags": [
+      "С Новым годом!",
+      "новый год",
+      "чёрная",
+      "каллиграфическая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "happy new year",
+      "new year",
+      "black",
+      "calligraphic lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Happy New Year",
+      "русская надпись"
+    ],
+    "style": "vector-calligraphy",
+    "background": "transparent"
+  },
+  {
+    "id": "new-year-warmth-and-comfort-russian-black-calligraphy",
+    "source": "assets/lettering/new-year-warmth-and-comfort-russian-black-calligraphy.svg",
+    "src": "lettering/new-year-warmth-and-comfort-russian-black-calligraphy.svg",
+    "name": {
+      "ru": "Чёрная каллиграфическая надпись «Тепла и уюта в новом году!»",
+      "en": "Black calligraphic lettering: Warmth and Comfort in the New Year"
+    },
+    "text": "Тепла и уюта в новом году!",
+    "language": "ru",
+    "category": "new-year",
+    "subcategory": "new-year-wishes",
+    "tags": [
+      "Тепла и уюта в новом году!",
+      "новый год",
+      "чёрная",
+      "каллиграфическая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "warmth and comfort in the new year",
+      "new year",
+      "black",
+      "calligraphic lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Warmth and Comfort in the New Year",
+      "русская надпись"
+    ],
+    "style": "vector-calligraphy",
+    "background": "transparent"
+  },
+  {
+    "id": "new-year-miracles-russian-black-calligraphy",
+    "source": "assets/lettering/new-year-miracles-russian-black-calligraphy.svg",
+    "src": "lettering/new-year-miracles-russian-black-calligraphy.svg",
+    "name": {
+      "ru": "Чёрная каллиграфическая надпись «Чудес в новом году!»",
+      "en": "Black calligraphic lettering: Miracles in the New Year"
+    },
+    "text": "Чудес в новом году!",
+    "language": "ru",
+    "category": "new-year",
+    "subcategory": "new-year-wishes",
+    "tags": [
+      "Чудес в новом году!",
+      "новый год",
+      "чёрная",
+      "каллиграфическая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "miracles in the new year",
+      "new year",
+      "black",
+      "calligraphic lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Miracles in the New Year",
+      "русская надпись"
+    ],
+    "style": "vector-calligraphy",
+    "background": "transparent"
+  },
+  {
+    "id": "winter-magic-russian-black-calligraphy",
+    "source": "assets/lettering/winter-magic-russian-black-calligraphy.svg",
+    "src": "lettering/winter-magic-russian-black-calligraphy.svg",
+    "name": {
+      "ru": "Чёрная каллиграфическая надпись «Зимнего волшебства!»",
+      "en": "Black calligraphic lettering: Winter Magic"
+    },
+    "text": "Зимнего волшебства!",
+    "language": "ru",
+    "category": "magic",
+    "subcategory": "magic-winter-magic",
+    "tags": [
+      "Зимнего волшебства!",
+      "волшебство",
+      "чёрная",
+      "каллиграфическая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "winter magic",
+      "magic",
+      "black",
+      "calligraphic lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Winter Magic",
+      "русская надпись"
+    ],
+    "style": "vector-calligraphy",
+    "background": "transparent"
+  },
+  {
+    "id": "new-year-happiness-russian-black-calligraphy",
+    "source": "assets/lettering/new-year-happiness-russian-black-calligraphy.svg",
+    "src": "lettering/new-year-happiness-russian-black-calligraphy.svg",
+    "name": {
+      "ru": "Чёрная каллиграфическая надпись «Счастья в новом году!»",
+      "en": "Black calligraphic lettering: Happiness in the New Year"
+    },
+    "text": "Счастья в новом году!",
+    "language": "ru",
+    "category": "new-year",
+    "subcategory": "new-year-wishes",
+    "tags": [
+      "Счастья в новом году!",
+      "новый год",
+      "чёрная",
+      "каллиграфическая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "happiness in the new year",
+      "new year",
+      "black",
+      "calligraphic lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Happiness in the New Year",
+      "русская надпись"
+    ],
+    "style": "vector-calligraphy",
+    "background": "transparent"
+  },
+  {
+    "id": "merry-christmas-russian-black-calligraphy",
+    "source": "assets/lettering/merry-christmas-russian-black-calligraphy.svg",
+    "src": "lettering/merry-christmas-russian-black-calligraphy.svg",
+    "name": {
+      "ru": "Чёрная каллиграфическая надпись «С Рождеством Христовым!»",
+      "en": "Black calligraphic lettering: Merry Christmas"
+    },
+    "text": "С Рождеством Христовым!",
+    "language": "ru",
+    "category": "christmas",
+    "subcategory": "christmas-merry-christmas",
+    "tags": [
+      "С Рождеством Христовым!",
+      "рождество",
+      "чёрная",
+      "каллиграфическая надпись",
+      "векторная надпись"
+    ],
+    "tagsEn": [
+      "merry christmas",
+      "christmas",
+      "black",
+      "calligraphic lettering",
+      "vector lettering"
+    ],
+    "aliases": [
+      "Merry Christmas",
+      "русская надпись"
+    ],
+    "style": "vector-calligraphy",
+    "background": "transparent"
+  },
   {
     id: 'golden-glitter-merry-christmas', source: 'assets/lettering/golden-glitter-merry-christmas.png', src: 'lettering/golden-glitter-merry-christmas.png',
     name: { ru: 'Золотая надпись «Merry Christmas!» с блёстками', en: 'Golden glitter Merry Christmas calligraphy' },

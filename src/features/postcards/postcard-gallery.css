@@ -15,7 +15,7 @@
 .postcard-artistic-catalog > .template-grid { margin-top: 28px; }
 .postcard-create-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 1fr); align-items: start; gap: 28px; }
 .postcard-create-preview { display: grid; place-items: center; min-height: 320px; padding: 28px; border-radius: 14px; background: #eae9dd; }
-.postcard-create-preview > span { display: block; width: min(100%, 250px); background: white; box-shadow: 0 5px 15px #48513d22; }
+.postcard-create-preview > span { display: block; width: min(100%, 250px); filter: drop-shadow(0 5px 8px #48513d22); }
 .postcard-create-preview > span > svg, .postcard-start-card__paper > svg { display: block; }
 .postcard-create-fields .field { margin-top: 0; margin-bottom: 16px; }
 .postcard-create-fields input, .postcard-create-fields select { min-height: 44px; width: 100%; }

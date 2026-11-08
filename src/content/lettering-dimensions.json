@@ -1,4 +1,144 @@
 {
+  "merry-christmas-red-playful": {
+    "width": 505,
+    "height": 266
+  },
+  "happy-holidays-green-playful": {
+    "width": 441,
+    "height": 265
+  },
+  "let-it-snow-blue-playful": {
+    "width": 386,
+    "height": 274
+  },
+  "joy-to-the-world-red-playful": {
+    "width": 392,
+    "height": 303
+  },
+  "happy-new-year-red-playful": {
+    "width": 470,
+    "height": 262
+  },
+  "seasons-greetings-red-playful": {
+    "width": 479,
+    "height": 251
+  },
+  "ho-ho-ho-green-playful": {
+    "width": 460,
+    "height": 179
+  },
+  "peace-on-earth-green-playful": {
+    "width": 375,
+    "height": 309
+  },
+  "warm-winter-wishes-blue-playful": {
+    "width": 394,
+    "height": 308
+  },
+  "happy-new-year-russian-red-playful": {
+    "width": 459,
+    "height": 283
+  },
+  "merry-christmas-russian-green-playful": {
+    "width": 498,
+    "height": 225
+  },
+  "magical-holiday-russian-green-playful": {
+    "width": 452,
+    "height": 244
+  },
+  "health-joy-kindness-russian-green-playful": {
+    "width": 411,
+    "height": 279
+  },
+  "warmth-and-comfort-russian-red-playful": {
+    "width": 407,
+    "height": 259
+  },
+  "new-year-happiness-russian-green-playful": {
+    "width": 469,
+    "height": 230
+  },
+  "wishes-come-true-russian-green-playful": {
+    "width": 466,
+    "height": 221
+  },
+  "new-year-miracles-russian-green-playful": {
+    "width": 458,
+    "height": 247
+  },
+  "happy-christmas-russian-red-playful": {
+    "width": 470,
+    "height": 244
+  },
+  "merry-christmas-russian-red-script": {
+    "width": 504,
+    "height": 180
+  },
+  "believe-in-miracles-russian-red-script": {
+    "width": 374,
+    "height": 243
+  },
+  "happy-new-year-russian-red-handwritten": {
+    "width": 303,
+    "height": 224
+  },
+  "magical-holidays-russian-red-handwritten": {
+    "width": 432,
+    "height": 224
+  },
+  "new-year-happiness-russian-red-script": {
+    "width": 414,
+    "height": 220
+  },
+  "winter-fairytale-russian-red-script": {
+    "width": 391,
+    "height": 231
+  },
+  "cozy-christmas-russian-red-handwritten": {
+    "width": 466,
+    "height": 210
+  },
+  "letter-to-father-frost-russian-red-handwritten": {
+    "width": 443,
+    "height": 209
+  },
+  "christmas-magic-russian-red-script": {
+    "width": 496,
+    "height": 201
+  },
+  "happy-holidays-russian-green-calligraphy": {
+    "width": 473,
+    "height": 289
+  },
+  "joy-and-prosperity-russian-green-calligraphy": {
+    "width": 467,
+    "height": 291
+  },
+  "happy-new-year-russian-black-calligraphy": {
+    "width": 427,
+    "height": 292
+  },
+  "new-year-warmth-and-comfort-russian-black-calligraphy": {
+    "width": 416,
+    "height": 296
+  },
+  "new-year-miracles-russian-black-calligraphy": {
+    "width": 441,
+    "height": 275
+  },
+  "winter-magic-russian-black-calligraphy": {
+    "width": 442,
+    "height": 290
+  },
+  "new-year-happiness-russian-black-calligraphy": {
+    "width": 476,
+    "height": 274
+  },
+  "merry-christmas-russian-black-calligraphy": {
+    "width": 482,
+    "height": 269
+  },
   "golden-glitter-merry-christmas": {
     "width": 2172,
     "height": 724

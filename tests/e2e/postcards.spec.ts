@@ -605,24 +605,24 @@ test('multiple texts, illustration and lettering keep their layer identity, aspe
   await page.screenshot({ path: 'artifacts/postcards-layers-1440.png' });
 });
 
-test('canvas and large previews use original background and decor files without rotating portrait backgrounds', async ({ page }) => {
+test('canvas and large previews use full-resolution background and decor files without rotating portrait backgrounds', async ({ page }) => {
   await page.goto('/#postcards');
   await page.locator('[data-postcard-template="elf-workshop-a6-landscape"]').click();
   const setup = page.locator('.postcard-create-modal');
   const background = setup.locator('.postcard-create-preview image[href*="backgrounds/"]');
-  await expect(background).toHaveAttribute('href', /backgrounds\/delicate-golden-star-sparkle\.png$/);
+  await expect(background).toHaveAttribute('href', /backgrounds\/delicate-golden-star-sparkle\.(?:png|webp)$/);
   expect(await background.getAttribute('transform')).toBeNull();
   const dimensions = await background.evaluate(async node => { const image = new Image(); image.src = node.getAttribute('href')!; await image.decode(); return { width: image.naturalWidth, height: image.naturalHeight }; });
   expect(dimensions).toEqual({ width: 1024, height: 1536 });
   await setup.getByRole('button', { name: 'Создать проект', exact: true }).click();
   await acceptTermsIfOffered(page); await expect(page.locator('.postcard-studio')).toBeVisible(); await dismissNotices(page);
   const canvasBackground = page.locator('.canvas-artboard image[href*="backgrounds/"]');
-  await expect(canvasBackground).toHaveAttribute('href', /backgrounds\/delicate-golden-star-sparkle\.png$/);
+  await expect(canvasBackground).toHaveAttribute('href', /backgrounds\/delicate-golden-star-sparkle\.(?:png|webp)$/);
   expect(await canvasBackground.getAttribute('transform')).toBeNull();
   await tab(page, 'Декор');
   await page.getByRole('button', { name: 'Добавить: Бордовый бархатный бант с золотым кантом', exact: true }).click();
   const decor = page.locator('.canvas-artboard image[href*="decorations/burgundy-velvet-bow-with-gold-trim"]');
-  await expect(decor).toHaveAttribute('href', /decorations\/burgundy-velvet-bow-with-gold-trim\.png$/);
+  await expect(decor).toHaveAttribute('href', /decorations\/burgundy-velvet-bow-with-gold-trim\.(?:png|webp)$/);
   expect(await decor.evaluate(async node => { const image = new Image(); image.src = node.getAttribute('href')!; await image.decode(); return image.naturalWidth; })).toBe(1312);
   await page.getByRole('button', { name: 'Приблизить', exact: true }).click();
   await expect(page.locator('.canvas-artboard image[href$="-preview.webp"]')).toHaveCount(0);
@@ -638,7 +638,7 @@ test('decorative artwork keeps its original proportions and appears in opaque 30
   expect(artwork).toMatchObject({ type: 'decoration', assetId: 'burgundy-velvet-bow-with-gold-trim' });
   expect(artwork.width / artwork.height).toBeCloseTo(1312 / 1199, 6);
   await expect(page.locator('.canvas-artboard image[href*="decorations/burgundy-velvet-bow-with-gold-trim"]')).toHaveCount(1);
-  await expect(page.locator('.canvas-artboard image[href*="decorations/burgundy-velvet-bow-with-gold-trim"]')).toHaveAttribute('href', /burgundy-velvet-bow-with-gold-trim\.png$/);
+  await expect(page.locator('.canvas-artboard image[href*="decorations/burgundy-velvet-bow-with-gold-trim"]')).toHaveAttribute('href', /burgundy-velvet-bow-with-gold-trim\.(?:png|webp)$/);
   await number(page, 'По горизонтали', 20); await number(page, 'По вертикали', 35);
   await number(page, 'Ширина', 60); await number(page, 'Поворот', 30); await number(page, 'Непрозрачность', 70);
   await expect.poll(async () => { const element = (await activeCard(page)).elements[0]; return { width: element.width, rotation: element.rotation, opacity: element.type !== 'text' ? element.opacity : null }; }).toEqual({ width: 60, rotation: 30, opacity: 0.7 });

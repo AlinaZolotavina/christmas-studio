@@ -9,7 +9,12 @@ import { generatePostcardPdf, postcardExportSvg, preparePostcardExport } from '.
 afterEach(() => vi.unstubAllGlobals());
 function localFetch() {
   vi.stubGlobal('fetch', async (url: string) => {
-    try { return new Response(await readFile(resolve('public', url.replace(/^\.\//, '').replace(/^\//, '')))); }
+    try {
+      const path = resolve('assets', url.replace(/^\.\//, '').replace(/^\//, ''));
+      const bytes = await readFile(path);
+      // Node has no browser canvas: normalize WebP with Sharp at the fixture boundary.
+      return new Response(path.endsWith('.webp') ? await sharp(bytes).png().toBuffer() : bytes);
+    }
     catch { return new Response('', { status: 404 }); }
   });
 }

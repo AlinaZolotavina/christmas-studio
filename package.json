@@ -11,8 +11,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "assets:prepare": "node scripts/prepare-assets.mjs",
-    "prebuild": "npm run assets:prepare"
+    "assets:prepare": "node scripts/prepare-assets.mjs"
   },
   "dependencies": {
     "fflate": "0.8.3",

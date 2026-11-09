@@ -136,8 +136,8 @@ export const decorationMotifs: ImageMotif[] = [
 export const decorations: ImageMetadata[] = [
   {
     "id": "burgundy-velvet-bow-with-gold-trim",
-    "source": "assets/decorations/burgundy-velvet-bow-with-gold-trim.png",
-    "src": "decorations/burgundy-velvet-bow-with-gold-trim.png",
+    "source": "original-assets/decorations/burgundy-velvet-bow-with-gold-trim.png",
+    "src": "decorations/burgundy-velvet-bow-with-gold-trim.webp",
     "name": {
       "ru": "Бордовый бархатный бант с золотым кантом",
       "en": "Burgundy velvet bow with gold trim"
@@ -167,8 +167,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "gilded-holly-scroll-divider",
-    "source": "assets/decorations/gilded-holly-scroll-divider.png",
-    "src": "decorations/gilded-holly-scroll-divider.png",
+    "source": "original-assets/decorations/gilded-holly-scroll-divider.png",
+    "src": "decorations/gilded-holly-scroll-divider.webp",
     "name": {
       "ru": "Золотой разделитель с завитками и падубом",
       "en": "Gilded scroll divider with holly"
@@ -200,8 +200,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "gold-edged-burgundy-velvet-ribbon",
-    "source": "assets/decorations/gold-edged-burgundy-velvet-ribbon.png",
-    "src": "decorations/gold-edged-burgundy-velvet-ribbon.png",
+    "source": "original-assets/decorations/gold-edged-burgundy-velvet-ribbon.png",
+    "src": "decorations/gold-edged-burgundy-velvet-ribbon.webp",
     "name": {
       "ru": "Волнистая бордовая лента с золотым краем",
       "en": "Wavy burgundy velvet ribbon with gold edging"
@@ -233,8 +233,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "golden-glitter-starburst-arc",
-    "source": "assets/decorations/golden-glitter-starburst-arc.png",
-    "src": "decorations/golden-glitter-starburst-arc.png",
+    "source": "original-assets/decorations/golden-glitter-starburst-arc.png",
+    "src": "decorations/golden-glitter-starburst-arc.webp",
     "name": {
       "ru": "Дуга из золотых звёзд и искр",
       "en": "Arc of golden stars and sparkles"
@@ -266,8 +266,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "golden-star-garland-with-burgundy-bows",
-    "source": "assets/decorations/golden-star-garland-with-burgundy-bows.png",
-    "src": "decorations/golden-star-garland-with-burgundy-bows.png",
+    "source": "original-assets/decorations/golden-star-garland-with-burgundy-bows.png",
+    "src": "decorations/golden-star-garland-with-burgundy-bows.webp",
     "name": {
       "ru": "Гирлянда золотых звёзд с бордовыми бантами",
       "en": "Golden star garland with burgundy bows"
@@ -297,8 +297,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "golden-watercolour-eight-point-starburst",
-    "source": "assets/decorations/golden-watercolour-eight-point-starburst.png",
-    "src": "decorations/golden-watercolour-eight-point-starburst.png",
+    "source": "original-assets/decorations/golden-watercolour-eight-point-starburst.png",
+    "src": "decorations/golden-watercolour-eight-point-starburst.webp",
     "name": {
       "ru": "Золотая восьмиконечная звезда",
       "en": "Golden watercolor eight-point starburst"
@@ -328,8 +328,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "golden-watercolour-star",
-    "source": "assets/decorations/golden-watercolour-star.png",
-    "src": "decorations/golden-watercolour-star.png",
+    "source": "original-assets/decorations/golden-watercolour-star.png",
+    "src": "decorations/golden-watercolour-star.webp",
     "name": {
       "ru": "Объёмная золотая пятиконечная звезда",
       "en": "Faceted golden five-point watercolor star"
@@ -361,8 +361,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "ornamental-christmas-pinecone-divider",
-    "source": "assets/decorations/ornamental-christmas-pinecone-divider.png",
-    "src": "decorations/ornamental-christmas-pinecone-divider.png",
+    "source": "original-assets/decorations/ornamental-christmas-pinecone-divider.png",
+    "src": "decorations/ornamental-christmas-pinecone-divider.webp",
     "name": {
       "ru": "Орнаментальный разделитель с шишками и бантом",
       "en": "Ornamental divider with pine cones and a bow"
@@ -398,8 +398,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "ornate-burgundy-and-sage-snowflake-ornament",
-    "source": "assets/decorations/ornate-burgundy-and-sage-snowflake-ornament.png",
-    "src": "decorations/ornate-burgundy-and-sage-snowflake-ornament.png",
+    "source": "original-assets/decorations/ornate-burgundy-and-sage-snowflake-ornament.png",
+    "src": "decorations/ornate-burgundy-and-sage-snowflake-ornament.webp",
     "name": {
       "ru": "Ажурная снежинка в бордовых и шалфейных тонах",
       "en": "Ornate burgundy and sage snowflake"
@@ -433,8 +433,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "ornate-golden-compass-star",
-    "source": "assets/decorations/ornate-golden-compass-star.png",
-    "src": "decorations/ornate-golden-compass-star.png",
+    "source": "original-assets/decorations/ornate-golden-compass-star.png",
+    "src": "decorations/ornate-golden-compass-star.webp",
     "name": {
       "ru": "Золотая вытянутая звезда-роза ветров",
       "en": "Elongated golden compass star"
@@ -466,8 +466,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "ornate-holly-berry-snowflake",
-    "source": "assets/decorations/ornate-holly-berry-snowflake.png",
-    "src": "decorations/ornate-holly-berry-snowflake.png",
+    "source": "original-assets/decorations/ornate-holly-berry-snowflake.png",
+    "src": "decorations/ornate-holly-berry-snowflake.webp",
     "name": {
       "ru": "Снежинка из листьев падуба и красных ягод",
       "en": "Ornate holly leaf and berry snowflake"
@@ -499,8 +499,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "rustic-linen-ribbon-bow",
-    "source": "assets/decorations/rustic-linen-ribbon-bow.png",
-    "src": "decorations/rustic-linen-ribbon-bow.png",
+    "source": "original-assets/decorations/rustic-linen-ribbon-bow.png",
+    "src": "decorations/rustic-linen-ribbon-bow.webp",
     "name": {
       "ru": "Кремовый бант из льняной ленты",
       "en": "Rustic ivory linen ribbon bow"
@@ -532,8 +532,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "vintage-burgundy-velvet-bow",
-    "source": "assets/decorations/vintage-burgundy-velvet-bow.png",
-    "src": "decorations/vintage-burgundy-velvet-bow.png",
+    "source": "original-assets/decorations/vintage-burgundy-velvet-bow.png",
+    "src": "decorations/vintage-burgundy-velvet-bow.webp",
     "name": {
       "ru": "Винтажный бордовый бархатный бант",
       "en": "Vintage burgundy velvet bow"
@@ -565,8 +565,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-berry-and-leaf-sprig",
-    "source": "assets/decorations/watercolour-berry-and-leaf-sprig.png",
-    "src": "decorations/watercolour-berry-and-leaf-sprig.png",
+    "source": "original-assets/decorations/watercolour-berry-and-leaf-sprig.png",
+    "src": "decorations/watercolour-berry-and-leaf-sprig.webp",
     "name": {
       "ru": "Веточка с белыми ягодами и зелёными листьями",
       "en": "Sprig with white berries and green leaves"
@@ -596,8 +596,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-cedar-sprig-on-transparent-background",
-    "source": "assets/decorations/watercolour-cedar-sprig-on-transparent-background.png",
-    "src": "decorations/watercolour-cedar-sprig-on-transparent-background.png",
+    "source": "original-assets/decorations/watercolour-cedar-sprig-on-transparent-background.png",
+    "src": "decorations/watercolour-cedar-sprig-on-transparent-background.webp",
     "name": {
       "ru": "Плоская хвойная веточка",
       "en": "Flat evergreen foliage sprig"
@@ -627,8 +627,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-christmas-evergreen-corner",
-    "source": "assets/decorations/watercolour-christmas-evergreen-corner.png",
-    "src": "decorations/watercolour-christmas-evergreen-corner.png",
+    "source": "original-assets/decorations/watercolour-christmas-evergreen-corner.png",
+    "src": "decorations/watercolour-christmas-evergreen-corner.webp",
     "name": {
       "ru": "Хвойный уголок с шишками и ягодами",
       "en": "Evergreen corner with pine cones and berries"
@@ -660,8 +660,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-christmas-garland-with-glowing-bulbs",
-    "source": "assets/decorations/watercolour-christmas-garland-with-glowing-bulbs.png",
-    "src": "decorations/watercolour-christmas-garland-with-glowing-bulbs.png",
+    "source": "original-assets/decorations/watercolour-christmas-garland-with-glowing-bulbs.png",
+    "src": "decorations/watercolour-christmas-garland-with-glowing-bulbs.webp",
     "name": {
       "ru": "Гирлянда тёплых лампочек с красными бантами",
       "en": "Glowing warm bulb garland with red bows"
@@ -693,8 +693,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-christmas-garland-with-velvet-bow",
-    "source": "assets/decorations/watercolour-christmas-garland-with-velvet-bow.png",
-    "src": "decorations/watercolour-christmas-garland-with-velvet-bow.png",
+    "source": "original-assets/decorations/watercolour-christmas-garland-with-velvet-bow.png",
+    "src": "decorations/watercolour-christmas-garland-with-velvet-bow.webp",
     "name": {
       "ru": "Хвойная гирлянда с шишками и бархатным бантом",
       "en": "Evergreen garland with pine cones and a velvet bow"
@@ -726,8 +726,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-eight-point-christmas-star-ornament",
-    "source": "assets/decorations/watercolour-eight-point-christmas-star-ornament.png",
-    "src": "decorations/watercolour-eight-point-christmas-star-ornament.png",
+    "source": "original-assets/decorations/watercolour-eight-point-christmas-star-ornament.png",
+    "src": "decorations/watercolour-eight-point-christmas-star-ornament.webp",
     "name": {
       "ru": "Кремово-золотая звезда с растительным узором",
       "en": "Ivory and gold star with botanical ornament"
@@ -761,8 +761,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-evergreen-sprig-on-transparent-background",
-    "source": "assets/decorations/watercolour-evergreen-sprig-on-transparent-background.png",
-    "src": "decorations/watercolour-evergreen-sprig-on-transparent-background.png",
+    "source": "original-assets/decorations/watercolour-evergreen-sprig-on-transparent-background.png",
+    "src": "decorations/watercolour-evergreen-sprig-on-transparent-background.webp",
     "name": {
       "ru": "Зелёная хвойная веточка без украшений",
       "en": "Plain green evergreen sprig"
@@ -794,8 +794,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-holly-and-berry-corner-ornament",
-    "source": "assets/decorations/watercolour-holly-and-berry-corner-ornament.png",
-    "src": "decorations/watercolour-holly-and-berry-corner-ornament.png",
+    "source": "original-assets/decorations/watercolour-holly-and-berry-corner-ornament.png",
+    "src": "decorations/watercolour-holly-and-berry-corner-ornament.webp",
     "name": {
       "ru": "Уголок из падуба и красных ягод",
       "en": "Holly and red berry corner ornament"
@@ -827,8 +827,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-holly-berry-garland-with-red-bow",
-    "source": "assets/decorations/watercolour-holly-berry-garland-with-red-bow.png",
-    "src": "decorations/watercolour-holly-berry-garland-with-red-bow.png",
+    "source": "original-assets/decorations/watercolour-holly-berry-garland-with-red-bow.png",
+    "src": "decorations/watercolour-holly-berry-garland-with-red-bow.webp",
     "name": {
       "ru": "Гирлянда падуба с ягодами и красным бантом",
       "en": "Holly berry garland with a red bow"
@@ -860,8 +860,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-pine-and-berry-sprig",
-    "source": "assets/decorations/watercolour-pine-and-berry-sprig.png",
-    "src": "decorations/watercolour-pine-and-berry-sprig.png",
+    "source": "original-assets/decorations/watercolour-pine-and-berry-sprig.png",
+    "src": "decorations/watercolour-pine-and-berry-sprig.webp",
     "name": {
       "ru": "Хвойная веточка с красными ягодами",
       "en": "Evergreen sprig with red berries"
@@ -891,8 +891,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-pine-branch-with-cones",
-    "source": "assets/decorations/watercolour-pine-branch-with-cones.png",
-    "src": "decorations/watercolour-pine-branch-with-cones.png",
+    "source": "original-assets/decorations/watercolour-pine-branch-with-cones.png",
+    "src": "decorations/watercolour-pine-branch-with-cones.webp",
     "name": {
       "ru": "Сосновая ветка с шишками",
       "en": "Pine branch with cones"
@@ -924,8 +924,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-red-berry-sprig",
-    "source": "assets/decorations/watercolour-red-berry-sprig.png",
-    "src": "decorations/watercolour-red-berry-sprig.png",
+    "source": "original-assets/decorations/watercolour-red-berry-sprig.png",
+    "src": "decorations/watercolour-red-berry-sprig.webp",
     "name": {
       "ru": "Веточка с красными ягодами и листьями",
       "en": "Red berry and leaf sprig"
@@ -955,8 +955,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-rosehip-branch-arch",
-    "source": "assets/decorations/watercolour-rosehip-branch-arch.png",
-    "src": "decorations/watercolour-rosehip-branch-arch.png",
+    "source": "original-assets/decorations/watercolour-rosehip-branch-arch.png",
+    "src": "decorations/watercolour-rosehip-branch-arch.webp",
     "name": {
       "ru": "Дуга из ветки шиповника с красными ягодами",
       "en": "Arch of rosehip branches with red berries"
@@ -988,8 +988,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-snowflake-ornament-with-cranberries",
-    "source": "assets/decorations/watercolour-snowflake-ornament-with-cranberries.png",
-    "src": "decorations/watercolour-snowflake-ornament-with-cranberries.png",
+    "source": "original-assets/decorations/watercolour-snowflake-ornament-with-cranberries.png",
+    "src": "decorations/watercolour-snowflake-ornament-with-cranberries.webp",
     "name": {
       "ru": "Золотая снежинка с бордовыми ягодами",
       "en": "Golden snowflake ornament with cranberry berries"
@@ -1021,8 +1021,8 @@ export const decorations: ImageMetadata[] = [
   },
   {
     "id": "watercolour-snowflake-ornament-with-holly-accents",
-    "source": "assets/decorations/watercolour-snowflake-ornament-with-holly-accents.png",
-    "src": "decorations/watercolour-snowflake-ornament-with-holly-accents.png",
+    "source": "original-assets/decorations/watercolour-snowflake-ornament-with-holly-accents.png",
+    "src": "decorations/watercolour-snowflake-ornament-with-holly-accents.webp",
     "name": {
       "ru": "Нарядная снежинка с падубом и ягодами",
       "en": "Ornate snowflake with holly and berries"

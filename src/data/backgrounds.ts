@@ -30,8 +30,8 @@ export const backgroundMotifs: ImageMotif[] = [
 export const backgrounds: BackgroundMetadata[] = [
   {
     "id": "dreamy-golden-winter-snowfall",
-    "source": "assets/backgrounds/dreamy-golden-winter-snowfall.png",
-    "src": "backgrounds/dreamy-golden-winter-snowfall.png",
+    "source": "original-assets/backgrounds/dreamy-golden-winter-snowfall.png",
+    "src": "backgrounds/dreamy-golden-winter-snowfall.webp",
     "name": {
       "ru": "Голубой снегопад с тёплым золотым боке",
       "en": "Blue snowfall with warm golden bokeh"
@@ -64,8 +64,8 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     "id": "dreamy-pastel-winter-sparkle",
-    "source": "assets/backgrounds/dreamy-pastel-winter-sparkle.png",
-    "src": "backgrounds/dreamy-pastel-winter-sparkle.png",
+    "source": "original-assets/backgrounds/dreamy-pastel-winter-sparkle.png",
+    "src": "backgrounds/dreamy-pastel-winter-sparkle.webp",
     "name": {
       "ru": "Пастельный зимний фон с мерцающими огнями",
       "en": "Pastel winter background with sparkling lights"
@@ -102,8 +102,8 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     "id": "dreamy-winter-snowflake-bokeh",
-    "source": "assets/backgrounds/dreamy-winter-snowflake-bokeh.png",
-    "src": "backgrounds/dreamy-winter-snowflake-bokeh.png",
+    "source": "original-assets/backgrounds/dreamy-winter-snowflake-bokeh.png",
+    "src": "backgrounds/dreamy-winter-snowflake-bokeh.webp",
     "name": {
       "ru": "Морозный голубой фон со снежинками и боке",
       "en": "Frosty blue snowflake and bokeh background"
@@ -137,8 +137,8 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     "id": "elegant-gold-winter-watercolour-background",
-    "source": "assets/backgrounds/elegant-gold-winter-watercolour-background.png",
-    "src": "backgrounds/elegant-gold-winter-watercolour-background.png",
+    "source": "original-assets/backgrounds/elegant-gold-winter-watercolour-background.png",
+    "src": "backgrounds/elegant-gold-winter-watercolour-background.webp",
     "name": {
       "ru": "Пастельная акварельная бумага с золотыми звёздами",
       "en": "Pastel watercolor paper with golden stars"
@@ -175,8 +175,8 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     "id": "vintage-botanical-christmas-snowflakes",
-    "source": "assets/backgrounds/vintage-botanical-christmas-snowflakes.png",
-    "src": "backgrounds/vintage-botanical-christmas-snowflakes.png",
+    "source": "original-assets/backgrounds/vintage-botanical-christmas-snowflakes.png",
+    "src": "backgrounds/vintage-botanical-christmas-snowflakes.webp",
     "name": {
       "ru": "Винтажная кремовая рамка с хвойными веточками и снежинками",
       "en": "Vintage cream border with evergreen sprigs and snowflakes"
@@ -213,8 +213,8 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     "id": "vintage-icy-blue-snowflake-paper-texture",
-    "source": "assets/backgrounds/vintage-icy-blue-snowflake-paper-texture.png",
-    "src": "backgrounds/vintage-icy-blue-snowflake-paper-texture.png",
+    "source": "original-assets/backgrounds/vintage-icy-blue-snowflake-paper-texture.png",
+    "src": "backgrounds/vintage-icy-blue-snowflake-paper-texture.webp",
     "name": {
       "ru": "Состаренная голубая бумага со снежинками",
       "en": "Vintage icy blue paper with snowflakes"
@@ -249,8 +249,8 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     "id": "vintage-sepia-christmas-stationery",
-    "source": "assets/backgrounds/vintage-sepia-christmas-stationery.png",
-    "src": "backgrounds/vintage-sepia-christmas-stationery.png",
+    "source": "original-assets/backgrounds/vintage-sepia-christmas-stationery.png",
+    "src": "backgrounds/vintage-sepia-christmas-stationery.webp",
     "name": {
       "ru": "Винтажная бумага с подвесными игрушками и бантиками",
       "en": "Vintage stationery with hanging ornaments and bows"
@@ -289,8 +289,8 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     "id": "vintage-winter-botanical-watercolour-background",
-    "source": "assets/backgrounds/vintage-winter-botanical-watercolour-background.png",
-    "src": "backgrounds/vintage-winter-botanical-watercolour-background.png",
+    "source": "original-assets/backgrounds/vintage-winter-botanical-watercolour-background.png",
+    "src": "backgrounds/vintage-winter-botanical-watercolour-background.webp",
     "name": {
       "ru": "Розовая винтажная бумага с зимними веточками",
       "en": "Rose vintage paper with winter botanical sprigs"
@@ -329,7 +329,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'watercolor-winter-sky-snowflakes',
-    source: 'assets/backgrounds/watercolor-winter-sky-snowflakes.png', src: 'backgrounds/watercolor-winter-sky-snowflakes.png',
+    source: 'original-assets/backgrounds/watercolor-winter-sky-snowflakes.png', src: 'backgrounds/watercolor-winter-sky-snowflakes.webp',
     name: { ru: 'Голубое и сиреневое зимнее небо со снежинками', en: 'Blue and lilac winter sky with snowflakes' },
     category: 'background-textures', subcategory: 'textures-snowflakes', composition: 'texture', background: 'opaque',
     tags: ['акварель', 'зима', 'небо', 'снежинки', 'снег', 'голубой', 'сиреневый', 'градиент'],
@@ -338,7 +338,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'elegant-golden-christmas-background',
-    source: 'assets/backgrounds/elegant-golden-christmas-background.png', src: 'backgrounds/elegant-golden-christmas-background.png',
+    source: 'original-assets/backgrounds/elegant-golden-christmas-background.png', src: 'backgrounds/elegant-golden-christmas-background.webp',
     name: { ru: 'Кремовый рождественский фон с золотыми веточками', en: 'Cream Christmas background with golden sprigs' },
     category: 'background-textures', subcategory: 'textures-golden-botanical', composition: 'texture', background: 'opaque',
     tags: ['акварель', 'рождество', 'кремовый', 'золото', 'хвоя', 'веточки', 'звёзды', 'бумага'],
@@ -347,7 +347,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'festive-watercolor-holly-bows-gold-pattern',
-    source: 'assets/backgrounds/festive-watercolor-holly-bows-gold-pattern.png', src: 'backgrounds/festive-watercolor-holly-bows-gold-pattern.png',
+    source: 'original-assets/backgrounds/festive-watercolor-holly-bows-gold-pattern.png', src: 'backgrounds/festive-watercolor-holly-bows-gold-pattern.webp',
     name: { ru: 'Узор с падубом, красными бантами и золотыми деталями', en: 'Holly, red bows and gold detail pattern' },
     category: 'background-patterns', subcategory: 'patterns-botanical', composition: 'pattern', background: 'opaque',
     tags: ['акварель', 'узор', 'падуб', 'ягоды', 'красные банты', 'золото', 'веточки', 'кремовый'],
@@ -356,7 +356,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'festive-rose-winter-pattern',
-    source: 'assets/backgrounds/festive-rose-winter-pattern.png', src: 'backgrounds/festive-rose-winter-pattern.png',
+    source: 'original-assets/backgrounds/festive-rose-winter-pattern.png', src: 'backgrounds/festive-rose-winter-pattern.webp',
     name: { ru: 'Розовый зимний фон со снежинками и ягодами', en: 'Rose winter background with snowflakes and berries' },
     category: 'background-textures', subcategory: 'textures-snowflakes', composition: 'texture', background: 'opaque',
     tags: ['акварель', 'зима', 'розовый', 'кремовый', 'градиент', 'снежинки', 'ягоды', 'золотые звёзды'],
@@ -365,7 +365,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'minimalist-christmas-fir-trees-snowflakes-pattern',
-    source: 'assets/backgrounds/minimalist-christmas-fir-trees-snowflakes-pattern.png', src: 'backgrounds/minimalist-christmas-fir-trees-snowflakes-pattern.png',
+    source: 'original-assets/backgrounds/minimalist-christmas-fir-trees-snowflakes-pattern.png', src: 'backgrounds/minimalist-christmas-fir-trees-snowflakes-pattern.webp',
     name: { ru: 'Лаконичный узор с ёлочками и снежинками', en: 'Minimal fir tree and snowflake pattern' },
     category: 'background-patterns', subcategory: 'patterns-winter-symbols', composition: 'pattern', background: 'opaque',
     tags: ['узор', 'минимализм', 'ёлочки', 'снежинки', 'кремовый', 'красный', 'зелёный', 'зима'],
@@ -374,7 +374,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'vintage-star-parchment-ornaments',
-    source: 'assets/backgrounds/vintage-star-parchment-ornaments.png', src: 'backgrounds/vintage-star-parchment-ornaments.png',
+    source: 'original-assets/backgrounds/vintage-star-parchment-ornaments.png', src: 'backgrounds/vintage-star-parchment-ornaments.webp',
     name: { ru: 'Винтажный пергамент с золотыми звёздами и завитками', en: 'Vintage parchment with golden stars and flourishes' },
     category: 'background-frames', subcategory: 'frames-ornamental', composition: 'frame', background: 'opaque',
     tags: ['пергамент', 'винтаж', 'бумага', 'золото', 'звёзды', 'завитки', 'рамка', 'бежевый'],
@@ -383,7 +383,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'watercolor-christmas-gingerbread-pattern',
-    source: 'assets/backgrounds/watercolor-christmas-gingerbread-pattern.png', src: 'backgrounds/watercolor-christmas-gingerbread-pattern.png',
+    source: 'original-assets/backgrounds/watercolor-christmas-gingerbread-pattern.png', src: 'backgrounds/watercolor-christmas-gingerbread-pattern.webp',
     name: { ru: 'Акварельный узор с имбирным печеньем и леденцами', en: 'Watercolor gingerbread cookie and candy cane pattern' },
     category: 'background-patterns', subcategory: 'patterns-gingerbread', composition: 'pattern', background: 'opaque',
     tags: ['акварель', 'узор', 'имбирное печенье', 'пряники', 'леденцы', 'звёзды', 'сердечки', 'кремовый'],
@@ -392,7 +392,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'delicate-winter-botanicals-sage-green',
-    source: 'assets/backgrounds/delicate-winter-botanicals-sage-green.png', src: 'backgrounds/delicate-winter-botanicals-sage-green.png',
+    source: 'original-assets/backgrounds/delicate-winter-botanicals-sage-green.png', src: 'backgrounds/delicate-winter-botanicals-sage-green.webp',
     name: { ru: 'Шалфейный фон с зимними веточками и снежинками', en: 'Sage background with winter sprigs and snowflakes' },
     category: 'background-frames', subcategory: 'frames-botanical', composition: 'frame', background: 'opaque',
     tags: ['акварель', 'шалфейный', 'зелёный', 'веточки', 'ягоды', 'снежинки', 'зима', 'рамка'],
@@ -401,7 +401,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'delicate-winter-snowflake-background',
-    source: 'assets/backgrounds/delicate-winter-snowflake-background.png', src: 'backgrounds/delicate-winter-snowflake-background.png',
+    source: 'original-assets/backgrounds/delicate-winter-snowflake-background.png', src: 'backgrounds/delicate-winter-snowflake-background.webp',
     name: { ru: 'Нежный голубой фон с белыми снежинками', en: 'Soft blue background with white snowflakes' },
     category: 'background-textures', subcategory: 'textures-snowflakes', composition: 'texture', background: 'opaque',
     tags: ['акварель', 'голубой', 'белый', 'снежинки', 'снег', 'зима', 'градиент', 'бумага'],
@@ -410,7 +410,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'delicate-golden-star-sparkle',
-    source: 'assets/backgrounds/delicate-golden-star-sparkle.png', src: 'backgrounds/delicate-golden-star-sparkle.png',
+    source: 'original-assets/backgrounds/delicate-golden-star-sparkle.png', src: 'backgrounds/delicate-golden-star-sparkle.webp',
     name: { ru: 'Кремовая бумага с россыпью золотых звёзд', en: 'Cream paper scattered with golden stars' },
     category: 'background-textures', subcategory: 'textures-stars', composition: 'texture', background: 'opaque',
     tags: ['бумага', 'кремовый', 'золото', 'звёзды', 'искры', 'сияние', 'нежный', 'рождество'],
@@ -419,7 +419,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'faded-vintage-tartan-paper',
-    source: 'assets/backgrounds/faded-vintage-tartan-paper.png', src: 'backgrounds/faded-vintage-tartan-paper.png',
+    source: 'original-assets/backgrounds/faded-vintage-tartan-paper.png', src: 'backgrounds/faded-vintage-tartan-paper.webp',
     name: { ru: 'Выцветший винтажный тартан на кремовой бумаге', en: 'Faded vintage tartan on cream paper' },
     category: 'background-patterns', subcategory: 'patterns-tartan', composition: 'pattern', background: 'opaque',
     tags: ['тартан', 'клетка', 'винтаж', 'бумага', 'бежевый', 'красный', 'зелёный', 'выцветший'],
@@ -428,7 +428,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'winter-watercolor-spruce-branch-frame',
-    source: 'assets/backgrounds/winter-watercolor-spruce-branch-frame.png', src: 'backgrounds/winter-watercolor-spruce-branch-frame.png',
+    source: 'original-assets/backgrounds/winter-watercolor-spruce-branch-frame.png', src: 'backgrounds/winter-watercolor-spruce-branch-frame.webp',
     name: { ru: 'Голубая зимняя рамка с заснеженными еловыми ветвями', en: 'Blue winter frame with snowy spruce branches' },
     category: 'background-frames', subcategory: 'frames-botanical', composition: 'frame', background: 'opaque',
     tags: ['акварель', 'рамка', 'ель', 'ветви', 'хвоя', 'снег', 'снежинки', 'голубой'],
@@ -437,7 +437,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'shimmering-golden-stars-background',
-    source: 'assets/backgrounds/shimmering-golden-stars-background.png', src: 'backgrounds/shimmering-golden-stars-background.png',
+    source: 'original-assets/backgrounds/shimmering-golden-stars-background.png', src: 'backgrounds/shimmering-golden-stars-background.webp',
     name: { ru: 'Розовый акварельный фон с мерцающими золотыми звёздами', en: 'Rose watercolor background with shimmering golden stars' },
     category: 'background-textures', subcategory: 'textures-stars', composition: 'texture', background: 'opaque',
     tags: ['акварель', 'розовый', 'золото', 'звёзды', 'искры', 'мерцание', 'градиент', 'кремовый'],
@@ -446,7 +446,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'christmas-watercolor-poinsettia-berry-frame',
-    source: 'assets/backgrounds/christmas-watercolor-poinsettia-berry-frame.png', src: 'backgrounds/christmas-watercolor-poinsettia-berry-frame.png',
+    source: 'original-assets/backgrounds/christmas-watercolor-poinsettia-berry-frame.png', src: 'backgrounds/christmas-watercolor-poinsettia-berry-frame.webp',
     name: { ru: 'Рождественская рамка с пуансеттиями, хвоей и ягодами', en: 'Christmas frame with poinsettias, evergreen and berries' },
     category: 'background-frames', subcategory: 'frames-botanical', composition: 'frame', background: 'opaque',
     tags: ['акварель', 'рамка', 'рождество', 'пуансеттия', 'красные цветы', 'ягоды', 'хвоя', 'кремовый'],
@@ -455,7 +455,7 @@ export const backgrounds: BackgroundMetadata[] = [
   },
   {
     id: 'scandinavian-winter-pattern-cream-paper',
-    source: 'assets/backgrounds/scandinavian-winter-pattern-cream-paper.png', src: 'backgrounds/scandinavian-winter-pattern-cream-paper.png',
+    source: 'original-assets/backgrounds/scandinavian-winter-pattern-cream-paper.png', src: 'backgrounds/scandinavian-winter-pattern-cream-paper.webp',
     name: { ru: 'Скандинавский узор со снежинками, ёлками и оленями', en: 'Scandinavian snowflake, fir tree and reindeer pattern' },
     category: 'background-patterns', subcategory: 'patterns-winter-symbols', composition: 'pattern', background: 'opaque',
     tags: ['узор', 'скандинавский', 'снежинки', 'ёлочки', 'олени', 'ромбы', 'кремовый', 'зима'],

@@ -9,7 +9,7 @@ afterEach(() => vi.unstubAllGlobals());
 function localFonts(missing = '') {
   vi.stubGlobal('fetch', async (url: string) => {
     if (missing && url.includes(missing)) return new Response('', { status: 404 });
-    try { return new Response(await readFile(resolve('public', url.replace(/^\.\//, '').replace(/^\//, '')))); }
+    try { return new Response(await readFile(resolve('assets', url.replace(/^\.\//, '').replace(/^\//, '')))); }
     catch { return new Response('', { status: 404 }); }
   });
 }

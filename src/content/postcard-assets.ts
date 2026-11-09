@@ -17,6 +17,7 @@ export interface PostcardResource {
   height: number;
   preview: string;
   print: string;
+  // Export bytes are normalized to PNG by the resource loader, including WebP sources.
   format: 'png' | 'svg';
 }
 type Dimensions = Record<string, { width: number; height: number }>;

@@ -14,11 +14,11 @@ describe('explicit illustration metadata', () => {
     expect(new Set(categories.map(i => i.id)).size).toBe(categories.length);
     expect(new Set(subcategories.map(i => i.id)).size).toBe(subcategories.length);
     expect(categories).toHaveLength(8);
-    expect(new Set(images.map(i => i.source))).toEqual(new Set(readdirSync('assets').filter(file => /\.png$/i.test(file)).map(file => `assets/${file}`)));
+    expect(new Set(images.map(i => i.src))).toEqual(new Set(readdirSync('assets/art').filter(file => file.endsWith('.webp') && !file.endsWith('-preview.webp')).map(file => `art/${file}`)));
     for (const image of images) {
       expect(image.id).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
-      expect(image.source).toBe(`assets/${image.id}.png`);
-      expect(image.src).toBe(`art/${image.id}.png`);
+      expect(image.source).toBe(`original-assets/${image.id}.png`);
+      expect(image.src).toBe(`art/${image.id}.webp`);
       expect(categories.some(c => c.id === image.category)).toBe(true);
       expect(subcategories.some(c => c.id === image.subcategory && c.category === image.category)).toBe(true);
       expect(image.tags.length).toBeGreaterThan(0);

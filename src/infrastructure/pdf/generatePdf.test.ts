@@ -1,14 +1,19 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import sharp from 'sharp';
 import { createProject } from '../../domain/project';
 import { generatePdf, preparePrint } from './generatePdf';
 
 function installLocalFetch(missing = '') {
   vi.stubGlobal('fetch', async (url: string) => {
     if (missing && url.includes(missing)) return new Response('', { status: 404 });
-    const path = resolve('public', url.replace(/^\.\//, '').replace(/^\//, ''));
-    try { return new Response(await readFile(path)); } catch { return new Response('', { status: 404 }); }
+    const path = resolve('assets', url.replace(/^\.\//, '').replace(/^\//, ''));
+    try {
+      const bytes = await readFile(path);
+      // Node has no browser canvas: normalize WebP with Sharp at the fixture boundary.
+      return new Response(path.endsWith('.webp') ? await sharp(bytes).png().toBuffer() : bytes);
+    } catch { return new Response('', { status: 404 }); }
   });
 }
 

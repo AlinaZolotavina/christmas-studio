@@ -1,30 +1,30 @@
 # Изображения для галереи шаблонов и страницы «О проекте»
 
-Макеты от 3 ноября 2026 года. Оформление страниц хранится в `assets/site/`, отдельно от будущих фонов редактора в `assets/backgrounds/`. Все предусмотренные изображения подключены: зимние hero-композиции, шесть обложек наборов, подарок, конверт и три общие обложки направлений.
+Макеты от 3 ноября 2026 года. Оформление страниц хранится в `original-assets/site/`, отдельно от будущих фонов редактора в `original-assets/backgrounds/`. Все предусмотренные изображения подключены: зимние hero-композиции, шесть обложек наборов, подарок, конверт и три общие обложки направлений.
 
 ## Общие требования
 
 - Акварельный зимний/рождественский стиль, мягкие натуральные оттенки: хвойный зелёный, кремовый, приглушённый красный, тёплое золото.
 - Без текста, названий наборов, номеров карточек, кнопок и логотипов: подписи остаются в HTML.
-- Имена файлов — на английском в kebab-case. Исходники добавляются в `assets/site/`, подготовленные версии — в `public/site/`. [Структура папок](../assets/README.md).
+- Имена файлов — на английском в kebab-case. Исходники добавляются в `original-assets/site/`, подготовленные версии — в `assets/site/`. [Структура папок](./assets.md).
 - Для отдельных композиций нужен прозрачный PNG/WebP. Обложки наборов могут включать бумажный фон целиком; объекты и отступы должны учитывать кадрирование.
 - Желательно предоставить исходники в 2× или больше фактического размера. Ниже указаны рекомендуемые размеры, а не обязательный формат экспорта.
 
 ## Уже подключены в hero галереи
 
-- `assets/site/hero/snowy-lantern-and-evergreen-berries.png` — слева: ветки, ягоды, снег и фонарь; слот `templates-hero-left`.
-- `assets/site/hero/snowy-forest-cottage-glow.png` — справа: заснеженный домик с тёплыми окнами; слот `templates-hero-right`.
-- `assets/site/hero/holly-berry-sprig.png` — веточка с зелёными листьями и тремя ягодами под описанием; слот `templates-hero-sprig`.
+- `original-assets/site/hero/snowy-lantern-and-evergreen-berries.png` — слева: ветки, ягоды, снег и фонарь; слот `templates-hero-left`.
+- `original-assets/site/hero/snowy-forest-cottage-glow.png` — справа: заснеженный домик с тёплыми окнами; слот `templates-hero-right`.
+- `original-assets/site/hero/holly-berry-sprig.png` — веточка с зелёными листьями и тремя ягодами под описанием; слот `templates-hero-sprig`.
 
-`assets:prepare` создаёт облегчённые WebP в `public/site/`, сохраняющие прозрачность. Исходные PNG не редактируются. Пути перечислены в `src/data/site-art.ts` и разрешаются относительно GitHub Pages base path.
+`assets:prepare` создаёт облегчённые WebP в `assets/site/`, сохраняющие прозрачность. Исходные PNG не редактируются. Пути перечислены в `src/data/site-art.ts` и разрешаются относительно GitHub Pages base path.
 
 ## Уже подключено в hero главной
 
-`assets/site/hero/products-set.png` — общая композиция с адвент-тегом, открыткой и стикером. Подготовленная версия: `public/site/products-set.webp`.
+`original-assets/site/hero/products-set.png` — общая композиция с адвент-тегом, открыткой и стикером. Подготовленная версия: `assets/site/products-set.webp`.
 
 ## Уже подключены: обложки наборов
 
-| Исходник в `assets/site/templates/` | Набор | `data-art-slot` |
+| Исходник в `original-assets/site/templates/` | Набор | `data-art-slot` |
 | --- | --- | --- |
 | `coniferous-fairytale.png` | Хвойная сказка | `template-woodland-cover` |
 | `winter-stories.png` | Зимние истории | `template-winter-cover` |
@@ -33,11 +33,11 @@
 | `warm-gifts.png` | Тёплые подарки | `template-warm-gifts-cover` |
 | `classic-christmas.png` | Классическое Рождество | `template-classic-christmas-cover` |
 
-Для обложек подготовлены WebP в `public/site/`. На странице они загружаются отложенно; геометрические элементы этих слотов больше не отображаются. Исходники сохранены без изменений.
+Для обложек подготовлены WebP в `assets/site/`. На странице они загружаются отложенно; геометрические элементы этих слотов больше не отображаются. Исходники сохранены без изменений.
 
 ## Уже подключены: страница «О проекте»
 
-| Исходник в `assets/site/` | Содержание | `data-art-slot` |
+| Исходник в `original-assets/site/` | Содержание | `data-art-slot` |
 | --- | --- | --- |
 | `hero/branch-and-evergreen-berries.png` | Заснеженная хвойная ветка в верхнем блоке; скрыта на ширинах до 1150 px. | `about-hero-branch` |
 | `decorations/christmas-gift-box-with-pinecone.png` | Крафтовый подарок с адвент-тегом и шишкой рядом с текстом о мастерской. | `about-gift` |
@@ -52,7 +52,7 @@
 
 ## Логотип и иконки справки
 
-| Исходник в `assets/site/` | Назначение |
+| Исходник в `original-assets/site/` | Назначение |
 | --- | --- |
 | `branding/logo.svg` | Общий знак в хедере, футере, редакторе, мобильном меню и favicon. |
 | `icons/help/choose-template.svg` | Выбор шаблона. |

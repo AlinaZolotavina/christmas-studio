@@ -1,12 +1,13 @@
 /**
  * Explicit, visually reviewed illustration metadata. No semantic data is inferred
  * from filenames. Each image has one primary category and one primary motif.
- * includeTags adds curated secondary collections without duplicating images.
+ * includeTags/includeImages add secondary collections; excludeImages overrides
+ * membership without removing descriptive tags from full-text search.
  * src resolves against Vite BASE_URL; source is the original printable PNG.
  */
 export interface LocalizedLabel { ru: string; en: string; [locale: string]: string }
-export interface ImageCategory { id: string; name: LocalizedLabel; includeTags?: string[] }
-export interface ImageMotif { id: string; category: string; name: LocalizedLabel; includeTags?: string[] }
+export interface ImageCategory { id: string; name: LocalizedLabel; includeTags?: string[]; includeImages?: string[]; excludeImages?: string[] }
+export interface ImageMotif extends ImageCategory { category: string }
 export type ImageSubcategory = ImageMotif;
 export interface ImageMetadata {
   id: string;
@@ -36,8 +37,8 @@ export const categories: ImageCategory[] = [
   { id: 'botanical', name: { ru: 'Растения и цветы', en: 'Plants and flowers' }, includeTags: ['botanical'] },
   { id: 'ornaments', name: { ru: 'Ёлочные украшения', en: 'Christmas ornaments' }, includeTags: ['ornament'] },
   { id: 'seasonal-objects', name: { ru: 'Праздничные предметы', en: 'Festive objects' }, includeTags: ['festive-object'] },
-  { id: 'landscapes', name: { ru: 'Домики и пейзажи', en: 'Houses and landscapes' }, includeTags: ['landscape', 'winter-tree'] },
-  { id: 'treats', name: { ru: 'Угощения', en: 'Festive treats' }, includeTags: ['treat'] },
+  { id: 'landscapes', name: { ru: 'Дома и пейзажи', en: 'Houses and landscapes' }, includeTags: ['landscape', 'winter-tree'] },
+  { id: 'treats', name: { ru: 'Праздничный стол', en: 'Festive table' }, includeTags: ['treat'] },
   { id: 'russian-traditions', name: { ru: 'Русские новогодние традиции', en: 'Russian New Year traditions' }, includeTags: ['russian-traditions'] },
 ];
 
@@ -55,7 +56,7 @@ export const motifs: ImageMotif[] = [
   { id: 'animals-hares', category: 'animals', name: { ru: 'Зайцы', en: 'Hares' }, includeTags: ['hare'] },
   { id: 'animals-squirrels', category: 'animals', name: { ru: 'Белки', en: 'Squirrels' }, includeTags: ['squirrel'] },
   { id: 'animals-bears', category: 'animals', name: { ru: 'Медведи', en: 'Bears' }, includeTags: ['bear'] },
-  { id: 'animals-birds', category: 'animals', name: { ru: 'Птицы', en: 'Birds' }, includeTags: ['bird'] },
+  { id: 'animals-birds', category: 'animals', name: { ru: 'Птицы', en: 'Birds' }, includeTags: ['bird'], excludeImages: ['glass-bird-ornament', 'soviet-glass-ornaments'] },
   { id: 'botanical-trees', category: 'botanical', name: { ru: 'Ёлки', en: 'Christmas trees' }, includeTags: ['christmas-tree'] },
   { id: 'botanical-branches', category: 'botanical', name: { ru: 'Ветви и хвоя', en: 'Branches and evergreen' } },
   { id: 'botanical-wreaths', category: 'botanical', name: { ru: 'Рождественские венки и букеты', en: 'Christmas wreaths and bouquets' }, includeTags: ['wreath', 'bouquet'] },
@@ -67,35 +68,33 @@ export const motifs: ImageMotif[] = [
   { id: 'ornaments-soviet', category: 'ornaments', name: { ru: 'Советские ёлочные игрушки', en: 'Soviet Christmas ornaments' }, includeTags: ['soviet'] },
   { id: 'ornaments-bells', category: 'ornaments', name: { ru: 'Колокольчики', en: 'Bells' } },
   { id: 'ornaments-stars', category: 'ornaments', name: { ru: 'Звёзды', en: 'Stars' } },
-  { id: 'seasonal-objects-gifts', category: 'seasonal-objects', name: { ru: 'Подарки', en: 'Gifts' }, includeTags: ['gift'] },
+  { id: 'seasonal-objects-gifts', category: 'seasonal-objects', name: { ru: 'Подарки', en: 'Gifts' }, includeTags: ['gift'], excludeImages: ['winter-russian-troika-gifts', 'festive-russian-troika-snow'] },
   { id: 'seasonal-objects-clocks', category: 'seasonal-objects', name: { ru: 'Часы и куранты', en: 'Clocks and chimes' }, includeTags: ['clock'] },
   { id: 'seasonal-objects-drinks', category: 'seasonal-objects', name: { ru: 'Бокалы и шампанское', en: 'Glasses and champagne' } },
   { id: 'seasonal-objects-fireworks', category: 'seasonal-objects', name: { ru: 'Бенгальские огни и фейерверки', en: 'Sparklers and fireworks' } },
-  { id: 'seasonal-objects-sleighs', category: 'seasonal-objects', name: { ru: 'Санки', en: 'Sleds' }, includeTags: ['sleigh'] },
+  { id: 'seasonal-objects-sleighs', category: 'seasonal-objects', name: { ru: 'Санки', en: 'Sleds' }, includeTags: ['sleigh'], excludeImages: ['christmas-troika-in-snowy-forest', 'winter-horse-troika', 'winter-russian-troika-gifts', 'festive-russian-troika-snow', 'russian-troika-snow', 'ornate-troika-sleigh'] },
   { id: 'seasonal-objects-skates', category: 'seasonal-objects', name: { ru: 'Коньки', en: 'Ice skates' } },
   { id: 'seasonal-objects-mittens', category: 'seasonal-objects', name: { ru: 'Варежки', en: 'Mittens' } },
   { id: 'seasonal-objects-scarves', category: 'seasonal-objects', name: { ru: 'Шарфы', en: 'Scarves' } },
-  { id: 'seasonal-objects-felt-boots', category: 'seasonal-objects', name: { ru: 'Валенки', en: 'Felt boots' } },
-  { id: 'seasonal-objects-nesting-dolls', category: 'seasonal-objects', name: { ru: 'Матрёшки', en: 'Nesting dolls' } },
   { id: 'seasonal-objects-candles', category: 'seasonal-objects', name: { ru: 'Свечи', en: 'Candles' } },
   { id: 'seasonal-objects-snowflakes', category: 'seasonal-objects', name: { ru: 'Снежинки и морозные узоры', en: 'Snowflakes and frost patterns' } },
   { id: 'landscapes-cottages', category: 'landscapes', name: { ru: 'Уютные домики', en: 'Cozy cottages' }, includeTags: ['cottage'] },
-  { id: 'landscapes-gingerbread-houses', category: 'landscapes', name: { ru: 'Пряничные домики', en: 'Gingerbread houses' }, includeTags: ['gingerbread-house'] },
   { id: 'landscapes-churches', category: 'landscapes', name: { ru: 'Церкви', en: 'Churches' } },
   { id: 'landscapes-villages', category: 'landscapes', name: { ru: 'Заснеженные деревни', en: 'Snowy villages' }, includeTags: ['snowy-village'] },
   { id: 'landscapes-cities', category: 'landscapes', name: { ru: 'Зимние города', en: 'Winter cities' }, includeTags: ['city-landscape'] },
   { id: 'landscapes-forests', category: 'landscapes', name: { ru: 'Лесные пейзажи', en: 'Forest landscapes' }, includeTags: ['forest-landscape'] },
-  { id: 'landscapes-mountains', category: 'landscapes', name: { ru: 'Горы', en: 'Mountains' } },
+  { id: 'landscapes-mountains', category: 'landscapes', name: { ru: 'Горы', en: 'Mountains' }, includeImages: ['snowy-alpine-chalet', 'winter-alpine-cottage-in-snow'] },
   { id: 'landscapes-winter-trees', category: 'landscapes', name: { ru: 'Зимние деревья', en: 'Winter trees' }, includeTags: ['winter-tree'] },
   { id: 'treats-gingerbread-cookies', category: 'treats', name: { ru: 'Имбирное печенье', en: 'Gingerbread cookies' }, includeTags: ['gingerbread-cookie'] },
-  { id: 'treats-gingerbread', category: 'treats', name: { ru: 'Пряники', en: 'Decorated gingerbread' }, includeTags: ['gingerbread'] },
-  { id: 'treats-candy', category: 'treats', name: { ru: 'Конфеты и леденцы', en: 'Candy and candy canes' }, includeTags: ['candy'] },
+  { id: 'treats-gingerbread', category: 'treats', name: { ru: 'Пряники', en: 'Decorated gingerbread' }, includeTags: ['gingerbread'], excludeImages: ['gingerbread-house-candy', 'gingerbread-arrangement-with-evergreen-and-ribbon'] },
+  { id: 'treats-gingerbread-houses', category: 'treats', name: { ru: 'Пряничные домики', en: 'Gingerbread houses' }, includeTags: ['gingerbread-house'] },
+  { id: 'treats-candy', category: 'treats', name: { ru: 'Конфеты и леденцы', en: 'Candy and candy canes' }, includeTags: ['candy'], excludeImages: ['gingerbread-house-candy'] },
   { id: 'treats-hot-chocolate', category: 'treats', name: { ru: 'Горячий шоколад', en: 'Hot chocolate' } },
   { id: 'treats-baking', category: 'treats', name: { ru: 'Рождественская выпечка', en: 'Christmas baking' }, includeTags: ['christmas-baking'] },
   { id: 'treats-citrus', category: 'treats', name: { ru: 'Мандарины и цитрусы', en: 'Tangerines and citrus' } },
   { id: 'russian-traditions-postcards', category: 'russian-traditions', name: { ru: 'Советские открытки', en: 'Soviet postcards' }, includeTags: ['soviet-postcard'] },
-  { id: 'russian-traditions-fairytales', category: 'russian-traditions', name: { ru: 'Русские зимние сказки', en: 'Russian winter fairy tales' }, includeTags: ['russian-fairytale'] },
-  { id: 'russian-traditions-folk', category: 'russian-traditions', name: { ru: 'Русские народные мотивы', en: 'Russian folk motifs' }, includeTags: ['russian-folk'] },
+  { id: 'russian-traditions-fairytales', category: 'russian-traditions', name: { ru: 'Русские зимние сказки', en: 'Russian winter fairy tales' }, includeTags: ['russian-fairytale'], excludeImages: ['snowy-russian-wooden-manor-golden-rooster', 'snowy-fairytale-cottage'] },
+  { id: 'russian-traditions-folk', category: 'russian-traditions', name: { ru: 'Русские народные мотивы', en: 'Russian folk motifs' }, includeTags: ['russian-folk'], excludeImages: ['snowy-russian-wooden-manor-golden-rooster', 'snowy-fairytale-cottage', 'christmas-troika-in-snowy-forest', 'winter-horse-troika', 'winter-russian-troika-gifts', 'festive-russian-troika-snow', 'russian-troika-snow', 'ornate-troika-sleigh', 'christmas-gifts-russian-sleigh'] },
   { id: 'russian-traditions-symbols', category: 'russian-traditions', name: { ru: 'Русские новогодние символы', en: 'Russian New Year symbols' }, includeTags: ['russian-symbol'] },
   { id: 'russian-traditions-troikas', category: 'russian-traditions', name: { ru: 'Тройки и сани', en: 'Troikas and sleighs' }, includeTags: ['troika'] },
   { id: 'russian-traditions-houses', category: 'russian-traditions', name: { ru: 'Русские дома и деревни', en: 'Russian houses and villages' }, includeTags: ['russian-house'] },
@@ -110,6 +109,17 @@ export const imageAliases: Record<string, string> = { 'watercolor-snowy-alpine-v
 export const resolveImageId = (id: string) => imageAliases[id] ?? id;
 
 export const images: ImageMetadata[] = [
+  {
+    id: 'festive-hot-chocolate-with-marshmallows',
+    source: 'original-assets/festive-hot-chocolate-with-marshmallows.png',
+    src: 'art/festive-hot-chocolate-with-marshmallows.webp',
+    name: { ru: 'Праздничный горячий шоколад с маршмеллоу и леденцом', en: 'Festive hot chocolate with marshmallows and a candy cane' },
+    category: 'treats', subcategory: 'treats-hot-chocolate',
+    tags: ['горячий шоколад', 'какао', 'маршмеллоу', 'взбитые сливки', 'кружка', 'леденец-трость', 'пряничная звезда', 'корица', 'хвоя', 'красный бант'],
+    tagsEn: ['treat', 'hot chocolate', 'cocoa', 'marshmallows', 'whipped cream', 'mug', 'candy cane', 'star cookie', 'cinnamon', 'evergreen', 'red bow'],
+    aliases: ['рождественское какао', 'какао с зефирками', 'christmas cocoa', 'holiday hot chocolate'],
+    style: 'vintage-watercolor', background: 'transparent',
+  },
   {
     "id": "christmas-bauble-with-snowy-village",
     "source": "original-assets/christmas-bauble-with-snowy-village.png",
@@ -255,16 +265,7 @@ export const images: ImageMetadata[] = [
       "звезда",
       "золотая лента"
     ],
-    "tagsEn": [
-      "festive-object",
-      "gift",
-      "keepsake box",
-      "kremlin",
-      "tower",
-      "russian-symbol",
-      "russian-traditions",
-      "gold ribbon"
-    ],
+    "tagsEn": ["festive-object","gift","keepsake box","kremlin","tower","russian-symbol","russian-traditions","gold ribbon","russian-folk"],
     "aliases": [
       "подарок с курантами",
       "kremlin gift box"
@@ -345,8 +346,8 @@ export const images: ImageMetadata[] = [
       "ru": "Дед Мороз на белой тройке в заснеженном лесу",
       "en": "Father Frost riding a white troika in a snowy forest"
     },
-    "category": "seasonal-objects",
-    "subcategory": "seasonal-objects-sleighs",
+    "category": "russian-traditions",
+    "subcategory": "russian-traditions-troikas",
     "tags": [
       "тройка",
       "лошади",
@@ -571,25 +572,27 @@ export const images: ImageMetadata[] = [
     "source": "original-assets/gingerbread-arrangement-with-evergreen-and-ribbon.png",
     "src": "art/gingerbread-arrangement-with-evergreen-and-ribbon.webp",
     "name": {
-      "ru": "Пряничные домик, сердце и ангел с лентой и хвоей",
-      "en": "Gingerbread house, heart and angel with ribbon and evergreen"
+      "ru": "Пряничные домик, петушок, звезда и сердце с лентой и хвоей",
+      "en": "Gingerbread house, rooster, star and heart with ribbon and evergreen"
     },
     "category": "treats",
-    "subcategory": "treats-gingerbread",
+    "subcategory": "treats-gingerbread-houses",
     "tags": [
       "пряники",
-      "домик",
+      "пряничный домик",
       "сердце",
-      "ангел",
+      "петушок",
+      "звезда",
       "глазурь",
       "хвоя"
     ],
     "tagsEn": [
       "treat",
-      "gingerbread",
+      "gingerbread-house",
       "house",
       "heart",
-      "angel",
+      "rooster",
+      "star",
       "icing",
       "evergreen"
     ],
@@ -608,8 +611,8 @@ export const images: ImageMetadata[] = [
       "ru": "Пряничный домик в снегу с леденцом и ёлочками",
       "en": "Snowy gingerbread house with a candy cane and little trees"
     },
-    "category": "landscapes",
-    "subcategory": "landscapes-gingerbread-houses",
+    "category": "treats",
+    "subcategory": "treats-gingerbread-houses",
     "tags": [
       "пряничный домик",
       "снег",
@@ -617,14 +620,7 @@ export const images: ImageMetadata[] = [
       "леденец",
       "ёлочки"
     ],
-    "tagsEn": [
-      "gingerbread-house",
-      "treat",
-      "snow",
-      "icing",
-      "candy cane",
-      "christmas trees"
-    ],
+    "tagsEn": ["gingerbread-house","treat","snow","icing","candy cane","christmas trees"],
     "aliases": [
       "сказочный домик из пряника",
       "snowy candy house"
@@ -640,8 +636,8 @@ export const images: ImageMetadata[] = [
       "ru": "Заснеженный пряничный домик с корицей и дольками апельсина",
       "en": "Snow-covered gingerbread house with cinnamon and orange slices"
     },
-    "category": "landscapes",
-    "subcategory": "landscapes-gingerbread-houses",
+    "category": "treats",
+    "subcategory": "treats-gingerbread-houses",
     "tags": [
       "пряничный домик",
       "снег",
@@ -649,14 +645,7 @@ export const images: ImageMetadata[] = [
       "апельсин",
       "глазурь"
     ],
-    "tagsEn": [
-      "gingerbread-house",
-      "treat",
-      "snow",
-      "cinnamon",
-      "orange",
-      "icing"
-    ],
+    "tagsEn": ["gingerbread-house","treat","snow","cinnamon","orange","icing"],
     "aliases": [
       "пряничный дом со специями",
       "spiced gingerbread cottage"
@@ -672,8 +661,8 @@ export const images: ImageMetadata[] = [
       "ru": "Пряничный домик с красной дверью, колокольчиками и бантом",
       "en": "Gingerbread house with a red door, bells and a bow"
     },
-    "category": "landscapes",
-    "subcategory": "landscapes-gingerbread-houses",
+    "category": "treats",
+    "subcategory": "treats-gingerbread-houses",
     "tags": [
       "пряничный домик",
       "красная дверь",
@@ -681,14 +670,7 @@ export const images: ImageMetadata[] = [
       "бант",
       "глазурь"
     ],
-    "tagsEn": [
-      "gingerbread-house",
-      "treat",
-      "red door",
-      "bells",
-      "bow",
-      "icing"
-    ],
+    "tagsEn": ["gingerbread-house","treat","red door","bells","bow","icing"],
     "aliases": [
       "пряничный дом с колокольчиками",
       "bell decorated gingerbread house"
@@ -704,8 +686,8 @@ export const images: ImageMetadata[] = [
       "ru": "Пряничный домик с сердцем над дверью и новогодними подарками",
       "en": "Iced gingerbread house with a heart above the door and Christmas gifts"
     },
-    "category": "landscapes",
-    "subcategory": "landscapes-gingerbread-houses",
+    "category": "treats",
+    "subcategory": "treats-gingerbread-houses",
     "tags": [
       "пряничный домик",
       "сердце",
@@ -713,14 +695,7 @@ export const images: ImageMetadata[] = [
       "глазурь",
       "звёздочки"
     ],
-    "tagsEn": [
-      "gingerbread-house",
-      "treat",
-      "heart",
-      "gifts",
-      "icing",
-      "stars"
-    ],
+    "tagsEn": ["gingerbread-house","treat","heart","gifts","icing","stars"],
     "aliases": [
       "домик из пряника с подарками",
       "gingerbread gift cottage"
@@ -934,8 +909,8 @@ export const images: ImageMetadata[] = [
       "ru": "Пряничный домик с тёплыми окнами и двумя пряничными ёлками",
       "en": "Gingerbread house with warm windows and two gingerbread trees"
     },
-    "category": "landscapes",
-    "subcategory": "landscapes-gingerbread-houses",
+    "category": "treats",
+    "subcategory": "treats-gingerbread-houses",
     "tags": [
       "пряничный домик",
       "тёплые окна",
@@ -943,14 +918,7 @@ export const images: ImageMetadata[] = [
       "снег",
       "леденец"
     ],
-    "tagsEn": [
-      "gingerbread-house",
-      "treat",
-      "warm windows",
-      "gingerbread trees",
-      "snow",
-      "candy cane"
-    ],
+    "tagsEn": ["gingerbread-house","treat","warm windows","gingerbread trees","snow","candy cane"],
     "aliases": [
       "сказочный домик с пряничными ёлочками",
       "gingerbread tree cottage"
@@ -1034,8 +1002,8 @@ export const images: ImageMetadata[] = [
       "ru": "Зимняя тройка лошадей с красными узорчатыми санями",
       "en": "Winter horse troika with red patterned sleigh"
     },
-    "category": "seasonal-objects",
-    "subcategory": "seasonal-objects-sleighs",
+    "category": "russian-traditions",
+    "subcategory": "russian-traditions-troikas",
     "tags": [
       "тройка",
       "лошади",
@@ -2069,8 +2037,8 @@ export const images: ImageMetadata[] = [
   },
   {
     id: "embroidered-felt-boots-rowan", src: "art/embroidered-felt-boots-rowan.webp", source: "original-assets/embroidered-felt-boots-rowan.png",
-    name: { ru: "Валенки с красной вышивкой и рябиной", en: "Felt boots with red embroidery and rowan berries" }, category: "seasonal-objects", subcategory: "seasonal-objects-felt-boots",
-    tags: ["валенки", "войлок", "кремовый", "красная вышивка", "снежинки", "народный узор", "рябина", "хвоя", "снег"], tagsEn: ["festive-object", "felt boots", "valenki", "ivory", "red embroidery", "snowflakes", "folk pattern", "rowan", "evergreen", "snow", "russian-traditions", "russian-folk"], aliases: ["русские зимние валеночки", "traditional embroidered russian boots"], style: "vintage-watercolor", background: "transparent",
+    name: { ru: "Валенки с красной вышивкой и рябиной", en: "Felt boots with red embroidery and rowan berries" }, category: "russian-traditions", subcategory: "russian-traditions-folk",
+    tags: ["валенки", "войлок", "кремовый", "красная вышивка", "снежинки", "народный узор", "рябина", "хвоя", "снег"], tagsEn: ["felt boots","valenki","ivory","red embroidery","snowflakes","folk pattern","rowan","evergreen","snow","russian-traditions","russian-folk"], aliases: ["русские зимние валеночки", "traditional embroidered russian boots"], style: "vintage-watercolor", background: "transparent",
   },
   {
     id: "winter-hare-spruce-branches-berries", src: "art/winter-hare-spruce-branches-berries.webp", source: "original-assets/winter-hare-spruce-branches-berries.png",
@@ -2104,7 +2072,7 @@ export const images: ImageMetadata[] = [
   },
   {
     id: "winter-russian-troika-gifts", src: "art/winter-russian-troika-gifts.webp", source: "original-assets/winter-russian-troika-gifts.png",
-    name: { ru: "Русская тройка с подарками на фоне зимней деревни", en: "Russian troika with gifts before a winter village" }, category: "seasonal-objects", subcategory: "seasonal-objects-sleighs",
+    name: { ru: "Русская тройка с подарками на фоне зимней деревни", en: "Russian troika with gifts before a winter village" }, category: "russian-traditions", subcategory: "russian-traditions-troikas",
     tags: ["тройка", "лошади", "сани", "подарки", "русский узор", "снег", "деревня", "золотые купола", "закат"], tagsEn: ["festive-object", "troika", "horses", "sleigh", "gift", "folk pattern", "snow", "snowy-village", "golden domes", "sunset", "russian-traditions", "russian-folk"], aliases: ["зимняя русская тройка с подарками", "three horse russian christmas sleigh"], style: "vintage-watercolor", background: "transparent",
   },
   {
@@ -2119,7 +2087,7 @@ export const images: ImageMetadata[] = [
   },
   {
     id: "festive-russian-troika-snow", src: "art/festive-russian-troika-snow.webp", source: "original-assets/festive-russian-troika-snow.png",
-    name: { ru: "Праздничная русская тройка в снегу", en: "Festive Russian troika in the snow" }, category: "seasonal-objects", subcategory: "seasonal-objects-sleighs",
+    name: { ru: "Праздничная русская тройка в снегу", en: "Festive Russian troika in the snow" }, category: "russian-traditions", subcategory: "russian-traditions-troikas",
     tags: ["тройка", "три лошади", "сани", "красный", "золотой узор", "подарки", "фонарь", "хвоя", "снег"], tagsEn: ["festive-object", "troika", "three horses", "sleigh", "red", "golden pattern", "gift", "lantern", "evergreen", "snow", "russian-traditions", "russian-folk"], aliases: ["новогодняя тройка лошадей", "ornate russian three horse sleigh"], style: "vintage-watercolor", background: "transparent",
   },
   {
@@ -2189,8 +2157,8 @@ export const images: ImageMetadata[] = [
   },
   {
     id: "snowy-nesting-doll-spruce-branches", src: "art/snowy-nesting-doll-spruce-branches.webp", source: "original-assets/snowy-nesting-doll-spruce-branches.png",
-    name: { ru: "Матрёшка с рябиновой росписью среди еловых веток", en: "Rowan painted nesting doll among spruce branches" }, category: "seasonal-objects", subcategory: "seasonal-objects-nesting-dolls",
-    tags: ["матрёшка", "деревянная кукла", "красный платок", "народная роспись", "рябина", "хвоя", "шишки", "снег"], tagsEn: ["festive-object", "nesting doll", "matryoshka", "wooden doll", "red headscarf", "folk painting", "rowan", "evergreen", "pine cones", "snow", "russian-traditions", "russian-folk"], aliases: ["снежная матрёшка среди еловых ветвей", "russian winter matryoshka doll"], style: "vintage-watercolor", background: "transparent",
+    name: { ru: "Матрёшка с рябиновой росписью среди еловых веток", en: "Rowan painted nesting doll among spruce branches" }, category: "russian-traditions", subcategory: "russian-traditions-folk",
+    tags: ["матрёшка", "деревянная кукла", "красный платок", "народная роспись", "рябина", "хвоя", "шишки", "снег"], tagsEn: ["nesting doll","matryoshka","wooden doll","red headscarf","folk painting","rowan","evergreen","pine cones","snow","russian-traditions","russian-folk"], aliases: ["снежная матрёшка среди еловых ветвей", "russian winter matryoshka doll"], style: "vintage-watercolor", background: "transparent",
   },
   {
     id: "rustic-wooden-star", src: "art/rustic-wooden-star.webp", source: "original-assets/rustic-wooden-star.png",
@@ -2329,12 +2297,12 @@ export const images: ImageMetadata[] = [
   },
   {
     id: "russian-troika-snow", src: "art/russian-troika-snow.webp", source: "original-assets/russian-troika-snow.png",
-    name: {"ru":"Русская тройка в зимнем лесу","en":"Russian troika in winter forest"}, category: "seasonal-objects", subcategory: "seasonal-objects-sleighs",
+    name: {"ru":"Русская тройка в зимнем лесу","en":"Russian troika in winter forest"}, category: "russian-traditions", subcategory: "russian-traditions-troikas",
     tags: ["тройка","лошади","сани","дуга","снег","ель","русская зима"], tagsEn: ["troika","horses","sleigh","harness","snow","fir","russian winter","russian-traditions","festive-object","winter","new-year"], aliases: ["три коня","russian horses","winter carriage"], style: "vintage-watercolor", background: "transparent",
   },
   {
     id: "ornate-troika-sleigh", src: "art/ornate-troika-sleigh.webp", source: "original-assets/ornate-troika-sleigh.png",
-    name: {"ru":"Тройка с расписными санями","en":"Troika with ornate sleigh"}, category: "seasonal-objects", subcategory: "seasonal-objects-sleighs",
+    name: {"ru":"Тройка с расписными санями","en":"Troika with ornate sleigh"}, category: "russian-traditions", subcategory: "russian-traditions-troikas",
     tags: ["тройка","лошади","сани","роспись","снег","колокольчики","русская сказка"], tagsEn: ["troika","horses","sleigh","painted","snow","bells","russian fairytale","russian-traditions","festive-object","winter","new-year"], aliases: ["русская упряжка","ornate winter sleigh","three horses"], style: "vintage-watercolor", background: "transparent",
   },
   {
@@ -2679,8 +2647,8 @@ export const images: ImageMetadata[] = [
   },
   {
     id: "gingerbread-house-candy", src: "art/gingerbread-house-candy.webp", source: "original-assets/gingerbread-house-candy.png",
-    name: {"ru":"Пряничный домик с глазурью и леденцами","en":"Gingerbread house with icing and candy canes"}, category: "landscapes", subcategory: "landscapes-gingerbread-houses",
-    tags: ["пряничный домик","пряник","глазурь","конфеты","леденцы","венок","сладости","рождество"], tagsEn: ["landscape","gingerbread-house","gingerbread","treat","icing","candy","candy canes","wreath","christmas"], aliases: ["сказочный съедобный домик","candy gingerbread cottage","christmas cookie house"], style: "vintage-watercolor", background: "transparent",
+    name: {"ru":"Пряничный домик с глазурью и леденцами","en":"Gingerbread house with icing and candy canes"}, category: "treats", subcategory: "treats-gingerbread-houses",
+    tags: ["пряничный домик","пряник","глазурь","конфеты","леденцы","венок","сладости","рождество"], tagsEn: ["gingerbread-house","gingerbread","treat","icing","candy","candy canes","wreath","christmas"], aliases: ["сказочный съедобный домик","candy gingerbread cottage","christmas cookie house"], style: "vintage-watercolor", background: "transparent",
   },
   {
     id: "ivory-gift-golden-bow", src: "art/ivory-gift-golden-bow.webp", source: "original-assets/ivory-gift-golden-bow.png",
@@ -2730,7 +2698,7 @@ export const images: ImageMetadata[] = [
   {
     id: "burgundy-gift-golden-bow-holly", src: "art/burgundy-gift-golden-bow-holly.webp", source: "original-assets/burgundy-gift-golden-bow-holly.png",
     name: {"ru":"Бордовый подарок с золотым бантом и падубом","en":"Burgundy gift with a golden bow and holly"}, category: "seasonal-objects", subcategory: "seasonal-objects-gifts",
-    tags: ["подарок","коробка","бордовый","золотой бант","орнамент","падуб","красные ягоды","хвоя"], tagsEn: ["gift","box","burgundy","golden bow","ornate pattern","holly","red berries","evergreen"], aliases: ["нарядный подарок с золотой лентой","luxurious christmas present","burgundy holly gift"], style: "vintage-watercolor", background: "transparent",
+    tags: ["подарок","коробка","бордовый","золотой бант","орнамент","падуб","красные ягоды","хвоя"], tagsEn: ["gift","box","burgundy","golden bow","ornate pattern","holly","red berries","evergreen","russian-traditions","russian-folk"], aliases: ["нарядный подарок с золотой лентой","luxurious christmas present","burgundy holly gift"], style: "vintage-watercolor", background: "transparent",
   },
   {
     id: "ornate-gold-star-burgundy-bow", src: "art/ornate-gold-star-burgundy-bow.webp", source: "original-assets/ornate-gold-star-burgundy-bow.png",
@@ -2823,19 +2791,20 @@ const normalize = (text: string) => text.normalize('NFKC').toLocaleLowerCase().r
 const labels = (value: LocalizedLabel | undefined) => value ? Object.values(value).join(' ') : '';
 const imageTags = (image: ImageMetadata) => [...image.tags, ...image.tagsEn, ...Object.values(image.tagsByLocale ?? {}).flat()];
 const tagSet = (image: ImageMetadata) => new Set(imageTags(image).map(normalize));
-const matchesTaxon = (primary: string, taxon: ImageCategory | ImageMotif, tags: Set<string>) => primary === taxon.id || Boolean(taxon.includeTags?.some(tag => tags.has(normalize(tag))));
+const matchesTaxon = (primary: string, taxon: ImageCategory | ImageMotif, tags: Set<string>, imageId: string) =>
+  !taxon.excludeImages?.includes(imageId) && (primary === taxon.id || Boolean(taxon.includeImages?.includes(imageId)) || Boolean(taxon.includeTags?.some(tag => tags.has(normalize(tag)))));
 
 export function imageMatchesCategory(image: ImageMetadata, categoryId: string): boolean {
   const category = categories.find(item => item.id === categoryId);
-  return Boolean(category && matchesTaxon(image.category, category, tagSet(image)));
+  return Boolean(category && matchesTaxon(image.category, category, tagSet(image), image.id));
 }
 
 /** Future motifs appear automatically as soon as explicitly tagged artwork exists. */
 export function getAvailableMotifs(categoryId?: string): ImageMotif[] {
   const category = categoryId ? categories.find(item => item.id === categoryId) : undefined;
   if (categoryId && !category) return [];
-  const pool = images.map(image => ({ image, tags: tagSet(image) })).filter(({ image, tags }) => !category || matchesTaxon(image.category, category, tags));
-  return motifs.filter(motif => (!categoryId || motif.category === categoryId) && pool.some(({ image, tags }) => matchesTaxon(image.subcategory, motif, tags)));
+  const pool = images.map(image => ({ image, tags: tagSet(image) })).filter(({ image, tags }) => !category || matchesTaxon(image.category, category, tags, image.id));
+  return motifs.filter(motif => (!categoryId || motif.category === categoryId) && pool.some(({ image, tags }) => matchesTaxon(image.subcategory, motif, tags, image.id)));
 }
 
 /** Every query word must match explicit metadata, independently of the UI locale. */
@@ -2848,12 +2817,12 @@ export function searchImages(query = '', filters: ImageFilters = {}): ImageMetad
   return images.filter(image => {
     if (filters.background && image.background !== filters.background) return false;
     const tags = tagSet(image);
-    if (category && !matchesTaxon(image.category, category, tags)) return false;
-    if (motif && !matchesTaxon(image.subcategory, motif, tags)) return false;
+    if (category && !matchesTaxon(image.category, category, tags, image.id)) return false;
+    if (motif && !matchesTaxon(image.subcategory, motif, tags, image.id)) return false;
     if (!requestedTags.every(tag => [...tags].some(value => value.includes(tag)))) return false;
     if (!words.length) return true;
-    const imageCategories = categories.filter(item => matchesTaxon(image.category, item, tags));
-    const imageMotifs = motifs.filter(item => matchesTaxon(image.subcategory, item, tags));
+    const imageCategories = categories.filter(item => matchesTaxon(image.category, item, tags, image.id));
+    const imageMotifs = motifs.filter(item => matchesTaxon(image.subcategory, item, tags, image.id));
     const haystack = normalize([
       image.id, labels(image.name), ...imageCategories.flatMap(item => [item.id, labels(item.name)]),
       ...imageMotifs.flatMap(item => [item.id, labels(item.name)]), ...imageTags(image),

@@ -78,6 +78,8 @@ export interface TemplateDefinition {
   shape: Shape;
   fontId: FontId;
   assetIds: string[];
+  requiredAssetIds?: string[];
+  alternateSubcategories?: boolean;
 }
 export interface FontDefinition {
   id: FontId;

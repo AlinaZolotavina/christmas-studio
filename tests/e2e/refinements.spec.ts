@@ -39,9 +39,9 @@ test('home keeps the tag collections, opens postcards and gives future products 
   await expect(page.locator('.about-story__copy')).toContainText('пространство для творчества и подготовки к праздникам');
   await expect(page.locator('.about-story__copy')).not.toContainText('Я ');
   await page.locator('.about-products [data-product=tags]').click();
-  await expect(page.getByRole('heading', { name: 'Хвойная сказка', exact: true })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Зимние истории', exact: true })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Винтажный праздник', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Зимний сад', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Зимняя сказка', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Вкусное Рождество', exact: true })).toBeVisible();
   for (let template = 0; template < 6; template++) {
     await page.locator('.template-card').nth(template).click();
     const examples = [];

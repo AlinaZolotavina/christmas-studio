@@ -5,3 +5,13 @@
 .saved-project__actions{display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap}
 @media(max-width:900px){.saved-project{align-items:flex-start;flex-direction:column;gap:18px}}
 @media(max-width:650px){.saved-project{padding:20px}.saved-project__actions{flex-direction:column;width:100%}}
+.saved-project.saved-project--compact{width:100%;max-width:470px;margin:0;flex-direction:column;align-items:stretch;gap:.5rem;padding:.75rem;border-radius:14px}
+.saved-project--compact>div{min-width:0}
+/* Component typography must take precedence over public-page heading and paragraph styles. */
+.saved-project.saved-project--compact .saved-project__name{font-size:1rem;line-height:1.25rem;letter-spacing:0;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.saved-project.saved-project--compact .saved-project__description{font-size:.8125rem;line-height:1rem;margin:0}
+.saved-project--compact .saved-project__status{display:block;font-size:.75rem;line-height:1rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.saved-project--compact .saved-project__actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%}
+.saved-project--compact .button{min-width:0;min-height:2.75rem;padding:.5rem;gap:6px;font-size:.75rem;line-height:1.3;white-space:nowrap}
+.saved-project--compact .button svg{width:15px;height:15px;flex-shrink:0}
+@media(max-width:360px){.saved-project--compact .button{padding:.5rem .25rem;font-size:.75rem}}

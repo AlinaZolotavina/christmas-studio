@@ -51,35 +51,41 @@ export function TemplateGallery({
     <SiteLayout current="tags" hasProject={hasProject}>
       <main className="template-gallery-main">
         <section className="template-hero" aria-labelledby="templates-title">
-          <img
-            src={assetUrl(templateHeroArtwork.left.src)}
-            width={templateHeroArtwork.left.width}
-            height={templateHeroArtwork.left.height}
-            alt=""
-            draggable={false}
-            data-art-slot={templateHeroArtwork.left.id}
-            className="template-hero__scene template-hero__scene--left"
-            fetchPriority="high"
-          />
-          <img
-            src={assetUrl(templateHeroArtwork.right.src)}
-            width={templateHeroArtwork.right.width}
-            height={templateHeroArtwork.right.height}
-            alt=""
-            draggable={false}
-            data-art-slot={templateHeroArtwork.right.id}
-            className="template-hero__scene template-hero__scene--right"
-          />
           <div className="template-hero__copy">
             <h1 id="templates-title">Адвент-теги</h1>
             <p>
-              Красивые наборы тегов для вашего{" "}
+              Красивые наборы тегов<br />для вашего{" "}
               <span className="template-hero__occasion">адвент-календаря</span>
             </p>
-            {!project && <CreateProjectLink className="template-hero__create" direction="tags" onClick={event => { event.preventDefault(); scrollToCatalog(); }} />}
+            <div className="template-hero__actions">
+            {project ? (
+              <SavedProjectNotice
+                compact
+                className="tag-saved-project"
+                label="Сохранённый проект адвент-тегов"
+                name={project.name}
+                status="Ваши адвент-теги сохранены"
+                description={`Карточек в наборе: ${project.cardCount}`}
+                onContinue={onContinue}
+                onNew={scrollToCatalog}
+              />
+            ) : (
+              <CreateProjectLink className="template-hero__create" direction="tags" onClick={event => { event.preventDefault(); scrollToCatalog(); }} />
+            )}
+            </div>
+          </div>
+          <div className="template-hero__art">
+            <img
+              src={assetUrl(templateHeroArtwork.tags.src)}
+              width={templateHeroArtwork.tags.width}
+              height={templateHeroArtwork.tags.height}
+              alt=""
+              draggable={false}
+              data-art-slot={templateHeroArtwork.tags.id}
+              fetchPriority="high"
+            />
           </div>
         </section>
-        {project && <SavedProjectNotice className="tag-saved-project" label="Сохранённый проект адвент-тегов" name={project.name} status="Ваши адвент-теги сохранены" description={`Карточек в наборе: ${project.cardCount}`} onContinue={onContinue} onNew={scrollToCatalog} />}
         <div className="template-intro" ref={catalog} tabIndex={-1}>
           <BowDivider className="template-intro__divider" />
           <h2 id="template-collections-title">Выберите свое настроение</h2>
@@ -100,10 +106,7 @@ export function TemplateGallery({
                 <div
                   className={`template-card__art template-card__art--${index}`}
                 >
-                  <ArtworkPlaceholder
-                    kind="tag-pair"
-                    slot={`template-${template.id}-cover`}
-                  />
+                  <ArtworkPlaceholder kind="tag-pair" slot={`template-${template.id}-cover`} />
                 </div>
                 <div className="template-card__details">
                   <h3>{template.name}</h3>

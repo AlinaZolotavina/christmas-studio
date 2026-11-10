@@ -55,7 +55,9 @@ describe('explicit illustration metadata', () => {
     expect(image.category).toBe('ornaments');
     expect(searchImages('', { category: 'ornaments', subcategory: 'ornaments-soviet' })).toContain(image);
     expect(searchImages('', { category: 'russian-traditions' })).toContain(image);
-    expect(searchImages('', { category: 'animals', subcategory: 'animals-birds' })).toContain(image);
+    expect(searchImages('', { category: 'animals', subcategory: 'animals-birds' })).not.toContain(image);
+    expect(searchImages('bird', { category: 'ornaments' })).toContain(image);
+    expect(searchImages('', { subcategory: 'animals-birds' })).not.toContain(getImage('soviet-glass-ornaments'));
     expect(searchImages('Русские новогодние традиции')).toContain(image);
     expect(images.filter(item => item.id === image.id)).toHaveLength(1);
   });
@@ -68,10 +70,10 @@ describe('explicit illustration metadata', () => {
     expect(searchImages('christmas-tree winter')).toContain(image);
     expect(searchImages('', { category: 'characters', subcategory: 'animals-deer' })).toEqual([]);
   });
-  it('classifies sleighs and a city by object type while keeping their Russian cultural motifs', () => {
+  it('places troikas in Russian traditions while keeping a city in its landscape and cultural collections', () => {
     const troika = getImage('russian-troika-snow')!;
-    expect(troika.category).toBe('seasonal-objects');
-    expect(searchImages('', { category: 'seasonal-objects', subcategory: 'seasonal-objects-sleighs' })).toContain(troika);
+    expect(troika.category).toBe('russian-traditions');
+    expect(searchImages('', { category: 'seasonal-objects', subcategory: 'seasonal-objects-sleighs' })).not.toContain(troika);
     expect(searchImages('', { category: 'russian-traditions', subcategory: 'russian-traditions-troikas' })).toContain(troika);
     const city = getImage('winter-kremlin-panorama')!;
     expect(city.category).toBe('landscapes');
@@ -96,20 +98,25 @@ describe('explicit illustration metadata', () => {
     expect(getImage('watercolor-snowy-alpine-village-1')).toBe(getImage('watercolor-snowy-alpine-village'));
     expect(images.some(image => image.id === 'watercolor-snowy-alpine-village-1')).toBe(false);
   });
-  it('finds the new folk objects in both object and cultural collections', () => {
+  it('finds felt boots and nesting dolls in Russian folk motifs without separate object subcategories', () => {
     const boots = getImage('embroidered-felt-boots-rowan')!;
-    expect(boots.category).toBe('seasonal-objects');
-    expect(searchImages('ВАЛЁНКИ', { category: 'seasonal-objects', subcategory: 'seasonal-objects-felt-boots' })).toContain(boots);
+    expect(boots.category).toBe('russian-traditions');
+    expect(searchImages('ВАЛЁНКИ', { category: 'russian-traditions' })).toContain(boots);
     expect(searchImages('felt boots', { category: 'russian-traditions', subcategory: 'russian-traditions-folk' })).toContain(boots);
     const doll = getImage('snowy-nesting-doll-spruce-branches')!;
-    expect(searchImages('матрешка', { category: 'seasonal-objects', subcategory: 'seasonal-objects-nesting-dolls' })).toContain(doll);
+    expect(doll.category).toBe('russian-traditions');
+    expect(searchImages('матрешка', { category: 'russian-traditions' })).toContain(doll);
     expect(searchImages('matryoshka', { category: 'russian-traditions', subcategory: 'russian-traditions-folk' })).toContain(doll);
-    expect(getAvailableMotifs('seasonal-objects').map(motif => motif.id)).toEqual(expect.arrayContaining(['seasonal-objects-felt-boots', 'seasonal-objects-nesting-dolls']));
+    expect(motifs.some(motif => ['seasonal-objects-felt-boots', 'seasonal-objects-nesting-dolls'].includes(motif.id))).toBe(false);
+    expect(searchImages('', { category: 'seasonal-objects' })).not.toContain(boots);
+    expect(searchImages('', { category: 'seasonal-objects' })).not.toContain(doll);
   });
-  it('keeps new troikas as sleighs and new villages as landscapes', () => {
+  it('keeps troikas out of gifts and sleds while preserving their searchable details', () => {
     const troika = getImage('winter-russian-troika-gifts')!;
-    expect(troika.category).toBe('seasonal-objects');
-    expect(searchImages('gifts', { category: 'seasonal-objects', subcategory: 'seasonal-objects-sleighs' })).toContain(troika);
+    expect(troika.category).toBe('russian-traditions');
+    expect(searchImages('gifts', { subcategory: 'seasonal-objects-sleighs' })).not.toContain(troika);
+    expect(searchImages('gifts', { subcategory: 'seasonal-objects-gifts' })).not.toContain(troika);
+    expect(searchImages('gifts', { subcategory: 'russian-traditions-troikas' })).toContain(troika);
     expect(searchImages('тройка', { category: 'russian-traditions', subcategory: 'russian-traditions-troikas' })).toContain(troika);
     const village = getImage('winter-village-golden-domes')!;
     expect(village.category).toBe('landscapes');

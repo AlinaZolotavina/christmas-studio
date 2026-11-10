@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('../content/assets', () => ({ assets: Array.from({ length: 36 }, (_, index) => ({ id: `image-${index}`, name: `Image ${index}`, category: 'winter', width: 100, height: 120, preview: '', print: '' })) }));
-vi.mock('../content/templates', () => ({ templates: [{ id: 'winter', name: 'Winter', description: '', eyebrow: '', color: '#315C4C', background: '#FFF9ED', shape: 'tag', fontId: 'serif', assetIds: ['image-0'] }] }));
+vi.mock('../content/templates', () => ({ templates: [{ id: 'winter', name: 'Winter', description: '', eyebrow: '', color: '#315C4C', background: '#FFF9ED', shape: 'tag', fontId: 'serif', assetIds: Array.from({ length: 36 }, (_, index) => `image-${index}`) }] }));
 
 import { createProject } from './project';
 import { templates } from '../content/templates';
@@ -34,5 +34,11 @@ describe('project factory', () => {
       const project = createProject('winter', 31, () => 0.42);
       expect(new Set(project.cards.map(card => card.illustration.assetId))).toEqual(new Set(templates[0].assetIds));
     } finally { templates[0].assetIds = previous; }
+  });
+  it('does not fill an incomplete themed collection from the entire library', () => {
+    const previous = templates[0].assetIds;
+    templates[0].assetIds = ['image-0'];
+    try { expect(() => createProject('winter', 31)).toThrow('недостаточно уникальных'); }
+    finally { templates[0].assetIds = previous; }
   });
 });

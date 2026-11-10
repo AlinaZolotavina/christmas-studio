@@ -48,7 +48,8 @@ for (const width of [1440, 390]) test(`hero creation at ${width} follows indepen
     await expect(page.locator('.template-hero')).toBeVisible();
     const action = page.locator('.template-hero').getByRole('link', { name: 'Создать проект', exact: true });
     await expect(action).toHaveCount(created.has(product) ? 0 : 1);
-    await expect(page.locator('.saved-project')).toHaveCount(created.has(product) ? 1 : 0);
+    await expect(page.locator('.template-hero__copy .saved-project--compact')).toHaveCount(created.has(product) ? 1 : 0);
+    await expect(page.locator('main > .saved-project')).toHaveCount(0);
     await expect(page.locator('.public-header').getByRole('link', { name: 'Создать проект', exact: true })).toHaveCount(0);
     if (!created.has(product)) {
       await action.click();
@@ -123,8 +124,8 @@ test('tag template dialog keeps its title and description fixed while selecting 
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/#tags');
     await page.locator('[data-template-id="woodland"]').click();
-    const dialog = page.getByRole('dialog', { name: 'Хвойная сказка', exact: true });
-    await expect(dialog.getByRole('heading', { name: 'Хвойная сказка', exact: true })).toHaveCount(1);
+    const dialog = page.getByRole('dialog', { name: 'Зимний сад', exact: true });
+    await expect(dialog.getByRole('heading', { name: 'Зимний сад', exact: true })).toHaveCount(1);
     await expect(dialog.locator('.modal__header, .eyebrow')).toHaveCount(0);
     await expect(dialog).not.toContainText('Маленькая история');
     await expect(dialog).toContainText('Еловые ветви, тёплая бумага и маленькие чудеса.');

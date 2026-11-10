@@ -1,5 +1,6 @@
 import { assets } from '../content/assets';
 import { templates } from '../content/templates';
+import { getImage } from '../data/images';
 import type { AssetDefinition, Card, ProjectDocument, TemplateDefinition } from './types';
 import { defaultHole } from './geometry';
 
@@ -12,6 +13,30 @@ function shuffled<T>(items: T[], rng: () => number): T[] {
     if (!Number.isFinite(random) || random < 0 || random >= 1) throw new Error('Генератор случайных чисел вернул недопустимое значение.');
     const target = Math.floor(random * (index + 1));
     [result[index], result[target]] = [result[target], result[index]];
+  }
+  return result;
+}
+
+/** Randomly choose among groups that still allow a complete non-adjacent order. */
+function alternateSubcategories(selected: AssetDefinition[], rng: () => number): AssetDefinition[] {
+  const groups = new Map<string, AssetDefinition[]>();
+  for (const asset of shuffled(selected, rng)) {
+    const subcategory = getImage(asset.id)?.subcategory;
+    if (!subcategory) throw new Error('Для иллюстрации набора не указана подкатегория.');
+    groups.set(subcategory, [...(groups.get(subcategory) ?? []), asset]);
+  }
+  const result: AssetDefinition[] = [];
+  let previous = '';
+  while (result.length < selected.length) {
+    const remainingLength = selected.length - result.length - 1;
+    const candidates = [...groups].filter(([subcategory, items]) => items.length && subcategory !== previous && [...groups].every(([other, pending]) => {
+      const remaining = pending.length - (other === subcategory ? 1 : 0);
+      return remaining <= remainingLength - remaining + (other === subcategory ? 0 : 1);
+    }));
+    const chosen = shuffled(candidates, rng)[0];
+    if (!chosen) throw new Error('В этом наборе не хватает разных подкатегорий для чередования карточек.');
+    previous = chosen[0];
+    result.push(chosen[1].pop()!);
   }
   return result;
 }
@@ -48,9 +73,15 @@ export function createProject(templateId: string, count: 24 | 31, rng: () => num
   if (!template) throw new Error('Шаблон не найден.');
   const preferred = template.assetIds.map(id => assets.find(asset => asset.id === id)).filter((asset): asset is AssetDefinition => Boolean(asset));
   const curated = [...new Map(preferred.map(asset => [asset.id, asset])).values()];
-  const pool = curated.length >= count ? curated : [...new Map([...curated, ...assets].map(asset => [asset.id, asset])).values()];
-  if (pool.length < count) throw new Error('В библиотеке недостаточно уникальных иллюстраций для этого набора.');
-  const selected = shuffled(pool, rng).slice(0, count);
+  if (curated.length < count) throw new Error('В библиотеке недостаточно уникальных иллюстраций для этого набора.');
+  const requiredIds = new Set(template.requiredAssetIds ?? []);
+  const required = curated.filter(asset => requiredIds.has(asset.id));
+  if (required.length !== requiredIds.size) throw new Error('В библиотеке отсутствуют обязательные иллюстрации набора.');
+  let selected = [
+    ...shuffled(required, rng).slice(0, count),
+    ...shuffled(curated.filter(asset => !requiredIds.has(asset.id)), rng).slice(0, Math.max(0, count - required.length)),
+  ];
+  if (template.alternateSubcategories) selected = alternateSubcategories(selected, rng);
   return {
     schemaVersion: 1, id: makeId(), name: 'Мой адвент-календарь', templateId,
     cardCount: count, holeEnabled: template.shape === 'tag',

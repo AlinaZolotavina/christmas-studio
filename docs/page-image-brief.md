@@ -10,11 +10,12 @@
 - Для отдельных композиций нужен прозрачный PNG/WebP. Обложки наборов могут включать бумажный фон целиком; объекты и отступы должны учитывать кадрирование.
 - Желательно предоставить исходники в 2× или больше фактического размера. Ниже указаны рекомендуемые размеры, а не обязательный формат экспорта.
 
-## Уже подключены в hero галереи
+## Уже подключены в hero галерей
 
-- `original-assets/site/hero/snowy-lantern-and-evergreen-berries.png` — слева: ветки, ягоды, снег и фонарь; слот `templates-hero-left`.
-- `original-assets/site/hero/snowy-forest-cottage-glow.png` — справа: заснеженный домик с тёплыми окнами; слот `templates-hero-right`.
-- `original-assets/site/hero/holly-berry-sprig.png` — веточка с зелёными листьями и тремя ягодами под описанием; слот `templates-hero-sprig`.
+- `original-assets/site/hero/advent-tags-hero.png` — бирка с малиновкой, шнурком и хвойным декором для страницы адвент-тегов; слот `templates-hero-tags`, готовый файл `assets/site/advent-tags-hero.webp`.
+- `original-assets/site/hero/postcards-hero.png` — открытка с рождественским венком для страницы открыток; слот `templates-hero-postcards`, готовый файл `assets/site/postcards-hero.webp`.
+
+Как на главной странице, на широком экране текст находится слева, изображение справа. На экранах до 760 px и планшетах до 1150 px в портретной ориентации изображение располагается над текстом. Изображения вписываются целиком без кадрирования. Под описанием в левой части hero показана либо кнопка создания, либо компактная плашка сохранённого проекта с названием, количеством карточек и действиями «Продолжить» / «Начать новый».
 
 `assets:prepare` создаёт облегчённые WebP в `assets/site/`, сохраняющие прозрачность. Исходные PNG не редактируются. Пути перечислены в `src/data/site-art.ts` и разрешаются относительно GitHub Pages base path.
 
@@ -26,9 +27,9 @@
 
 | Исходник в `original-assets/site/templates/` | Набор | `data-art-slot` |
 | --- | --- | --- |
-| `coniferous-fairytale.png` | Хвойная сказка | `template-woodland-cover` |
-| `winter-stories.png` | Зимние истории | `template-winter-cover` |
-| `vintage-celebration.png` | Винтажный праздник | `template-vintage-cover` |
+| `coniferous-fairytale.png` | Зимний сад | `template-woodland-cover` |
+| `winter-fairytale.png` | Зимняя сказка | `template-winter-cover` |
+| `tasty-christmas.png` | Вкусное Рождество | `template-vintage-cover` |
 | `forest-friends.png` | Лесные друзья | `template-forest-friends-cover` |
 | `warm-gifts.png` | Тёплые подарки | `template-warm-gifts-cover` |
 | `classic-christmas.png` | Классическое Рождество | `template-classic-christmas-cover` |

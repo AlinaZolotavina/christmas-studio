@@ -187,39 +187,38 @@ export function PostcardGallery({
     <SiteLayout current="postcards" hasProject={hasProject}>
       <main className="template-gallery-main postcard-gallery-main">
         <section className="template-hero" aria-labelledby="postcards-title">
-          <img
-            src={assetUrl(templateHeroArtwork.left.src)}
-            width={templateHeroArtwork.left.width}
-            height={templateHeroArtwork.left.height}
-            alt=""
-            draggable={false}
-            className="template-hero__scene template-hero__scene--left"
-          />
           <div className="template-hero__copy">
             <h1 id="postcards-title">Открытки</h1>
-            <p>Тёплые слова и зимние истории, которые хочется подарить</p>
-            {!project && <CreateProjectLink className="template-hero__create" direction="postcards" onClick={event => { event.preventDefault(); scrollToCatalog(); }} />}
+            <p>Тёплые слова и зимние истории,<br />которые хочется подарить</p>
+            <div className="template-hero__actions">
+            {project ? (
+              <SavedProjectNotice
+                compact
+                className="postcard-saved-project"
+                label="Сохранённый проект открыток"
+                name={project.name}
+                status="Ваши открытки сохранены"
+                description={`Открыток в проекте: ${project.postcards.length}`}
+                onContinue={onContinue}
+                onNew={() => choose(blankPostcardTemplates[0], "new")}
+              />
+            ) : (
+              <CreateProjectLink className="template-hero__create" direction="postcards" onClick={event => { event.preventDefault(); scrollToCatalog(); }} />
+            )}
+            </div>
           </div>
-          <img
-            src={assetUrl(templateHeroArtwork.right.src)}
-            width={templateHeroArtwork.right.width}
-            height={templateHeroArtwork.right.height}
-            alt=""
-            draggable={false}
-            className="template-hero__scene template-hero__scene--right"
-          />
+          <div className="template-hero__art">
+            <img
+              src={assetUrl(templateHeroArtwork.postcards.src)}
+              width={templateHeroArtwork.postcards.width}
+              height={templateHeroArtwork.postcards.height}
+              alt=""
+              draggable={false}
+              data-art-slot={templateHeroArtwork.postcards.id}
+              fetchPriority="high"
+            />
+          </div>
         </section>
-        {project && (
-          <SavedProjectNotice
-            className="postcard-saved-project"
-            label="Сохранённый проект открыток"
-            name={project.name}
-            status="Ваши открытки сохранены"
-            description={`Открыток в проекте: ${project.postcards.length}`}
-            onContinue={onContinue}
-            onNew={() => choose(blankPostcardTemplates[0], "new")}
-          />
-        )}
         <div className="template-intro" ref={catalog} tabIndex={-1}>
           <BowDivider className="template-intro__divider" />
           <h2 id="postcard-starts-title">Начните с чистой открытки</h2>

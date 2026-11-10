@@ -1,85 +1,51 @@
 import type { TemplateDefinition } from '../domain/types';
+import { imageMatchesCategory, images, searchImages } from '../data/images';
+
+// The user's 24-card selection from tests/tags.json is the complete short set.
+const warmGiftAssetIds = [
+  'christmas-gift-with-evergreen-sprigs-and-bow', 'winter-coat-rack-mittens',
+  'christmas-gifts-russian-sleigh', 'wool-scarf-with-winter-decor',
+  'christmas-gift-stack-red-ribbons', 'gift-stack-wooden-sleigh',
+  'ivory-gift-golden-bow', 'knitted-red-mittens', 'watercolor-christmas-gift-arrangement',
+  'twin-ivory-christmas-candles', 'christmas-tree-green-gifts', 'festive-tartan-scarf-with-decor',
+  'burgundy-gift-golden-bow-holly', 'green-knitted-mittens', 'cranberry-knitted-scarf-fir-sprig',
+  'vintage-ice-skates-on-red-scarf', 'christmas-heart-with-bow-and-berries', 'beeswax-winter-candle',
+  'evergreen-gifts-red-bows', 'ivory-mittens-evergreen-pattern', 'bear-with-christmas-gift',
+  'burgundy-knitted-christmas-bow', 'knitted-scarf-with-winter-decor', 'kraft-christmas-gifts-evergreen',
+];
+const warmGiftExtras = images.filter(image => ['seasonal-objects-candles', 'seasonal-objects-skates'].includes(image.subcategory) && !warmGiftAssetIds.includes(image.id)).map(image => image.id);
+const birdIds = new Set(searchImages('', { subcategory: 'animals-birds' }).map(image => image.id));
+const botanicalAssetIds = images.filter(image => image.category === 'botanical').map(image => image.id);
+const animalAssetIds = images.filter(image => image.category === 'animals').map(image => image.id);
+const winterAssetIds = images.filter(image => !imageMatchesCategory(image, 'russian-traditions') && (
+  image.category === 'landscapes' && !image.tagsEn.includes('gingerbread-house') ||
+  image.category === 'animals' && !birdIds.has(image.id)
+)).map(image => image.id);
+const festiveTableAssetIds = images.filter(image => image.category === 'treats' || image.subcategory === 'seasonal-objects-drinks').map(image => image.id);
 
 export const templates: TemplateDefinition[] = [
   {
-    id: 'woodland', name: 'Хвойная сказка', description: 'Еловые ветви, тёплая бумага и маленькие чудеса.', eyebrow: 'ТЕПЛО ЛЕСА', color: '#315c4c', background: '#fcf2e2', shape: 'tag', fontId: 'serif',
-    assetIds: [
-      'woodland-christmas-tree', 'rustic-wooden-star', 'robin-bird-feeder',
-      'snowy-spruce-branch', 'evergreen-holly-bouquet', 'winter-berry-cone-bouquet',
-      'snowy-spruce-cones', 'winter-red-bow-bouquet', 'wooden-ornament-wreath',
-      'orange-cinnamon-wreath', 'christmas-tree-natural-decorations', 'straw-christmas-star',
-      'winter-stag-red-bow', 'winter-deer-family', 'white-hare-snowy-spruce',
-      'scarf-hare-evergreen-bouquet', 'squirrel-nut-snowy-stump', 'squirrel-pair-nut-basket',
-      'goldfinch-trio-rowan', 'blue-tit-pair-holly', 'snowy-fir-winter-grasses',
-      'fox-walking-snow-tracks', 'bear-carrying-evergreen', 'robin-snowy-rowan-branch',
-      'mother-bear-cub-snow', 'snowy-cottage-pine-forest', 'snowy-fir-tree-winter-berries',
-      'snowy-spruce-forest-path', 'winter-forest-path-lantern', 'squirrel-nut-evergreen',
-      'sleeping-fawn-evergreen-nest', 'kraft-christmas-gifts-evergreen',
-    ],
+    id: 'woodland', name: 'Зимний сад', description: 'Хвойные ветви, праздничные цветы, ягоды и венки.', eyebrow: 'ЗИМНЯЯ БОТАНИКА', color: '#315c4c', background: '#fcf2e2', shape: 'tag', fontId: 'serif',
+    assetIds: botanicalAssetIds,
   },
   {
-    id: 'winter', name: 'Зимние истории', description: 'Снежные домики и герои любимых зимних сказок.', eyebrow: 'НЕМНОГО ВОЛШЕБСТВА', color: '#436779', background: '#edf3f5', shape: 'tag', fontId: 'serif',
-    assetIds: [
-      'snowy-fairytale-cottage', 'snow-maiden-crystal-snowflake', 'russian-troika-snow',
-      'ornate-troika-sleigh', 'father-frost-blue-coat', 'father-frost-gift-sack',
-      'father-frost-spruce-bouquet', 'snow-maiden-christmas-tree', 'snow-maiden-kokoshnik',
-      'snow-maiden-berry-basket', 'snow-maiden-winter-branch', 'snowman-pair-christmas-tree',
-      'winter-kremlin-panorama', 'spasskaya-tower-spruce', 'cozy-snowy-cottage-lights',
-      'snowy-cottage-pine-forest', 'snowy-fir-winter-grasses', 'snowy-fir-tree-winter-berries',
-      'snowy-spruce-forest-path', 'winter-forest-path-lantern', 'snowy-forest-bauble',
-      'snowy-cottage-glass-bauble', 'decorated-tree-snowy-forest', 'snowy-spruce-red-berries',
-      'white-hare-snowy-spruce', 'winter-hare-pair', 'winter-deer-family',
-      'fox-walking-snow-tracks', 'scarf-fox-candle-lantern', 'white-vintage-skates',
-      'cream-skates-cranberry-ribbons', 'ivory-mittens-evergreen-pattern',
-    ],
+    id: 'winter', name: 'Зимняя сказка', description: 'Заснеженные дома, тихие пейзажи и лесные звери.', eyebrow: 'НЕМНОГО ВОЛШЕБСТВА', color: '#436779', background: '#edf3f5', shape: 'tag', fontId: 'serif',
+    assetIds: winterAssetIds,
   },
   {
-    id: 'vintage', name: 'Винтажный праздник', description: 'Знакомые с детства игрушки, красные ленты и золото.', eyebrow: 'ДОБРЫЕ ТРАДИЦИИ', color: '#963e3e', background: '#fbf0e8', shape: 'tag', fontId: 'script',
-    assetIds: [
-      'vintage-three-baubles', 'mantel-clock-wreath', 'red-glass-star',
-      'glass-bird-ornament', 'golden-cone-ornament', 'soviet-glass-ornaments',
-      'hanging-christmas-cottage', 'snowy-forest-bauble', 'green-gold-bauble',
-      'snowy-cottage-glass-bauble', 'red-bauble-gold-pattern', 'ornate-christmas-clock',
-      'snowy-christmas-clock', 'spasskaya-tower-spruce', 'winter-kremlin-panorama',
-      'golden-holly-bells', 'silver-festive-bells', 'evergreen-jingle-bells',
-      'embossed-gold-bells-burgundy-bow', 'filigree-golden-star', 'hanging-five-golden-stars',
-      'ornate-gold-star-burgundy-bow', 'rustic-wooden-star', 'straw-christmas-star',
-      'brown-vintage-skates', 'white-vintage-skates', 'cream-skates-cranberry-ribbons',
-      'red-wooden-sleigh', 'four-advent-candles', 'beeswax-winter-candle',
-      'twin-ivory-christmas-candles', 'burgundy-gift-golden-bow-holly',
-    ],
+    // Retain the internal ID so existing saved projects remain readable.
+    id: 'vintage', name: 'Вкусное Рождество', description: 'Пряничные домики, рождественская выпечка, сладости и шампанское.', eyebrow: 'ПРАЗДНИЧНЫЙ СТОЛ', color: '#963e3e', background: '#fbf0e8', shape: 'tag', fontId: 'script',
+    assetIds: festiveTableAssetIds,
   },
   {
     id: 'forest-friends', name: 'Лесные друзья', description: 'Лисички, оленята и другие обитатели снежного леса.', eyebrow: 'ДРУЗЬЯ РЯДОМ', color: '#3e6750', background: '#f1f1e5', shape: 'tag', fontId: 'sans',
-    assetIds: [
-      'woodland-fox-in-red-scarf', 'sleeping-fawn-evergreen-nest', 'bear-with-christmas-gift',
-      'robin-bird-feeder', 'bear-carrying-evergreen', 'winter-stag-red-bow',
-      'winter-deer-family', 'scarf-fox-candle-lantern', 'fox-walking-snow-tracks',
-      'white-hare-snowy-spruce', 'scarf-hare-evergreen-bouquet', 'winter-hare-pair',
-      'squirrel-nut-snowy-stump', 'squirrel-pair-nut-basket', 'goldfinch-trio-rowan',
-      'blue-tit-pair-holly', 'bear-in-red-scarf', 'robin-snowy-rowan-branch',
-      'mother-bear-cub-snow', 'hare-red-scarf-spruce', 'fawn-red-scarf-snowy-tree',
-      'fox-robin-snow', 'fox-snowy-forest', 'squirrel-red-scarf-acorn',
-      'hanging-birdhouse-robin', 'squirrel-nut-evergreen', 'festive-reindeer-bells-red-ribbon',
-      'snowy-spruce-forest-path', 'winter-forest-path-lantern', 'snowy-fir-winter-grasses',
-      'snowy-fir-tree-winter-berries',
-    ],
+    assetIds: animalAssetIds,
   },
   {
-    id: 'warm-gifts', name: 'Тёплые подарки', description: 'Подарки, вязаные варежки, свечи и праздничные сладости.', eyebrow: 'СОГРЕВАТЬ И ДАРИТЬ', color: '#8a5143', background: '#fff3e5', shape: 'tag', fontId: 'serif',
-    assetIds: [
-      'kraft-christmas-gifts-evergreen', 'knitted-red-mittens', 'twin-ivory-christmas-candles',
-      'gift-stack-wooden-sleigh', 'christmas-gift-stack-red-ribbons', 'ivory-gift-golden-bow',
-      'burgundy-gift-golden-bow-holly', 'evergreen-gifts-red-bows', 'green-knitted-mittens',
-      'ivory-mittens-woodland-pattern', 'ivory-mittens-evergreen-pattern', 'four-advent-candles',
-      'beeswax-winter-candle', 'brown-vintage-skates', 'white-vintage-skates',
-      'cream-skates-cranberry-ribbons', 'red-wooden-sleigh', 'christmas-raisin-almond-cake',
-      'candy-canes-green-ribbon', 'christmas-candy-assortment', 'iced-christmas-cinnamon-rolls',
-      'christmas-candy-jar', 'gingerbread-man-red-bow', 'gingerbread-star-white-icing',
-      'gingerbread-house-candy', 'cozy-snowy-cottage-lights', 'snowy-cottage-pine-forest',
-      'bear-with-christmas-gift', 'scarf-fox-candle-lantern', 'christmas-tree-natural-decorations',
-      'orange-cinnamon-wreath', 'winter-forest-path-lantern',
-    ],
+    id: 'warm-gifts', name: 'Тёплые подарки', description: 'Подарки, уютные шарфы, варежки, свечи и коньки.', eyebrow: 'СОГРЕВАТЬ И ДАРИТЬ', color: '#8a5143', background: '#fff3e5', shape: 'tag', fontId: 'serif',
+    assetIds: [...warmGiftAssetIds, ...warmGiftExtras],
+    requiredAssetIds: warmGiftAssetIds,
+    alternateSubcategories: true,
   },
   {
     id: 'classic-christmas', name: 'Классическое Рождество', description: 'Рождественские венки, пуансеттии и красно-золотые детали.', eyebrow: 'РОЖДЕСТВЕНСКАЯ КЛАССИКА', color: '#8d3f43', background: '#fbf4e9', shape: 'tag', fontId: 'serif',

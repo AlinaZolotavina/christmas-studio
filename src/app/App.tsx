@@ -13,6 +13,9 @@ import { EditorCanvas } from '../rendering/interaction/EditorCanvas';
 import { Button, IconButton } from '../shared/ui/Controls';
 import { Modal } from '../shared/ui/Modal';
 import { AboutPage, ComingSoonPage, HomePage } from '../features/home/WorkshopPages';
+import { IdeasPage } from '../features/ideas/IdeasPage';
+import { PostcardIdeasPage } from '../features/ideas/PostcardIdeasPage';
+import { TagIdeasPage } from '../features/ideas/TagIdeasPage';
 import type { WorkshopRoute } from '../shared/navigation/routes';
 import { SiteLayout } from '../shared/layout/SiteLayout';
 import { TermsDialog } from '../features/onboarding/TermsDialog';
@@ -34,7 +37,7 @@ function routeFromHash(hasProject: boolean, hasPostcards = false): WorkshopRoute
   if (route === 'editor' || route === 'editor/tags') return hasProject ? 'editor' : 'tags';
   if (route === 'editor/postcards') return hasPostcards ? 'editor/postcards' : 'postcards';
   if (route === 'create') return 'create';
-  return ['tags', 'postcards', 'stickers', 'ideas', 'about', 'privacy', 'terms'].includes(route) ? route as WorkshopRoute : 'home';
+  return ['tags', 'postcards', 'stickers', 'ideas', 'ideas/postcards', 'ideas/tags', 'about', 'privacy', 'terms'].includes(route) ? route as WorkshopRoute : 'home';
 }
 
 export default function App() {
@@ -133,12 +136,16 @@ export default function App() {
     if (!termsAcceptance.hasAccepted()) { setPendingPostcardTerms(options); return; }
     if (postcardStore.project) setPendingPostcardCreate(options); else createPostcards(options);
   };
+  const openPostcardEditor = () => {
+    if (postcardStore.project) navigate('editor/postcards', true);
+    else requestPostcardCreate({ count: 1, format: 'a6-portrait' });
+  };
   const applyPostcardTemplate = (template: PostcardTemplate, format: PostcardFormat, cornerRadius: number, adding: boolean) => {
     const project = postcardStore.project; if (!project) return;
     const result = executePostcard(adding ? { type: 'add-postcard', template, format, cornerRadius } : { type: 'apply-template', postcardId: project.activePostcardId, template, format, cornerRadius });
     if (!result.error) navigate('editor/postcards', true);
   };
-  const postcardContext = view === 'postcards' || view === 'editor/postcards';
+  const postcardContext = view === 'postcards' || view === 'editor/postcards' || view === 'ideas/postcards';
   const noticeStore = postcardContext ? postcardStore : store;
   const displayedNotice = toast ?? noticeStore.notice;
   const restoredNotice = !toast && Boolean(noticeStore.notice?.startsWith('Проект восстановлен'));
@@ -153,7 +160,10 @@ export default function App() {
     {view === 'about' && <AboutPage hasProject={hasProject} />}
     {view === 'postcards' && <Suspense fallback={<p className="public-loading" role="status">Загружаем открытки…</p>}><PostcardGallery hasProject={hasProject} project={postcardStore.project} scrollToTemplates={scrollToTemplates === 'postcards'} onContinue={() => { setPostcardEntry(false); navigate('editor/postcards', true); }} onCreate={requestPostcardCreate} onApply={(template, format, cornerRadius) => applyPostcardTemplate(template, format, cornerRadius, false)} onAdd={(template, format, cornerRadius) => applyPostcardTemplate(template, format, cornerRadius, true)} /></Suspense>}
     {view === 'editor/postcards' && postcardStore.project && <Suspense fallback={<p className="public-loading" role="status">Загружаем редактор открыток…</p>}><PostcardShell key={postcardStore.project.id} project={postcardStore.project} saveStatus={postcardStore.saveStatus} canUndo={postcardStore.canUndo} canRedo={postcardStore.canRedo} onUndo={postcardStore.undo} onRedo={postcardStore.redo} onCommand={executePostcard} onSelectPostcard={postcardStore.selectPostcard} onHome={() => navigate('home')} onTemplates={() => navigate('postcards', false, true)} onExport={() => setPostcardPreview(true)} onStartTour={() => setPostcardTourActive(true)} focusTarget={postcardFocus} /></Suspense>}
-    {(view === 'stickers' || view === 'ideas') && <ComingSoonPage page={view} hasProject={hasProject} />}
+    {view === 'ideas' && <IdeasPage hasProject={hasProject} />}
+    {view === 'ideas/tags' && <TagIdeasPage project={store.project} onOpenEditor={() => { if (store.project) navigate('editor', true); else navigate('tags', false, true); }} onNew={() => navigate('tags', false, true)} />}
+    {view === 'ideas/postcards' && <PostcardIdeasPage hasProject={hasProject} project={postcardStore.project} onOpenEditor={openPostcardEditor} onNew={() => requestPostcardCreate({ count: 1, format: 'a6-portrait' })} />}
+    {view === 'stickers' && <ComingSoonPage page={view} hasProject={hasProject} />}
     {(view === 'privacy' || view === 'terms') && <Suspense fallback={<SiteLayout current={view} hasProject={hasProject}><main className="public-content-page" aria-busy="true"><p>Загружаем документ…</p></main></SiteLayout>}><LegalPage document={view} hasProject={hasProject} /></Suspense>}
     {(pendingTerms || pendingPostcardTerms) && <TermsDialog onCancel={() => { setPendingTerms(null); setPendingPostcardTerms(null); }} onAccept={() => { termsAcceptance.accept(); if (pendingPostcardTerms) { const options = pendingPostcardTerms; setPendingPostcardTerms(null); requestPostcardCreate(options); } else if (pendingTerms) { const selection = pendingTerms; setPendingTerms(null); requestCreate(selection.templateId, selection.count); } }} />}
     {view === 'create' && <Modal title="Что будем создавать?" onClose={() => navigate('home')}><div className="project-direction-options"><Button onClick={() => navigate('tags')}>Адвент-теги</Button><Button onClick={() => navigate('postcards')}>Открытки</Button></div></Modal>}

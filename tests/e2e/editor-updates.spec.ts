@@ -128,7 +128,7 @@ test('tag template dialog keeps its title and description fixed while selecting 
     await expect(dialog.getByRole('heading', { name: 'Зимний сад', exact: true })).toHaveCount(1);
     await expect(dialog.locator('.modal__header, .eyebrow')).toHaveCount(0);
     await expect(dialog).not.toContainText('Маленькая история');
-    await expect(dialog).toContainText('Еловые ветви, тёплая бумага и маленькие чудеса.');
+    await expect(dialog).toContainText('Хвойные ветви, праздничные цветы, ягоды и венки.');
     await page.evaluate(() => document.fonts.ready);
     await dialog.evaluate(element => Promise.all(element.getAnimations().map(animation => animation.finished)));
     const artwork = (await dialog.locator('.template-preview__art').boundingBox())!;

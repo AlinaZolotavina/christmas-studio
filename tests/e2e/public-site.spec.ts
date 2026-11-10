@@ -63,17 +63,21 @@ test('public routes share navigation, a responsive footer and PT Sans typography
       expect(typography.family).toContain('PT Sans');
       for (const level of [2, 3, 4]) {
         const headingStyles = await page.locator(`main h${level}`).evaluateAll((elements, headingLevel) => {
-          const expectedSize = getComputedStyle(document.querySelector('.public-site')!).getPropertyValue(`--public-h${headingLevel}-size`).trim();
+          const publicSite = document.querySelector('.public-site')!;
           return elements.map(element => {
             const style = getComputedStyle(element);
+            const visualLevel = element.classList.contains('idea-card__title') ? 3 : headingLevel;
+            const expectedSize = getComputedStyle(publicSite).getPropertyValue(`--public-h${visualLevel}-size`).trim();
             return { family: style.fontFamily, size: style.fontSize, weight: style.fontWeight, expectedSize };
           });
         }, level);
         for (const style of headingStyles) { expect(style.family).toContain('PT Sans'); expect(style.size).toBe(style.expectedSize); expect(style.weight).toBe('700'); }
       }
-      const bodySizes = await page.locator('main p').evaluateAll(elements => [...new Set(elements.map(element => `${getComputedStyle(element).fontFamily}|${getComputedStyle(element).fontSize}|${getComputedStyle(element).fontWeight}`))]);
+      const bodySizes = await page.locator('main p:not(.idea-card__description)').evaluateAll(elements => [...new Set(elements.map(element => `${getComputedStyle(element).fontFamily}|${getComputedStyle(element).fontSize}|${getComputedStyle(element).fontWeight}`))]);
       expect(bodySizes.length).toBe(1);
       expect(bodySizes[0]).toContain('PT Sans');
+      const ideaDescriptions = await page.locator('main .idea-card__description').evaluateAll(elements => [...new Set(elements.map(element => `${getComputedStyle(element).fontFamily}|${getComputedStyle(element).fontSize}|${getComputedStyle(element).fontWeight}`))]);
+      for (const style of ideaDescriptions) { expect(style).toContain('PT Sans'); expect(style).toContain('|14px|400'); }
       expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
       const stackedFooter = width <= 760 || (width <= 1150 && width <= page.viewportSize()!.height);
       expect(await page.locator('.public-footer__inner').evaluate(element => getComputedStyle(element).gridTemplateColumns.split(' ').length)).toBe(stackedFooter ? 1 : 3);

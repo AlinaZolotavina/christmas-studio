@@ -33,7 +33,10 @@ test('home keeps the tag collections, opens postcards and gives future products 
   await expect(page.locator('.studio')).toHaveCount(0);
   await page.getByRole('link', { name: 'На главную', exact: true }).click();
   await page.locator('.public-header nav').getByRole('link', { name: 'Идеи', exact: true }).click();
-  await expect(page.locator('.coming-soon__section')).toHaveText('Идеи · В разработке');
+  await expect(page.getByRole('heading', { name: 'Идеи', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Крепление адвент-тегов', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Открытки и не только', exact: true })).toBeVisible();
+  await expect(page.locator('.coming-soon')).toHaveCount(0);
   await page.locator('.public-header nav').getByRole('link', { name: 'О проекте', exact: true }).click();
   await expect(page.locator('.about-project')).toContainText('Проект полностью бесплатный и не требует регистрации.');
   await expect(page.locator('.about-story__copy')).toContainText('пространство для творчества и подготовки к праздникам');

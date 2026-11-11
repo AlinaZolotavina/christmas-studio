@@ -1,10 +1,10 @@
+import { t } from '../../i18n';
 import type { TourStep } from '../onboarding/steps';
-
 export const POSTCARD_TOUR_KEY = 'christmas-studio:postcards:tour-offered';
 export const postcardTourSteps: TourStep[] = [
-  { target: '.inspector-tabs, .mobile-dock', title: 'Создайте свою открытку', paragraphs: ['Во вкладке «Текст» выберите «Свой текст» или «Готовые надписи». Иллюстрации и декор добавляются в своих вкладках. Поиск иллюстраций работает на русском и английском.', 'Выберите элемент на холсте. Перетаскивайте его мышью или пальцем, меняйте размер за маркеры и поворачивайте с шагом 15°. Двойной клик открывает ввод текста.'] },
-  { target: '[data-tab="background"], .mobile-dock', title: 'Выберите фон и формат', paragraphs: ['Во вкладке «Формат и фон» доступны готовые изображения, однотонный цвет и градиенты. Изображение заполняет открытку с обрезкой по центру.', 'Выбор формата в этой же вкладке меняет формат только текущей открытки. Координаты и размеры элементов сохраняются — проверьте композицию после изменения.'] },
-  { target: '[data-tab="layers"], .mobile-dock', title: 'Управляйте слоями', paragraphs: ['Во вкладке «Слои» выберите нужный элемент, поднимите или опустите его, заблокируйте или удалите. Заблокированный элемент не перемещается на холсте.', 'Каждое действие можно отменить. История общая для всех открыток этого проекта.'] },
-  { target: '.thumbnail-strip, [data-tab="cards"]', title: 'Соберите свой проект', paragraphs: ['В проекте может быть от 1 до 20 независимых открыток разных форматов. Кнопка с плюсом открывает добавление чистой открытки или копии текущей.', 'Перетаскивайте миниатюры для изменения порядка. В панели открыток есть те же действия кнопками — удобно на телефоне и с клавиатуры.'] },
-  { target: '.inspector-footer, [data-tab="export"]', title: 'Проверьте и сохраните результат', paragraphs: ['В предпросмотре выберите текущую открытку или весь проект и формат PDF, PNG или JPG. Красные ошибки нужно исправить. Предупреждения можно подтвердить одним действием.', 'Проект сохраняется в этом браузере отдельно от адвент-тегов. PDF сохраняет физические размеры, PNG/JPG готовятся в 300 DPI; несколько изображений скачиваются архивом ZIP.'] },
+    { target: '.inspector-tabs, .mobile-dock', title: t("onboarding.postcards.content.title"), paragraphs: [t("onboarding.postcards.content.edit"), t("onboarding.postcards.content.move")] },
+    { target: '[data-tab="background"], .mobile-dock', title: t("onboarding.postcards.background.title"), paragraphs: [t("onboarding.postcards.background.edit"), t("onboarding.postcards.background.format")] },
+    { target: '[data-tab="layers"], .mobile-dock', title: t("onboarding.postcards.layers.title"), paragraphs: [t("onboarding.postcards.layers.actions"), t("onboarding.postcards.layers.undo")] },
+    { target: '.thumbnail-strip, [data-tab="cards"]', title: t("onboarding.postcards.cards.title"), paragraphs: [t("onboarding.postcards.cards.count"), t("onboarding.postcards.cards.reorder")] },
+    { target: '.inspector-footer, [data-tab="export"]', title: t("onboarding.postcards.export.title"), paragraphs: [t("onboarding.postcards.export.validation"), t("onboarding.postcards.export.formats")] },
 ];

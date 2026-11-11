@@ -1,46 +1,50 @@
-export interface TourStep { target: string; title: string; paragraphs: string[] }
-
+import { t } from '../../i18n';
+export interface TourStep {
+    target: string;
+    title: string;
+    paragraphs: string[];
+}
 /** Approved reference copy is stored in tests/fixtures/tour-reference.md. */
 export const tourSteps: TourStep[] = [
-  {
-    target: '.inspector-tabs, .mobile-dock',
-    title: 'Добавляйте текст и изображения',
-    paragraphs: [
-      'Выберите вкладку «Текст» или «Изображение» в панели настроек. Для текста можно изменить содержание, шрифт, размер, цвет и выравнивание. В разделе изображений найдите подходящую иллюстрацию по названию или ключевым словам на русском или английском языке и добавьте её на карточку.',
-      'Чтобы переместить элемент, перетащите его мышью или пальцем. Размер и положение выбранного элемента можно изменить прямо на карточке. Чтобы отредактировать текст, дважды щёлкните по нему.',
-    ],
-  },
-  {
-    target: '.inspector, .mobile-dock',
-    title: 'Настраивайте фон и оформление',
-    paragraphs: [
-      'Во вкладке «Фон» выберите цвет или градиент для карточки. Здесь же можно добавить небольшие декоративные элементы — например, круги или звёзды — и настроить их внешний вид и положение.',
-      'На телефоне вкладки «Текст», «Изображение» и «Фон» находятся на нижней панели. Нажмите нужную иконку, чтобы открыть настройки.',
-    ],
-  },
-  {
-    target: '.thumbnail-strip, .inspector-tabs [data-tab="cards"], .mobile-dock',
-    title: 'Работайте со всеми карточками проекта',
-    paragraphs: [
-      'Переключайтесь между карточками в нижней ленте на компьютере. На телефоне нажмите иконку «Карточки» на нижней панели — откроется список карточек.',
-      'Вы можете оформить каждую карточку отдельно или применить общие настройки ко всему набору с помощью режима «Всему набору». При этом индивидуальные тексты и их расположение сохраняются.',
-    ],
-  },
-  {
-    target: '.history-controls',
-    title: 'Отменяйте изменения и пробуйте снова',
-    paragraphs: [
-      'Если результат вам не понравился, используйте кнопки отмены и повтора в правом верхнем углу рабочей области. Они позволяют отменить или вернуть до 15 последних действий.',
-      'На компьютере также доступны сочетания клавиш: **Ctrl + Z** (на Mac — **⌘ + Z**) для отмены и **Ctrl + Shift + Z** (на Mac — **⌘ + Shift + Z**) для повтора. Изменения в проекте сохраняются автоматически в браузере. После перезагрузки страницы проект останется, но история действий начнётся заново.',
-    ],
-  },
-  {
-    target: '.inspector-footer, .inspector-tabs [data-tab="export"], .mobile-dock',
-    title: 'Скачивайте и печатайте карточки',
-    paragraphs: [
-      'Когда оформление будет готово, на компьютере нажмите кнопку экспорта, на планшете или телефоне — откройте вкладку «Экспорт» и перейдите к предпросмотру PDF. Проверьте расположение всех карточек на страницах A4.',
-      'Красные ошибки необходимо исправить перед печатью. Оранжевые предупреждения не блокируют скачивание, но на них стоит обратить внимание.',
-      'При печати выберите масштаб **100%** и отключите параметр «Подогнать под страницу». Так размеры карточек сохранятся правильными. Остаётся распечатать листы и вырезать карточки по пунктирным линиям.',
-    ],
-  },
+    {
+        target: '.inspector-tabs, .mobile-dock',
+        title: t("onboarding.tags.content.title"),
+        paragraphs: [
+            t("onboarding.tags.content.edit"),
+            t("onboarding.tags.content.move"),
+        ],
+    },
+    {
+        target: '.inspector, .mobile-dock',
+        title: t("onboarding.tags.background.title"),
+        paragraphs: [
+            t("onboarding.tags.background.edit"),
+            t("onboarding.tags.background.mobile"),
+        ],
+    },
+    {
+        target: '.thumbnail-strip, .inspector-tabs [data-tab="cards"], .mobile-dock',
+        title: t("onboarding.tags.cards.title"),
+        paragraphs: [
+            t("onboarding.tags.cards.navigation"),
+            t("onboarding.tags.cards.applyAll"),
+        ],
+    },
+    {
+        target: '.history-controls',
+        title: t("onboarding.tags.undo.title"),
+        paragraphs: [
+            t("onboarding.tags.undo.description"),
+            t("onboarding.tags.undo.shortcuts"),
+        ],
+    },
+    {
+        target: '.inspector-footer, .inspector-tabs [data-tab="export"], .mobile-dock',
+        title: t("onboarding.tags.export.title"),
+        paragraphs: [
+            t("onboarding.tags.export.open"),
+            t("onboarding.tags.export.validation"),
+            t("onboarding.tags.export.print"),
+        ],
+    },
 ];

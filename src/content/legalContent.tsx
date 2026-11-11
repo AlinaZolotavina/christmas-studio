@@ -1,53 +1,52 @@
+import { getLocale, localized, t } from '../i18n';
+import { rich } from '../i18n/rich';
 import { siteContacts } from './siteContacts';
 import { legalMetadata } from './legalMetadata';
-
 const githubPrivacy = 'https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement';
 function Email() { return <a href={`mailto:${siteContacts.authorEmail}`}>{siteContacts.authorEmail}</a>; }
-
 export function PrivacyContent() {
-  return <>
-    <p>«Новогодняя мастерская» работает без регистрации. Здесь описано, какие данные сохраняются в браузере и используются при посещении сайта и обращении к автору.</p>
-    <section><h2>1. Ответственное лицо</h2><p>Ответственное лицо — {legalMetadata.ownerName}. Контакт по вопросам конфиденциальности: <Email />.</p></section>
-    <section><h2>2. Данные в вашем браузере</h2><p>Проекты и экспортируемые файлы создаются на вашем устройстве. Содержимое дизайнов не отправляется автору или на сервер. В localStorage браузера сохраняются:</p>
+    return <>
+    <p>{t("legal.privacy.intro")}</p>
+    <section><h2>{t("legal.privacy.controller.title")}</h2><p>{rich("legal.privacy.controller.description", { ownerName: localized(legalMetadata.ownerName) }, { emailLink: <Email /> })}</p></section>
+    <section><h2>{t("legal.privacy.localData.title")}</h2><p>{t("legal.privacy.localData.intro")}</p>
       <ul>
-        <li>По одному проекту адвент-тегов и открыток: название, идентификаторы, тексты, оформление и порядок элементов. Личные сведения, введённые в текст дизайна, тоже остаются частью проекта.</li>
-        <li>Техническая копия повреждённого проекта для восстановления и последние выбранные цвета.</li>
-        <li>Отметки о показе уведомления и обучающего тура, версия и время принятия условий.</li>
+        <li>{t("legal.privacy.localData.projects")}</li>
+        <li>{t("legal.privacy.localData.recovery")}</li>
+        <li>{t("legal.privacy.localData.preferences")}</li>
       </ul>
-      <p>Эти записи нужны для сохранения работы и настроек. Они хранятся без автоматического срока удаления. Новый проект после подтверждения заменяет текущий проект выбранного редактора; техническая копия и служебные отметки могут сохраняться отдельно. Чтобы удалить все записи, очистите данные сайта в настройках браузера. Автор не имеет к ним доступа. История отмены и повтора исчезает после перезагрузки страницы.</p>
-      <p>Аналитики, рекламы и отслеживания нет. Приложение не устанавливает собственные cookie. Принятие условий не является согласием на рекламу или отслеживание.</p>
+      <p>{t("legal.privacy.localData.retention")}</p>
+      <p>{t("legal.privacy.localData.noTracking")}</p>
     </section>
-    <section><h2>3. Хостинг и загрузка файлов</h2>
-      <p>Сайт размещается на GitHub Pages. GitHub регистрирует IP-адреса посетителей для безопасности независимо от наличия аккаунта. Подробнее — в <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection" target="_blank" rel="noopener noreferrer">документации GitHub Pages</a>.</p>
-      <p>Обработка технических данных, получатели, сроки хранения и международная передача, в том числе в США, описаны в <a href={githubPrivacy} target="_blank" rel="noopener noreferrer">политике GitHub</a>. Автор не получает журналы с IP-адресами посетителей.</p>
-      <p>Шрифты, изображения и библиотеки загружаются с самого сайта. Внешние CDN и Google Fonts не подключены. Экспорт PDF, PNG, JPG и ZIP выполняется в браузере.</p>
+    <section><h2>{t("legal.privacy.hosting.title")}</h2>
+      <p>{rich("legal.privacy.hosting.github", {}, { link: <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection" target="_blank" rel="noopener noreferrer"/> })}</p>
+      <p>{rich("legal.privacy.hosting.githubPolicy", {}, { link: <a href={githubPrivacy} target="_blank" rel="noopener noreferrer"/> })}</p>
+      <p>{t("legal.privacy.hosting.localAssets")}</p>
     </section>
-    <section><h2>4. Обращения к автору</h2>
-      <p>Письма отправляете вы сами через почтовое приложение. Автор получает ваш email, сообщение и добавленные вами имя или вложения. Для ответа используется Gmail; обработка и международная передача писем описаны в <a href="https://policies.google.com/privacy?hl=ru" target="_blank" rel="noopener noreferrer">политике Google</a>.</p>
-      <p>Переписка используется для ответа и удаляется в течение {legalMetadata.correspondenceRetentionMonths} месяцев после завершения обращения, кроме случаев, когда хранение требуется законом или для разрешения спора. Рекламных рассылок нет.</p>
-      <p>Технический отчёт в справке содержит версию приложения, сведения о браузере, состояние сохранения и число ошибок и предупреждений. Содержимое проекта в него автоматически не включается. Описание проблемы добавляется вами; копирование ничего не отправляет автору.</p>
-      <p>Если вы переходите в GitHub Issues и публикуете обращение, оно может быть общедоступным. На этой площадке действует политика GitHub.</p>
+    <section><h2>{t("legal.privacy.contact.title")}</h2>
+      <p>{rich("legal.privacy.contact.email", {}, { link: <a href={`https://policies.google.com/privacy?hl=${getLocale()}`} target="_blank" rel="noopener noreferrer"/> })}</p>
+      <p>{t("legal.privacy.contact.retention", { correspondenceRetentionMonths: legalMetadata.correspondenceRetentionMonths })}</p>
+      <p>{t("legal.privacy.contact.report")}</p>
+      <p>{t("legal.privacy.contact.issues")}</p>
     </section>
-    <section><h2>5. Цели и основания обработки</h2>
-      <p>Персональные данные, необходимые для запрошенных функций редактора и исполнения условий, обрабатываются на основании статьи 6(1)(b) GDPR. Ответы на общие вопросы и защита работы сайта основаны на статье 6(1)(f) GDPR: законный интерес автора — поддерживать сервис и отвечать на обращения.</p>
-      <p>Предоставлять личные сведения для работы редактора не требуется. Адрес электронной почты нужен только для ответа на ваше письмо. Данные не продаются и не используются для профилирования или автоматизированных решений с юридическими последствиями.</p>
+    <section><h2>{t("legal.privacy.processing.title")}</h2>
+      <p>{t("legal.privacy.processing.basis")}</p>
+      <p>{t("legal.privacy.processing.optionalData")}</p>
     </section>
-    <section><h2>6. Ваши права</h2>
-      <p>В предусмотренных GDPR случаях вы можете запросить доступ к своим данным, исправление, удаление, ограничение обработки, переносимость и возразить против обработки на основании законного интереса. Для этого напишите на <Email />.</p>
-      <p>Вы также вправе подать жалобу в компетентный орган защиты данных, в том числе по месту проживания, работы или предполагаемого нарушения. По данным, которые GitHub и Google обрабатывают для собственных целей, можно обратиться непосредственно к ним.</p>
+    <section><h2>{t("legal.privacy.rights.title")}</h2>
+      <p>{rich("legal.privacy.rights.requests", {}, { emailLink: <Email /> })}</p>
+      <p>{t("legal.privacy.rights.complaints")}</p>
     </section>
   </>;
 }
-
 export function TermsContent() {
-  return <>
-    <p>«Новогодняя мастерская» — бесплатное пространство для создания праздничного оформления. Доступны редакторы адвент-тегов и открыток. Разделы стикеров и идей находятся в разработке.</p>
-    <section><h2>1. Общие положения</h2><p>Сервис предоставляется бесплатно. Регистрация, аккаунт, подписка и оплата не требуются. Перед первым созданием проекта необходимо ознакомиться с условиями и подтвердить их принятие. Отметка с версией условий и временем подтверждения сохраняется только в вашем браузере; она не создаёт аккаунт.</p><p>Автор может изменять функциональность, добавлять возможности и прекращать поддержку отдельных инструментов.</p></section>
-    <section><h2>2. Сохранение дизайнов и приватность</h2><p>Для работы редактора не требуется предоставлять имя или адрес электронной почты. Проекты и их оформление сохраняются локально в браузере с помощью localStorage. Сайт не передаёт содержимое дизайнов автору и не хранит их на сервере.</p><p>В браузере независимо хранятся один текущий проект адвент-тегов и один текущий проект открыток. Создание нового проекта после подтверждения заменяет проект выбранного редактора. Очистка данных сайта удаляет локальные записи. PDF, PNG и JPG сохраняют готовый дизайн; при скачивании нескольких изображений они упаковываются в ZIP. Редактируемые данные остаются в браузере. Сервис не гарантирует сохранность данных после очистки браузера, смены устройства или сбоя хранилища.</p><p>Сайт размещён на GitHub Pages, где технические данные посещений обрабатываются по правилам хостинга. Подробности о локальных записях, обращениях и внешних сервисах описаны в <a href="#privacy">политике конфиденциальности</a>.</p></section>
-    <section><h2>3. Использование материалов</h2><p>Иллюстрации, шаблоны и декоративные элементы предназначены для личных праздничных изделий.</p><p>Разрешается:</p><ul><li>Создавать личные праздничные дизайны с помощью доступных инструментов.</li><li>Скачивать и распечатывать готовые работы.</li><li>Оформлять подарки, дом и личные праздничные мероприятия.</li><li>Дарить созданные изделия друзьям и близким.</li></ul><p>Не допускается:</p><ul><li>Коммерческое использование материалов проекта и изделий на их основе.</li><li>Продажа готовых тегов, открыток, наклеек и других изделий с материалами проекта.</li><li>Продажа, распространение или перепубликация отдельных цифровых иллюстраций, фонов и шаблонов.</li><li>Создание и распространение цифровых коллекций, наборов графики и шаблонов из материалов проекта.</li><li>Выдача материалов проекта за собственные оригинальные иллюстрации.</li></ul><p>Это правила использования материалов в рамках проекта. Они не означают, что на каждый отдельный графический элемент автоматически распространяется исключительное авторское право.</p></section>
-    <section><h2>4. Искусственный интеллект и права третьих лиц</h2><p>Представленные в проекте иллюстрации и графические материалы созданы с использованием искусственного интеллекта. Их правовой статус зависит от применимого законодательства. Автор не заявляет об исключительных правах на полностью сгенерированные изображения и не гарантирует уникальность каждого элемента.</p><p>Изображения могут быть похожи на результаты, полученные другими пользователями аналогичных технологий. Применение ИИ само по себе не исключает прав третьих лиц на отдельные элементы, если такие права существуют.</p></section>
-    <section><h2>5. Ответственность</h2><p>Сервис предоставляется «как есть». Автор стремится поддерживать стабильную работу, но не гарантирует постоянную доступность, отсутствие ошибок или сохранность данных в браузере.</p><p>Пользователь отвечает за содержание собственных надписей и соблюдение прав третьих лиц при использовании дизайнов. Ничто в этих условиях не ограничивает права, которые нельзя ограничить по применимому законодательству.</p></section>
-    <section><h2>6. Изменения условий</h2><p>Условия могут обновляться по мере развития проекта. Текущая версия и дата обновления публикуются на этой странице. После изменения версии перед созданием нового проекта редактор предложит ознакомиться с обновлёнными условиями.</p></section>
-    <section><h2>7. Контакты</h2><p>Автор проекта — {legalMetadata.ownerName}. По вопросам работы мастерской и использования материалов: <Email />.</p></section>
+    return <>
+    <p>{t("legal.terms.intro")}</p>
+    <section><h2>{t("legal.terms.general.title")}</h2><p>{t("legal.terms.general.access")}</p><p>{t("legal.terms.general.changes")}</p></section>
+    <section><h2>{t("legal.terms.storage.title")}</h2><p>{t("legal.terms.storage.privacy")}</p><p>{t("legal.terms.storage.loss")}</p><p>{rich("legal.terms.storage.hosting", {}, { link: <a href="#privacy"/> })}</p></section>
+    <section><h2>{t("legal.terms.materials.title")}</h2><p>{t("legal.terms.materials.intro")}</p><p>{t("legal.terms.materials.allowed")}</p><ul><li>{t("legal.terms.materials.personalDesigns")}</li><li>{t("legal.terms.materials.print")}</li><li>{t("legal.terms.materials.decoration")}</li><li>{t("legal.terms.materials.gifts")}</li></ul><p>{t("legal.terms.materials.prohibited")}</p><ul><li>{t("legal.terms.materials.commercialUse")}</li><li>{t("legal.terms.materials.resale")}</li><li>{t("legal.terms.materials.redistribution")}</li><li>{t("legal.terms.materials.collections")}</li><li>{t("legal.terms.materials.authorship")}</li></ul><p>{t("legal.terms.materials.scope")}</p></section>
+    <section><h2>{t("legal.terms.ai.title")}</h2><p>{t("legal.terms.ai.creation")}</p><p>{t("legal.terms.ai.thirdPartyRights")}</p></section>
+    <section><h2>{t("legal.terms.liability.title")}</h2><p>{t("legal.terms.liability.availability")}</p><p>{t("legal.terms.liability.userResponsibilities")}</p></section>
+    <section><h2>{t("legal.terms.changes.title")}</h2><p>{t("legal.terms.changes.description")}</p></section>
+    <section><h2>{t("legal.terms.contact.title")}</h2><p>{rich("legal.terms.contact.description", { ownerName: localized(legalMetadata.ownerName) }, { emailLink: <Email /> })}</p></section>
   </>;
 }

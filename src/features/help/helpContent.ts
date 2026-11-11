@@ -1,52 +1,65 @@
-type Step = { icon: 'template' | 'edit' | 'check' | 'print'; title: string; text: string };
-type Question = { icon?: 'storage' | 'print'; title: string; text: string };
-interface HelpContent { title: string; reportLabel: string; steps: Step[]; questions: Question[] }
-const customImageQuestion: Question = { title: 'Можно загрузить свою картинку?', text: 'В текущей версии — нет, доступна только встроенная библиотека. Возможно, загрузка своих изображений появится позднее.' };
-
+import { t } from '../../i18n';
+type Step = {
+    icon: 'template' | 'edit' | 'check' | 'print';
+    title: string;
+    text: string;
+};
+type Question = {
+    icon?: 'storage' | 'print';
+    title: string;
+    text: string;
+};
+interface HelpContent {
+    title: string;
+    reportLabel: string;
+    steps: Step[];
+    questions: Question[];
+}
+const customImageQuestion: Question = { title: t("help.common.faq.upload.question"), text: t("help.common.faq.upload.answer") };
 export const helpContent: Record<'tags' | 'postcards', HelpContent> = {
-  tags: {
-    title: 'Создайте свой набор адвент-тегов за четыре шага',
-    reportLabel: 'Без содержимого карточек',
-    steps: [
-      { icon: 'template', title: 'Выберите шаблон', text: 'Выберите один из готовых наборов.' },
-      { icon: 'edit', title: 'Настройте адвент-теги', text: 'Изменяйте текст, шрифт, цвета и иллюстрации. Перемещайте элементы и меняйте их размер.' },
-      { icon: 'check', title: 'Проверьте результат', text: 'Переключайтесь между карточками набора и исправляйте ошибки. Красные индикаторы обозначают незаполненные или некорректные поля.' },
-      { icon: 'print', title: 'Скачайте и распечатайте', text: 'Откройте предпросмотр, скачайте PDF и распечатайте на листе A4 в масштабе 100%.' },
-    ],
-    questions: [
-      { icon: 'storage', title: 'Где хранится мой проект?', text: 'В этом браузере на этом устройстве. Очистка данных сайта удалит проект; после перезагрузки история Undo/Redo начинается заново.' },
-      { icon: 'print', title: 'Как сохранить правильный размер при печати?', text: 'Печатайте PDF на A4 в масштабе 100%, отключив «Подогнать под страницу».' },
-      { title: 'Почему PDF не скачивается?', text: 'Красные ошибки блокируют скачивание. Откройте предпросмотр и нажмите «Исправить» рядом с проблемой.' },
-      { title: 'Что делать, если текст не помещается?', text: 'Сократите текст, уменьшите шрифт или расширьте рамку. Редактор не уменьшает текст автоматически.' },
-      customImageQuestion,
-      { title: 'Можно изменить число карточек?', text: 'Сейчас можно выбрать только 24 или 31 карточку при создании набора. Изменить количество в готовом проекте нельзя; для этого создайте новый набор.' },
-      { title: 'Можно восстановить редактируемый проект из PDF?', text: 'В текущей версии импорт не поддерживается. PDF сохраняет готовый результат для печати.' },
-      { title: 'Как применить оформление ко всем карточкам?', text: 'В панели справа выберите «Всему набору» и измените настройку. После действия редактор вернётся к текущей карточке.' },
-      { title: 'Сохранение не работает. Что делать?', text: 'Проверьте разрешение браузера на хранение данных сайта и свободное место. Перед закрытием страницы скачайте готовый результат в PDF.' },
-    ],
-  },
-  postcards: {
-    title: 'Создайте свои открытки за четыре шага',
-    reportLabel: 'Без содержимого открыток',
-    steps: [
-      { icon: 'template', title: 'Выберите формат', text: 'Начните с чистой открытки A6 или квадратной 105 × 105 мм. В проекте может быть от 1 до 20 открыток разных форматов.' },
-      { icon: 'edit', title: 'Соберите открытку', text: 'Во вкладке «Текст» введите свой текст или выберите готовые надписи. Добавьте иллюстрации и декор, настройте «Формат и фон». Порядок и блокировки элементов находятся в «Слоях».' },
-      { icon: 'check', title: 'Проверьте результат', text: 'Переключайтесь между открытками и исправляйте ошибки. Перед экспортом обратите внимание на предупреждения: они не блокируют экспорт, но помогают заметить детали, которые могут повлиять на качество печати.' },
-      { icon: 'print', title: 'Скачайте и распечатайте', text: 'Сохраните текущую открытку в PDF, JPG или PNG. Печатайте в масштабе 100%.' },
-    ],
-    questions: [
-      { icon: 'storage', title: 'Где хранится мой проект?', text: 'В этом браузере на этом устройстве, отдельно от тегов. Очистка данных сайта удалит проекты; на другое устройство они не переносятся.' },
-      { icon: 'print', title: 'Как сохранить правильный размер при печати?', text: 'PDF текущей открытки сохраняет её размер, PDF проекта размещает открытки на A4. Печатайте в масштабе 100%, отключив «Подогнать под страницу».' },
-      { title: 'Почему файл не скачивается?', text: 'Исправьте красные ошибки через кнопку «Исправить». Если есть только предупреждения, проверьте их и подтвердите продолжение.' },
-      { title: 'Что делать, если текст не помещается?', text: 'Сократите текст, уменьшите шрифт или расширьте рамку. Кнопка «Подогнать рамку к тексту» изменит рамку без изменения размера шрифта.' },
-      { title: 'Как добавить готовую надпись?', text: 'Откройте «Текст» и выберите «Готовые надписи». Слова в них изменить нельзя; для своих слов выберите «Свой текст».' },
-      { title: 'Где изменить формат и фон?', text: 'Откройте «Формат и фон». После смены формата проверьте расположение элементов: их размеры и координаты сохраняются.' },
-      { title: 'Как управлять слоями?', text: 'В «Слоях» выбирайте элементы, меняйте их порядок, блокируйте или удаляйте. Чтобы изменить заблокированный элемент, сначала разблокируйте его.' },
-      customImageQuestion,
-      { title: 'Как изменить число открыток?', text: 'Через ленту или панель «Открытки» добавляйте, копируйте и удаляйте открытки. В проекте может быть 1–20 открыток; удаление можно отменить.' },
-      { title: 'Можно восстановить редактируемый проект из PDF или изображений?', text: 'В текущей версии импорт не поддерживается. PDF, PNG и JPG сохраняют готовый результат, а редактируемый проект остаётся в браузере.' },
-      { title: 'Можно применить оформление ко всем открыткам?', text: 'Открытки редактируются отдельно. Чтобы повторить оформление, скопируйте открытку; изменения в копии не затронут оригинал.' },
-      { title: 'Сохранение не работает. Что делать?', text: 'Проверьте разрешение браузера на хранение данных сайта и свободное место. Перед закрытием страницы скачайте готовый результат в PDF, JPG или PNG.' },
-    ],
-  },
+    tags: {
+        title: t("help.tags.title"),
+        reportLabel: t("help.tags.reportPrivacy"),
+        steps: [
+            { icon: 'template', title: t("help.tags.steps.choose.title"), text: t("help.tags.steps.choose.description") },
+            { icon: 'edit', title: t("help.tags.steps.edit.title"), text: t("help.tags.steps.edit.description") },
+            { icon: 'check', title: t("help.common.steps.check.title"), text: t("help.tags.steps.check.description") },
+            { icon: 'print', title: t("help.common.steps.download.title"), text: t("help.tags.steps.download.description") },
+        ],
+        questions: [
+            { icon: 'storage', title: t("help.common.faq.storage.question"), text: t("help.tags.faq.storage.answer") },
+            { icon: 'print', title: t("help.common.faq.printSize.question"), text: t("help.tags.faq.printSize.answer") },
+            { title: t("help.tags.faq.download.question"), text: t("help.tags.faq.download.answer") },
+            { title: t("help.common.faq.textOverflow.question"), text: t("help.tags.faq.textOverflow.answer") },
+            customImageQuestion,
+            { title: t("help.tags.faq.cardCount.question"), text: t("help.tags.faq.cardCount.answer") },
+            { title: t("help.tags.faq.import.question"), text: t("help.tags.faq.import.answer") },
+            { title: t("help.tags.faq.applyAll.question"), text: t("help.tags.faq.applyAll.answer") },
+            { title: t("help.common.faq.save.question"), text: t("help.tags.faq.save.answer") },
+        ],
+    },
+    postcards: {
+        title: t("help.postcards.title"),
+        reportLabel: t("help.postcards.reportPrivacy"),
+        steps: [
+            { icon: 'template', title: t("help.postcards.steps.choose.title"), text: t("help.postcards.steps.choose.description") },
+            { icon: 'edit', title: t("help.postcards.steps.edit.title"), text: t("help.postcards.steps.edit.description") },
+            { icon: 'check', title: t("help.common.steps.check.title"), text: t("help.postcards.steps.check.description") },
+            { icon: 'print', title: t("help.common.steps.download.title"), text: t("help.postcards.steps.download.description") },
+        ],
+        questions: [
+            { icon: 'storage', title: t("help.common.faq.storage.question"), text: t("help.postcards.faq.storage.answer") },
+            { icon: 'print', title: t("help.common.faq.printSize.question"), text: t("help.postcards.faq.printSize.answer") },
+            { title: t("help.postcards.faq.download.question"), text: t("help.postcards.faq.download.answer") },
+            { title: t("help.common.faq.textOverflow.question"), text: t("help.postcards.faq.textOverflow.answer") },
+            { title: t("help.postcards.faq.lettering.question"), text: t("help.postcards.faq.lettering.answer") },
+            { title: t("help.postcards.faq.format.question"), text: t("help.postcards.faq.format.answer") },
+            { title: t("help.postcards.faq.layers.question"), text: t("help.postcards.faq.layers.answer") },
+            customImageQuestion,
+            { title: t("help.postcards.faq.cardCount.question"), text: t("help.postcards.faq.cardCount.answer") },
+            { title: t("help.postcards.faq.import.question"), text: t("help.postcards.faq.import.answer") },
+            { title: t("help.postcards.faq.applyAll.question"), text: t("help.postcards.faq.applyAll.answer") },
+            { title: t("help.common.faq.save.question"), text: t("help.postcards.faq.save.answer") },
+        ],
+    },
 };

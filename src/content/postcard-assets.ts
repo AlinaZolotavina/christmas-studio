@@ -1,4 +1,5 @@
 import { assets } from './assets';
+import { localized } from '../i18n';
 import { lettering } from '../data/lettering';
 import { backgrounds } from '../data/backgrounds';
 import { decorations } from '../data/decorations';
@@ -22,7 +23,7 @@ export interface PostcardResource {
 }
 type Dimensions = Record<string, { width: number; height: number }>;
 const resource = (entry: Pick<ImageMetadata, 'id' | 'name' | 'category' | 'src'>, dimensions: Dimensions, folder: string): PostcardResource => ({
-  id: entry.id, name: entry.name.ru, category: entry.category,
+  id: entry.id, name: localized(entry.name), category: entry.category,
   ...dimensions[entry.id], preview: `${folder}/${entry.id}-preview.webp`, print: entry.src,
   format: entry.src.endsWith('.svg') ? 'svg' : 'png',
 });

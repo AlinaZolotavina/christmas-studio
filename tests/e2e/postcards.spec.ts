@@ -412,7 +412,7 @@ test('background and shape contains every background mode and keeps card backgro
   expect((await activeCard(page)).background).toEqual(original.postcards[1].background);
   await selectCard(page, first); expect((await activeCard(page)).background).toEqual(radial);
   await kind.selectOption('image');
-  await page.getByLabel('Поиск: фоны', { exact: true }).fill('watercolor-winter-sky-snowflakes');
+  await page.getByLabel('Поиск фонов', { exact: true }).fill('watercolor-winter-sky-snowflakes');
   await page.locator('.image-library button').click();
   await expect.poll(async () => (await activeCard(page)).background).toMatchObject({ kind: 'image', assetId: 'watercolor-winter-sky-snowflakes' });
   const image = (await activeCard(page)).background;
@@ -436,7 +436,7 @@ test('touchscreen gestures commit one edit each, preserve graphic proportions an
     await create(page);
     const project = await saved(page);
     await tab(page, 'Иллюстрации');
-    await page.getByLabel('Поиск: иллюстрации', { exact: true }).fill('rustic-wooden-star');
+    await page.getByLabel('Поиск иллюстраций', { exact: true }).fill('rustic-wooden-star');
     await page.getByRole('button', { name: 'Добавить: Деревянная звезда с хвоей', exact: true }).tap();
     await page.getByRole('button', { name: 'Закрыть панель', exact: true }).tap();
     await expect.poll(async () => (await activeCard(page)).elements.length).toBe(1);
@@ -518,7 +518,7 @@ test('new bilingual SVG greetings and illustrations are searchable, editable and
   await tab(page, 'Иллюстрации');
   const illustration = page.getByRole('button', { name: 'Добавить: Рождественский штоллен с красной лентой и дольками апельсина', exact: true });
   for (const query of ['штоллен', 'stollen']) {
-    await page.getByLabel('Поиск: иллюстрации', { exact: true }).fill(query);
+    await page.getByLabel('Поиск иллюстраций', { exact: true }).fill(query);
     await expect(illustration).toBeVisible();
   }
   await illustration.click(); await number(page, 'Ширина', 55); await number(page, 'По горизонтали', 25); await number(page, 'По вертикали', 96);
@@ -527,7 +527,7 @@ test('new bilingual SVG greetings and illustrations are searchable, editable and
   const ids = ['merry-christmas-red-playful', 'new-year-miracles-russian-black-calligraphy'];
   for (const [index, id] of ids.entries()) {
     const resource = lettering.find(entry => entry.id === id)!;
-    await page.getByLabel('Поиск: надписи', { exact: true }).fill(index ? 'Miracles in the New Year' : 'Merry Christmas');
+    await page.getByLabel('Поиск надписей', { exact: true }).fill(index ? 'Miracles in the New Year' : 'Merry Christmas');
     const choice = page.getByRole('button', { name: `Добавить: ${resource.name.ru}`, exact: true });
     await expect(choice).toBeVisible(); await choice.click();
     await number(page, 'Ширина', index ? 70 : 75); await number(page, 'По горизонтали', index ? 17.5 : 15); await number(page, 'По вертикали', index ? 48 : 5);
@@ -560,7 +560,7 @@ test('multiple texts, illustration and lettering keep their layer identity, aspe
   await page.getByRole('combobox', { name: 'Шрифт', exact: true }).selectOption('serif');
   await expect.poll(async () => { const element = (await activeCard(page)).elements[1]; return element.type === 'text' ? element.fontId : null; }).toBe('serif');
   await tab(page, 'Иллюстрации');
-  await page.getByLabel('Поиск: иллюстрации', { exact: true }).fill('rustic-wooden-star');
+  await page.getByLabel('Поиск иллюстраций', { exact: true }).fill('rustic-wooden-star');
   await page.locator('.image-library button').first().click();
   await expect.poll(async () => (await activeCard(page)).elements.length).toBe(3);
   const illustration = (await activeCard(page)).elements[2];
@@ -572,7 +572,7 @@ test('multiple texts, illustration and lettering keep their layer identity, aspe
   await expect.poll(async () => (await activeCard(page)).elements[2].rotation).toBe(15);
   await tab(page, 'Текст');
   await page.getByRole('button', { name: 'Готовые надписи', exact: true }).click();
-  await page.getByLabel('Поиск: надписи', { exact: true }).fill('golden-merry-christmas-calligraphy');
+  await page.getByLabel('Поиск надписей', { exact: true }).fill('golden-merry-christmas-calligraphy');
   await page.locator('.image-library button').first().click();
   await expect.poll(async () => (await activeCard(page)).elements.length).toBe(4);
   const lettering = (await activeCard(page)).elements[3];
@@ -791,7 +791,7 @@ test('all five mobile tools remain reachable and edits survive phone, tablet and
   await page.setViewportSize({ width: 768, height: 1024 });
   await tab(page, 'Текст');
   await page.getByRole('button', { name: 'Готовые надписи', exact: true }).click();
-  await page.getByLabel('Поиск: надписи', { exact: true }).fill('golden-merry-christmas-calligraphy');
+  await page.getByLabel('Поиск надписей', { exact: true }).fill('golden-merry-christmas-calligraphy');
   await page.locator('.image-library button').first().click();
   await expect.poll(async () => (await activeCard(page)).elements.length).toBe(2);
   await page.getByRole('button', { name: 'Закрыть панель', exact: true }).click();
@@ -842,7 +842,7 @@ test('a failed requested font shows its local fallback and keeps export consent 
   await tab(page, 'Иллюстрации');
   await expect(page.getByRole('combobox', { name: 'Коллекция иллюстраций', exact: true })).toHaveCount(0);
   await expect(page.locator('.image-library button')).toHaveCount(images.length);
-  await page.getByLabel('Поиск: иллюстрации', { exact: true }).fill('rustic-wooden-star');
+  await page.getByLabel('Поиск иллюстраций', { exact: true }).fill('rustic-wooden-star');
   await expect(page.getByRole('button', { name: 'Добавить: Деревянная звезда с хвоей', exact: true })).toBeVisible();
   await text(page, 'С Новым годом!');
   await page.getByRole('combobox', { name: 'Шрифт', exact: true }).selectOption('serif');

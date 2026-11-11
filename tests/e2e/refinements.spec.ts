@@ -133,7 +133,8 @@ test('project geometry changes the entire set after an inline warning and reset 
   expect(original.cards[0].hole.y).toBeCloseTo(5.75);
   await page.locator('.studio-nav').getByRole('button', { name: 'Настройки', exact: true }).click();
   await page.getByLabel('Форма карточек', { exact: true }).selectOption('square');
-  await expect(page.getByRole('note')).toContainText('у всех 24 карточек');
+  await expect(page.getByRole('note')).toContainText('Форма и размеры изменятся у всего набора (24)');
+  expect((await documentData(page)).cards).toEqual(original.cards);
   await page.getByRole('button', { name: 'Применить ко всему набору', exact: true }).click();
   await expect.poll(async () => (await documentData(page))?.cards.every((card: { shape: string }) => card.shape === 'square')).toBe(true);
   await expect(page.getByRole('dialog')).toHaveCount(1);

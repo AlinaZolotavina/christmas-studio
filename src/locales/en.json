@@ -1,0 +1,1467 @@
+{
+  "projects": {
+    "notifications": {
+      "restored": "Project restored",
+      "postcardSaveFailed": "<span>Could not save your cards. Download your finished designs before closing this page.</span>",
+      "tagSaveFailed": "<span>Could not save your changes. Download a PDF to keep your finished designs.</span>",
+      "browserStorage": "Your project is saved only in this browser. Clearing browser data will delete it. A PDF preserves the printable design, but does not replace the editable project.",
+      "repaired": "Your project has been recovered from saved data. The original has been kept in a local backup."
+    },
+    "recovery": {
+      "originalPreserved": "The original data is still stored in this browser. A new project will not replace it without separate confirmation.",
+      "postcardsTitle": "Could not restore your cards",
+      "postcardsBanner": "<span>Your card project needs to be recovered.</span>",
+      "open": "Open recovery",
+      "discardExplanation": "The damaged document will be deleted. Only confirm if you want to start a new project.",
+      "discardPostcardsTitle": "Delete the damaged card project?",
+      "discardAndStart": "Delete and start over",
+      "downloadExplanation": "The original data has been kept. You can download it, try recovery again, or start over.",
+      "discardAction": "Delete the damaged project and start over",
+      "tagsTitle": "Could not restore your project",
+      "downloadData": "Download data",
+      "tagsBanner": "<span>Your saved project needs to be recovered.</span>",
+      "discardWarning": "Once deleted, this data cannot be recovered in the workshop. You can download the original file first.",
+      "downloadOriginal": "Download original data",
+      "discardTitle": "Delete the damaged project?",
+      "resolveBeforeCreate": "First download the damaged data and explicitly delete it, or try recovery again.",
+      "retryFailed": "The project could not be recovered yet. The original data has been kept.",
+      "discarded": "The damaged data has been deleted. You can create a new project.",
+      "discardFailed": "Could not delete the damaged data. The original has been kept; please try again."
+    },
+    "create": {
+      "chooseProduct": "What would you like to create?",
+      "postcardsDefaultName": "My cards",
+      "newAction": "Create a new project",
+      "action": "Create a project",
+      "tagsDefaultName": "My Advent calendar"
+    },
+    "replace": {
+      "postcardsDescription": {
+        "one": "The new project “{projectName}” with {count} card will replace your current card project. You can export your finished designs before replacing it.",
+        "other": "The new project “{projectName}” with {count} cards will replace your current card project. You can export your finished designs before replacing it."
+      },
+      "postcardsTitle": "Create a new card project?",
+      "keepCurrent": "Keep current project",
+      "tagsDescription": "One tag project is stored in this browser. The new set will replace it. Download a PDF first if you want to keep your finished Advent tags.",
+      "tagsTitle": "Start a new story?",
+      "confirmFirst": "Confirm that you want to replace the saved project before starting a new one."
+    },
+    "resume": {
+      "description": "The project “{projectName}” is saved in this browser. Choosing a new template will not replace it without confirmation.",
+      "postcardsTitle": "Continue working on your cards?",
+      "tagsTitle": "Continue working on your Advent tags?"
+    },
+    "saved": {
+      "tags": {
+        "label": "Saved Advent tag project",
+        "status": "Your Advent tags are saved",
+        "count": "Tags in this set: {count}"
+      },
+      "postcards": {
+        "label": "Saved card project",
+        "status": "Your cards are saved",
+        "count": "Cards in this project: {count}"
+      }
+    }
+  },
+  "common": {
+    "retry": "Try again",
+    "startOver": "Start over",
+    "cancel": "Cancel",
+    "loading": "Loading…",
+    "createNew": "Create new",
+    "dismissNotification": "Dismiss notification",
+    "done": "Done",
+    "closePanel": "Close panel",
+    "closeMenu": "Close menu",
+    "fix": "Fix",
+    "startNew": "Start new",
+    "continue": "Continue",
+    "back": "Back",
+    "save": "Save",
+    "brand": "Christmas Studio",
+    "closeWindow": "Close window",
+    "comingSoon": "Coming soon"
+  },
+  "export": {
+    "open": "Export",
+    "loadingPostcards": "Loading cards…",
+    "loadingPostcardEditor": "Loading the card editor…",
+    "postcardPreviewTitle": "Preparing your card preview",
+    "refreshingPreview": "Updating the preview…",
+    "previewTitle": "Preparing your preview",
+    "downloadPdf": "Download PDF",
+    "postcards": {
+      "pageSize": "Print page: {width} × {height} mm",
+      "preparationFailed": "Could not prepare your cards.",
+      "preparing": "Preparing your file…",
+      "progress": "{completed} of {total} complete",
+      "fileFailed": "Could not create the file. Please try again.",
+      "scope": {
+        "current": "Current card",
+        "project": "Entire project",
+        "label": "Cards to export",
+        "title": "Export"
+      },
+      "formatLabel": "Card export format",
+      "formatTitle": "File format",
+      "printInstructions": "Print at <strong>100%</strong> scale and turn off “Fit to page”. {formatHint}",
+      "zipHint": "Each card is saved as a separate image. Multiple images are packaged in a ZIP file.",
+      "checking": "<strong>Checking your cards…</strong>",
+      "loadingResources": "Loading images, preparing text outlines and arranging the layout",
+      "errors": "Errors: {count}. Fix them before exporting.",
+      "warnings": "Warnings: {count}. Review them before continuing.",
+      "ready": "No errors. Ready to save!",
+      "pageLabel": "Page {position}",
+      "pagesLabel": "Card pages",
+      "previousPage": "Previous page",
+      "pagePosition": "<span>Page {page} of {total}</span>",
+      "nextPage": "Next page",
+      "zoomOut": "Zoom out",
+      "actualSize": "100% scale",
+      "zoomIn": "Zoom in",
+      "fitPage": "Fit page",
+      "validationSummary": "Layout check · errors: {errorCount}, warnings: {warningCount}",
+      "confirmWarnings": "I have reviewed the warnings and want to continue exporting",
+      "title": "Card preview",
+      "projectSize": "A4 · original card sizes",
+      "dimensions": "{width} × {height} mm",
+      "rasterHint": "300 DPI · opaque background",
+      "backToEditor": "Back to editor",
+      "creating": "Creating your file…",
+      "download": "Download {format}"
+    },
+    "tags": {
+      "pageSize": "A4 print page",
+      "goToPage": "Go to page",
+      "previewFailed": "Could not update the preview. Please try again.",
+      "pdfFailed": "Could not create the PDF. Please try again.",
+      "printInstructions": "To preserve the tag dimensions, print at <strong>100%</strong> scale and turn off “Fit to page”.",
+      "updating": "<strong>Updating the preview…</strong>",
+      "loadingResources": "Checking the layout, sizes and fonts",
+      "errors": "Errors: {count}. Fix them before exporting.",
+      "warnings": "Warnings: {count}. You can download the PDF.",
+      "ready": "No errors. Ready to print!",
+      "pageLabel": "Page {position}",
+      "pagesLabel": "Document pages",
+      "previousPage": "Previous page",
+      "pagePosition": "<span>Page {page} of {total}</span>",
+      "nextPage": "Next page",
+      "zoomOut": "Zoom out",
+      "actualSize": "100% scale",
+      "actualSizeLabel": "Show at 100% scale",
+      "zoomIn": "Zoom in",
+      "fitPage": "Fit page",
+      "validationSummary": "Layout check · errors: {errorCount}, warnings: {warningCount}",
+      "title": "Print preview",
+      "documentSummary": {
+        "one": "A4 · original tag sizes · {count} page",
+        "other": "A4 · original tag sizes · {count} pages"
+      },
+      "backToEditor": "Back to editor",
+      "creating": "Creating your PDF…",
+      "download": "Download PDF",
+      "pageWithErrors": "Page {position}, has errors",
+      "pageWithWarnings": "Page {position}, has warnings"
+    }
+  },
+  "legal": {
+    "loading": "Loading document…",
+    "privacy": {
+      "intro": "Christmas Studio does not require registration. This policy explains what data is stored in your browser and processed when you visit the site or contact its creator.",
+      "controller": {
+        "title": "1. Data controller",
+        "description": "The data controller is {ownerName}. For privacy enquiries, contact <emailLink/>."
+      },
+      "localData": {
+        "title": "2. Data in your browser",
+        "intro": "Projects and exported files are created on your device. Your designs are not sent to the creator or a server. Your browser’s localStorage stores:",
+        "projects": "One Advent tag project and one card project, including their names, identifiers, text, appearance and element order. Any personal information you enter in a design also remains part of that project.",
+        "recovery": "A technical copy of a damaged project for recovery, and your recently selected colours.",
+        "preferences": "Records of notifications and the guided tour being shown, and the version and time of your acceptance of the terms.",
+        "retention": "These records preserve your work and settings. They have no automatic expiry date. After confirmation, a new project replaces the current project in the selected editor; the recovery copy and service preferences may remain separately. To delete all records, clear this site’s data in your browser settings. The creator cannot access these records. Undo and redo history is lost when the page reloads.",
+        "noTracking": "There are no analytics, advertisements or tracking. The app does not set its own cookies. Accepting the terms does not constitute consent to advertising or tracking."
+      },
+      "hosting": {
+        "title": "3. Hosting and file loading",
+        "github": "The site is hosted on GitHub Pages. GitHub logs visitors’ IP addresses for security purposes, whether or not they have an account. See the <link>GitHub Pages documentation</link> for details.",
+        "githubPolicy": "The processing of technical data, recipients, retention periods and international transfers, including to the United States, are described in <link>GitHub’s privacy statement</link>. The creator does not receive logs of visitors’ IP addresses.",
+        "localAssets": "Fonts, images and libraries are loaded from this site. No external CDNs or Google Fonts are used. PDF, PNG, JPG and ZIP exports are created in your browser."
+      },
+      "contact": {
+        "title": "4. Contacting the creator",
+        "email": "You send emails yourself using your email app. The creator receives your email address, message and any name or attachments you provide. Gmail is used to reply; the processing and international transfer of emails are described in <link>Google’s privacy policy</link>.",
+        "retention": "Correspondence is used to respond to your enquiry and is deleted within {correspondenceRetentionMonths} months after the enquiry is closed, unless retention is required by law or to resolve a dispute. No marketing emails are sent.",
+        "report": "The technical report in Help contains the app version, browser information, save status and the number of errors and warnings. Project content is not automatically included. You add the problem description yourself; copying the report does not send anything to the creator.",
+        "issues": "If you open GitHub Issues and submit a report, it may be publicly accessible. GitHub’s privacy policy applies on that platform."
+      },
+      "processing": {
+        "title": "5. Purposes and legal bases",
+        "basis": "Personal data needed to provide the requested editor features and fulfil the terms is processed under Article 6(1)(b) GDPR. Replies to general enquiries and protection of the site are based on Article 6(1)(f) GDPR: the creator’s legitimate interest in maintaining the service and responding to enquiries.",
+        "optionalData": "You do not need to provide personal information to use the editor. Your email address is needed only to reply to your email. Data is not sold or used for profiling or automated decisions with legal effects."
+      },
+      "rights": {
+        "title": "6. Your rights",
+        "requests": "Where provided for by the GDPR, you may request access to your data, rectification, erasure, restriction of processing and data portability, and object to processing based on legitimate interests. Contact <emailLink/> to exercise these rights.",
+        "complaints": "You may also lodge a complaint with a competent data protection authority, including in the place where you live or work, or where an alleged infringement occurred. For data that GitHub and Google process for their own purposes, you may contact them directly."
+      },
+      "title": "Privacy policy"
+    },
+    "terms": {
+      "intro": "Christmas Studio is a free space for creating festive designs. Advent tag and card editors are available. The stickers and ideas sections are in development.",
+      "general": {
+        "title": "1. General terms",
+        "access": "The service is free. No registration, account, subscription or payment is required. Before creating your first project, you must read and accept these terms. The version of the terms and the time of acceptance are recorded only in your browser; this does not create an account.",
+        "changes": "The creator may change features, add functionality and discontinue support for individual tools."
+      },
+      "storage": {
+        "title": "2. Saving designs and privacy",
+        "privacy": "You do not need to provide a name or email address to use the editor. Projects and their designs are stored locally in your browser using localStorage. The site does not send your designs to the creator or store them on a server.",
+        "loss": "The browser independently stores one current Advent tag project and one current card project. Creating a new project after confirmation replaces the project in the selected editor. Clearing site data deletes local records. PDF, PNG and JPG files preserve the finished design; multiple downloaded images are packaged in a ZIP file. Editable data remains in the browser. The service does not guarantee data retention after clearing browser data, switching devices or a storage failure.",
+        "hosting": "The site is hosted on GitHub Pages, which processes technical visit data under its hosting policies. Details about local records, enquiries and external services are provided in the <link>privacy policy</link>."
+      },
+      "materials": {
+        "title": "3. Use of materials",
+        "intro": "Illustrations, templates and decorative elements are intended for personal festive creations.",
+        "allowed": "You may:",
+        "personalDesigns": "Create personal festive designs using the available tools.",
+        "print": "Download and print your finished designs.",
+        "decoration": "Decorate gifts, your home and personal celebrations.",
+        "gifts": "Give your creations to friends and family.",
+        "prohibited": "You may not:",
+        "commercialUse": "Use the project’s materials or products based on them commercially.",
+        "resale": "Sell finished tags, cards, stickers or other products containing the project’s materials.",
+        "redistribution": "Sell, distribute or republish individual digital illustrations, backgrounds or templates.",
+        "collections": "Create and distribute digital collections, graphics packs or template sets using the project’s materials.",
+        "authorship": "Claim the project’s materials as your own original illustrations.",
+        "scope": "These are the rules for using materials within this project. They do not mean that every individual graphic element automatically carries exclusive copyright."
+      },
+      "ai": {
+        "title": "4. Artificial intelligence and third-party rights",
+        "creation": "The illustrations and graphics in this project were created using artificial intelligence. Their legal status depends on applicable law. The creator does not claim exclusive rights to fully generated images or guarantee that every element is unique.",
+        "thirdPartyRights": "Images may resemble results generated by other users of similar technologies. The use of AI does not in itself rule out third-party rights to individual elements, where such rights exist."
+      },
+      "liability": {
+        "title": "5. Liability",
+        "availability": "The service is provided “as is”. The creator aims to keep it running reliably but does not guarantee uninterrupted availability, freedom from errors or the preservation of data in your browser.",
+        "userResponsibilities": "You are responsible for the content of your own text and for respecting third-party rights when using your designs. Nothing in these terms limits rights that cannot be limited under applicable law."
+      },
+      "changes": {
+        "title": "6. Changes to these terms",
+        "description": "These terms may be updated as the project develops. The current version and update date are published on this page. When the version changes, the editor will ask you to review the updated terms before creating a new project."
+      },
+      "contact": {
+        "title": "7. Contact",
+        "description": "The project creator is {ownerName}. For questions about the studio or use of its materials, contact <emailLink/>."
+      },
+      "title": "Terms of use"
+    },
+    "updated": "Last updated: {updated}",
+    "acceptance": {
+      "intro": "The editor is free and does not require registration. Your designs are saved locally in your browser.",
+      "personalUse": "Materials may be used for personal, non-commercial purposes only.",
+      "agreement": "<span>I have read and agree to the <link>terms of use</link>.</span>",
+      "privacy": "The <link>privacy policy</link> explains what data stays in your browser and how hosting works.",
+      "title": "Before you begin",
+      "acceptAndCreate": "Accept and create project"
+    }
+  },
+  "navigation": {
+    "tags": "Advent tags",
+    "postcards": "Cards",
+    "directionLabel": "{label}: product",
+    "homeLabel": "Christmas Studio — home",
+    "editor": "Editor",
+    "templates": "Templates",
+    "mainLabel": "Studio navigation",
+    "languageLabel": "Interface language",
+    "closeMenu": "Close navigation",
+    "openMenu": "Open navigation",
+    "footerProductsLabel": "Studio products",
+    "footerDocumentsLabel": "About and policies",
+    "stickers": "Stickers",
+    "ideas": "Ideas",
+    "about": "About",
+    "terms": "Terms of use",
+    "privacy": "Privacy policy"
+  },
+  "errors": {
+    "storage": {
+      "saveFailed": "Could not save your changes. Download a PDF to keep your finished designs",
+      "recentColors": "Could not save your recent colours in this browser.",
+      "postcardJson": "Could not read the card project JSON. The original data has been kept.",
+      "postcardRecovery": "This version of the card project could not be recovered automatically.",
+      "unavailable": "Browser storage is unavailable.",
+      "recoveryFailed": "Could not recover the project.",
+      "backupFailed": "{initialError} Could not save a backup: {reason}. Download the original data before deleting it.",
+      "writeConflict": "Different project data has already been saved in this browser. Download the current PDF and reload the page to restore the saved project.",
+      "discardConflict": "The saved project has changed. Reload the page before deleting data.",
+      "tags": {
+        "geometry": "{label}: invalid coordinates or dimensions.",
+        "dimensions": "{label}: dimensions exceed the allowed range.",
+        "invalidDocument": "The saved data is not a valid project.",
+        "unsupportedVersion": "This project version is not supported yet. The original data has been kept for recovery.",
+        "projectId": "The project ID is missing.",
+        "projectName": "Invalid project name.",
+        "templateMissing": "The saved project’s template was not found.",
+        "cardCount": "Invalid number of tags.",
+        "holeSettings": "Invalid project hole setting.",
+        "cardSet": "The tag count does not match the project contents.",
+        "cardLabel": "Tag {position}",
+        "cardId": "{label}: invalid or duplicate ID.",
+        "cardOrder": "{label}: the fixed tag order has been changed.",
+        "shape": "{label}: unknown shape.",
+        "sizeValues": "{label}: dimensions must be finite positive numbers.",
+        "squareDimensions": "{label}: circles and squares must have equal width and height.",
+        "textMissing": "{label}: the text box is missing.",
+        "textLabel": "{label}, text",
+        "textContent": "{label}: invalid text content.",
+        "fontSize": "{label}: font size must be between 6 and 72 pt.",
+        "fontFamily": "{label}: unknown font.",
+        "fontWeight": "{label}: unknown font weight.",
+        "fontStyle": "{label}: invalid text style.",
+        "textAlign": "{label}: invalid text alignment.",
+        "illustrationMissing": "{label}: the main illustration is missing.",
+        "illustrationLabel": "{label}, illustration",
+        "illustrationAsset": "{label}: the saved illustration was not found in the library.",
+        "illustrationAngle": "{label}: invalid illustration angle.",
+        "backgroundMissing": "{label}: the background is missing.",
+        "backgroundType": "{label}: unknown background type.",
+        "backgroundColors": "{label}: invalid background colours.",
+        "gradientGeometry": "{label}: invalid gradient geometry.",
+        "decorationCount": "{label}: no more than {maxDecorations} decorations are allowed.",
+        "decorationId": "{label}: invalid decoration ID.",
+        "decorationLabel": "{label}, decoration",
+        "decorationDimensions": "{label}: the decoration exceeds 2 cm.",
+        "decorationType": "{label}: unknown decoration type.",
+        "decorationColors": "{label}: invalid decoration colours.",
+        "decorationStroke": "{label}: invalid decoration stroke width.",
+        "starPoints": "{label}: a star must have between 4 and 8 points.",
+        "hole": "{label}: invalid hole.",
+        "holeOutsideBounds": "{label}: the hole is outside the tag.",
+        "json": "Could not read the project JSON. You can download the original data.",
+        "recovery": "This project version could not be recovered automatically."
+      },
+      "saveConflict": "{saveWarning}. {reason}"
+    },
+    "projects": {
+      "missing": "Create or restore a project first.",
+      "invalid": "Invalid project data.",
+      "createFailed": "Could not create the project."
+    },
+    "postcards": {
+      "notFound": "Card not found.",
+      "orderPosition": "Invalid position in the order.",
+      "lockedElement": "Unlock the element in Layers first.",
+      "unsupportedProperty": "This element type does not support that property.",
+      "graphicAspectRatio": "Graphic elements keep their proportions when resized.",
+      "projectLimit": "A project can contain no more than {maxPostcards} cards.",
+      "missingAddition": "The card to add was not found.",
+      "lastCard": "You cannot delete the last card in a project.",
+      "elementLimit": "A card can contain no more than {maxElements} elements.",
+      "elementNotFound": "The element was not found on this card.",
+      "commandFailed": "Could not apply the change to this card.",
+      "projectCount": "A project must contain between 1 and 20 cards.",
+      "validation": {
+        "backgroundMissing": "The card background is missing.",
+        "backgroundAssetMissing": "The background image was not found in the library.",
+        "backgroundOpacity": "An opaque colour is required beneath the background image.",
+        "backgroundType": "Unknown card background type.",
+        "backgroundColors": "Invalid card background colours.",
+        "gradientGeometry": "Invalid card gradient geometry.",
+        "elementId": "Invalid element ID.",
+        "elementGeometry": "Element position and dimensions must be finite numbers; dimensions must be greater than zero.",
+        "elementDimensions": "Element dimensions exceed the allowed range.",
+        "rotationStep": "Elements rotate in 15° steps.",
+        "elementLock": "Invalid element lock state.",
+        "textLength": "Text cannot exceed {maxLength} characters.",
+        "fontMissing": "Unknown text font.",
+        "fontSize": "Font size must be between 6 and 200 pt.",
+        "textStyle": "Invalid text styling.",
+        "lineHeight": "Line spacing must be between 0.5 and 4.",
+        "letterSpacing": "Letter spacing must be between −20 and 100 pt.",
+        "textStroke": "Invalid text outline.",
+        "textShadow": "Invalid text shadow.",
+        "opacity": "Opacity must be between 0 and 1.",
+        "illustrationMissing": "The illustration was not found in the library.",
+        "letteringMissing": "The lettering artwork was not found in the library.",
+        "decorationShape": "Unknown decoration shape.",
+        "decorationMissing": "The decorative image was not found in the library.",
+        "decorationColors": "Invalid decoration colours.",
+        "decorationStroke": "Invalid decoration stroke width.",
+        "starPoints": "A star must have between 4 and 12 points.",
+        "elementType": "Unknown card element type.",
+        "postcardId": "Invalid card ID.",
+        "format": "Choose an A6 portrait, A6 landscape or square card.",
+        "cornerRadius": "Corner radius must be between 0 and {maxRadius} mm.",
+        "elementCount": "A card can contain no more than {maxElements} elements.",
+        "duplicateElementId": "Element IDs must be unique.",
+        "invalidProject": "The saved data is not a valid card project.",
+        "unsupportedVersion": "This card project version is not supported yet. The original data has been kept.",
+        "projectId": "The card project ID is missing.",
+        "projectName": "The name must contain between 1 and 120 characters.",
+        "defaultFormat": "Invalid default format.",
+        "defaultCornerRadius": "Invalid default corner radius.",
+        "postcardCount": "A project must contain between 1 and {maxPostcards} cards.",
+        "duplicatePostcardId": "Card IDs must be unique.",
+        "sharedElementId": "Elements on different cards must have separate IDs.",
+        "activePostcardMissing": "The active card was not found in the project."
+      }
+    },
+    "resources": {
+      "illustrationById": "Illustration not found: {id}",
+      "illustrationMissing": "The illustration was not found in the library.",
+      "letteringMissing": "The lettering artwork was not found in the library.",
+      "decodeFailed": "Could not decode the image for printing.",
+      "prepareFailed": "Could not prepare the image for printing.",
+      "insufficientMemory": "Not enough memory to prepare the image.",
+      "loadFailed": "Could not load the print resource: {path}"
+    },
+    "tags": {
+      "invalidBox": "Element position and dimensions must be finite numbers; dimensions must be greater than zero.",
+      "decorationTooLarge": "Decorations cannot exceed 2 cm.",
+      "starPoints": "A star must have between 4 and 8 points.",
+      "decorationColor": "Invalid decoration colour.",
+      "strokeWidth": "Stroke width must be between 0.25 and 3 pt.",
+      "projectName": "The name must contain between 1 and 120 characters.",
+      "cardNotFound": "Tag not found.",
+      "textTooLong": "Text cannot exceed {maxLength} characters.",
+      "fontSize": "Font size must be between 6 and 72 pt.",
+      "textStyle": "Invalid text styling.",
+      "illustrationAngle": "Invalid illustration angle.",
+      "illustrationMissing": "The illustration was not found in the library.",
+      "background": "Invalid background settings.",
+      "decorationMissing": "Decoration not found.",
+      "addHoleFirst": "Add a hole first.",
+      "holeOutside": "The hole must fit entirely inside the tag.",
+      "skippedDecorations": "Tags {numbers} were skipped: each already has {maxDecorations} decorations.",
+      "commandFailed": "Could not complete the action.",
+      "cardDimensions": "Enter a valid tag shape and dimensions.",
+      "resizeHoleConflict": "Changing the shape would place the hole outside the tag. Move or remove it first.",
+      "cardTooSmallForHole": "The tag is too small for a hole.",
+      "project": {
+        "randomValue": "The random number generator returned an invalid value.",
+        "missingSubcategory": "An illustration in this set has no subcategory.",
+        "insufficientSubcategories": "This set does not have enough different subcategories to alternate the tags.",
+        "cardCount": "Choose a set of 24 or 31 tags.",
+        "templateMissing": "Template not found.",
+        "insufficientImages": "The library does not have enough unique illustrations for this set.",
+        "requiredImagesMissing": "Some required illustrations for this set are missing from the library.",
+        "originalTemplateMissing": "The project’s original template was not found.",
+        "cardSet": "The project’s tag set is inconsistent.",
+        "cardOrder": "The project’s fixed tag order has been changed.",
+        "cardIllustrationMissing": "The illustration for tag {number} was not found in the library."
+      }
+    },
+    "pdf": {
+      "decodeIllustration": "Could not decode the illustration for PDF export.",
+      "prepareIllustration": "Could not prepare the illustration for PDF export.",
+      "baseFontMissing": "The base font is unavailable. Reload the page.",
+      "loadFont": "Could not load a font for the PDF. Check your connection and try again.",
+      "fontSubstituted": "The font on tag {number} was replaced with the available font “{family}”. Line wrapping has been checked again.",
+      "invalidLayout": "Fix the layout errors before exporting a PDF.",
+      "subjectTags": "Printable Advent calendar tags",
+      "illustrationMissing": "An illustration for the PDF is unavailable.",
+      "missingResource": "The resource is missing from the library.",
+      "invalidPng": "The PNG file is damaged.",
+      "invalidSvg": "The SVG file is damaged.",
+      "loadGraphics": "Could not load graphics for printing. {reason}",
+      "invalidPostcardLayout": "Fix the layout errors before exporting your cards.",
+      "missingPostcard": "A card is missing from the export snapshot.",
+      "subjectPostcards": "Printable greeting cards",
+      "author": "Christmas Studio"
+    },
+    "raster": {
+      "invalidPng": "Invalid PNG while preparing the print file.",
+      "pngStructure": "Damaged PNG structure.",
+      "pngData": "The PNG contains no image data.",
+      "invalidJpg": "Invalid JPG while preparing the print file.",
+      "jpgStructure": "Damaged JPG structure.",
+      "browserOnly": "Image export is available in a browser.",
+      "preparationFailed": "Could not prepare the card image. Try exporting again.",
+      "renderingFailed": "The browser could not prepare the print image.",
+      "insufficientMemory": "Not enough memory for the image. Try exporting one card at a time."
+    },
+    "fonts": {
+      "styleUnavailable": "This font style is unavailable.",
+      "fallback": "The original font is unavailable. The local PT Sans font was used, and line wrapping has been checked again.",
+      "unavailable": "Could not load any fonts, including the fallback PT Sans. Export is unavailable; please try again.",
+      "missingCharacters": "The font does not include these characters: {characters}. Choose another font or change the text.",
+      "fontUnavailable": "Font unavailable."
+    }
+  },
+  "validation": {
+    "print": {
+      "tagOutsidePage": "Tag {number} will not fit in the A4 printable area without scaling down.",
+      "minimumCards": "At least four tags must fit on a standard page. Reduce the tag dimensions manually.",
+      "postcardOutsidePage": "The card will not fit in the A4 printable area without scaling down."
+    },
+    "postcards": {
+      "backgroundMissing": "The background image is unavailable. Choose another background.",
+      "backgroundResolution": "The background resolution is about {dpi} DPI. 300 DPI is recommended for sharp printing.",
+      "outsideBounds": "An element extends beyond the card. Move it or make it smaller.",
+      "nearEdge": "An element is less than 3 mm from the card edge and may be trimmed off.",
+      "textOverflow": "The text does not fit in its box. Resize the box or change the font size.",
+      "graphicMissing": "A graphic resource is unavailable. Choose another one from the library.",
+      "imageResolution": "The image resolution at this size is about {dpi} DPI. 300 DPI is recommended for sharp printing."
+    },
+    "fontUnavailable": "Font unavailable.",
+    "missingCharacters": "The font does not include these characters: {characters}. Choose another font or change the text.",
+    "tags": {
+      "imageResolution": "The illustration on tag {number} has a resolution of about {dpi} DPI at this size. Make it smaller for sharper printing.",
+      "outsidePage": "Content on tag {number} extends beyond the A4 printable area. Move or resize the element manually.",
+      "dimensions": "Tag dimensions must be positive numbers.",
+      "textOverflow": "The text on tag {number} does not fit in its box. Resize the box or change the font size.",
+      "textOutsideBounds": "The text box on tag {number} extends beyond the tag.",
+      "imageClipped": "The illustration on tag {number} extends beyond its shape and will be clipped to the outline.",
+      "imageUnavailable": "The illustration on tag {number} is unavailable. Choose another one from the library.",
+      "decorationClipped": "Decorations on tag {number} extend beyond its shape and will be clipped to the outline.",
+      "holeOutsideBounds": "The hole must fit entirely inside the tag."
+    }
+  },
+  "templates": {
+    "woodland": {
+      "name": "Winter Garden",
+      "description": "Evergreen branches, festive flowers, berries and wreaths.",
+      "eyebrow": "WINTER BOTANICALS"
+    },
+    "winter": {
+      "name": "Winter Fairytale",
+      "description": "Snow-covered homes, peaceful landscapes and woodland animals.",
+      "eyebrow": "A LITTLE MAGIC"
+    },
+    "vintage": {
+      "name": "A Taste of Christmas",
+      "description": "Gingerbread houses, Christmas baking, sweets and champagne.",
+      "eyebrow": "THE FESTIVE TABLE"
+    },
+    "forestFriends": {
+      "name": "Woodland Friends",
+      "description": "Foxes, fawns and other inhabitants of the snowy forest.",
+      "eyebrow": "FRIENDS NEARBY"
+    },
+    "warmGifts": {
+      "name": "Cosy Gifts",
+      "description": "Presents, cosy scarves, mittens, candles and ice skates.",
+      "eyebrow": "WARMTH TO SHARE"
+    },
+    "classicChristmas": {
+      "name": "Classic Christmas",
+      "description": "Christmas wreaths, poinsettias and touches of red and gold.",
+      "eyebrow": "CHRISTMAS CLASSICS"
+    }
+  },
+  "editor": {
+    "postcards": {
+      "defaultGreeting": "Happy New Year!",
+      "formats": {
+        "portrait": "A6 portrait · 105 × 148 mm",
+        "landscape": "A6 landscape · 148 × 105 mm",
+        "square": "Square · 105 × 105 mm"
+      },
+      "elements": {
+        "emptyText": "Empty text",
+        "illustration": "Illustration",
+        "lettering": "Lettering",
+        "decoration": "Decoration"
+      },
+      "shapes": {
+        "circle": "Circle",
+        "star": "Star",
+        "line": "Line"
+      },
+      "text": {
+        "title": "Card text",
+        "hint": "Enter your own text or choose ready-made lettering.",
+        "custom": "Your text",
+        "lettering": "Ready-made lettering",
+        "mode": "Text type",
+        "add": "Add text",
+        "content": "Text on the card",
+        "fontFamily": "Font",
+        "fontSize": "Font size",
+        "bold": "Bold",
+        "italic": "Italic",
+        "left": "Align left",
+        "center": "Centre",
+        "right": "Align right",
+        "alignment": "Text alignment",
+        "lineHeight": "Line spacing",
+        "letterSpacing": "Letter spacing",
+        "color": "Text colour",
+        "stroke": "Text outline",
+        "strokeColor": "Outline colour",
+        "strokeWidth": "Outline width",
+        "shadow": "Text shadow",
+        "shadowColor": "Shadow colour",
+        "shadowX": "Horizontal shadow offset",
+        "shadowY": "Vertical shadow offset",
+        "shadowBlur": "Shadow blur",
+        "fitBox": "Fit box to text"
+      },
+      "illustrations": {
+        "title": "Illustrations",
+        "hint": "Choose an illustration for your card."
+      },
+      "decorations": {
+        "empty": "Decorative artwork has not been added yet. Basic shapes are already available."
+      },
+      "elementLimit": "This card already has 100 elements. Remove one to add another.",
+      "lockedElement": "This element is locked. Unlock it in Layers.",
+      "fontLoading": "Loading font…",
+      "geometry": {
+        "x": "Horizontal position",
+        "millimeters": "mm",
+        "y": "Vertical position",
+        "width": "Width",
+        "height": "Height",
+        "rotation": "Rotation"
+      },
+      "opacity": "Opacity",
+      "shape": {
+        "fill": "Fill",
+        "color": "Shape colour",
+        "stroke": "Outline",
+        "starPoints": "Star points"
+      },
+      "align": {
+        "left": "Left",
+        "centerX": "Centre horizontally",
+        "right": "Right",
+        "top": "Top",
+        "centerY": "Centre vertically",
+        "bottom": "Bottom",
+        "label": "Element alignment"
+      },
+      "duplicate": "Duplicate",
+      "delete": "Delete",
+      "background": {
+        "title": "Format & background",
+        "format": "Card format",
+        "image": "Background image",
+        "solid": "Solid colour",
+        "linear": "Linear gradient",
+        "radial": "Radial gradient",
+        "type": "Background type",
+        "cropHint": "The image fills the card and is cropped from the centre.",
+        "color": "Paper colour",
+        "stopColor": "Colour {position}",
+        "addColor": "Add a third colour",
+        "removeColor": "Remove the third colour",
+        "angle": "Gradient direction",
+        "centerX": "Horizontal centre",
+        "centerY": "Vertical centre"
+      },
+      "layers": {
+        "title": "Layers",
+        "description": "The top rows are in the foreground. Elements: {count}/100.",
+        "unlock": "Unlock layer",
+        "lock": "Lock layer",
+        "raise": "Move layer up",
+        "lower": "Move layer down",
+        "delete": "Delete layer",
+        "empty": "Your card is still blank. Add text, an illustration or lettering."
+      },
+      "resize": {
+        "description": "The canvas size will change. Element positions, sizes and rotations will stay the same. The layout will be checked again. You can undo this change.",
+        "title": "Change the card format?",
+        "apply": "Change format"
+      },
+      "shell": {
+        "tabs": {
+          "text": "Text",
+          "illustrations": "Illustrations",
+          "decorations": "Decorations",
+          "background": "Format & background",
+          "layers": "Layers",
+          "cards": "Cards",
+          "export": "Export"
+        },
+        "cardPosition": "Card {position} of {total}",
+        "addLabel": "<span>Add</span>",
+        "addCard": "Add card",
+        "duplicateCard": "Duplicate card",
+        "moveEarlier": "Move card earlier",
+        "moveLater": "Move card later",
+        "deleteCard": "Delete card",
+        "cardsLabel": "Project cards",
+        "cardCount": "{count} of 20",
+        "homeLink": "Christmas Studio — home",
+        "openMenu": "Open menu",
+        "cardSummary": "<span>Card <strong>{position}</strong> of {count}</span><span2>{width} × {height} mm</span2>",
+        "canvasLabel": "Canvas, card {position}",
+        "tools": "Card tools",
+        "previewAction": "Preview & export",
+        "manageCards": "Manage cards",
+        "settingsTitle": "Card settings",
+        "templatesAction": "Card templates",
+        "settingsAction": "Project settings",
+        "helpAction": "Help",
+        "projectName": "Project name",
+        "projectCount": "Cards: {count} of 20. Add, duplicate and delete cards in the strip or the Cards panel.",
+        "defaultFormat": "Default format",
+        "defaultFormatHint": "The default format and corner radius apply only to new cards.",
+        "projectSettingsTitle": "Card project settings",
+        "addBlank": "Blank card",
+        "addCopy": "Copy of current card",
+        "selectTemplate": "Choose a template",
+        "issueCard": "<strong>Card {position}</strong>",
+        "noErrors": "<strong>No errors</strong>",
+        "validationHint": "Margins and image resolution are also checked when preparing your export.",
+        "validationTitle": "Check entire project"
+      }
+    },
+    "tags": {
+      "inspector": {
+        "shapes": {
+          "tag": "Advent tag",
+          "rectangle": "Rectangle",
+          "square": "Square",
+          "circle": "Circle",
+          "oval": "Oval"
+        },
+        "horizontal": "Horizontal position",
+        "centimeters": "cm",
+        "vertical": "Vertical position",
+        "width": "Width",
+        "height": "Height",
+        "enable": "<span>Enable</span>",
+        "recent": "<span>Recent</span>",
+        "applyTo": "<span>Apply to</span>",
+        "currentCard": "This tag",
+        "wholeSet": "Entire set",
+        "applyOnce": "The next change will apply to the entire set, then this will switch back to the current tag.",
+        "text": {
+          "title": "Text settings",
+          "content": "Text on the tag",
+          "placeholder": "Add a little magic…",
+          "fontMood": "Font & mood",
+          "fontFamily": "Font family",
+          "fontSize": "Font size",
+          "fitBox": "Fit box to text",
+          "fitBoxHint": "Fits the box to the current lines on this tag only. Text, font size, line breaks and alignment stay the same.",
+          "bold": "Bold",
+          "italic": "Italic",
+          "color": "Text colour",
+          "geometry": "Box position & size",
+          "geometryHint": "Text content and position change only on this tag. Box size and font size are independent.",
+          "alignLeft": "Align left",
+          "alignCenter": "Align centre",
+          "alignRight": "Align right"
+        },
+        "image": {
+          "title": "Image settings",
+          "choose": "Choose an image",
+          "current": "Selected: {assetName}",
+          "search": "Search illustrations",
+          "searchPlaceholder": "House, star, snow…",
+          "clearSearch": "Clear search",
+          "allCategories": "All categories",
+          "category": "Illustration category",
+          "allMotifs": "All motifs",
+          "motif": "Illustration motif",
+          "resultCount": "Illustrations found: {count} of {total}",
+          "replace": "Replace illustration: {imageName}",
+          "noResults": "<strong>No results yet</strong>",
+          "noResultsHint": "Try another word or clear the filters.",
+          "showAll": "Show the full collection",
+          "geometry": "Size & position",
+          "rotation": "Illustration rotation",
+          "aspectHint": "Proportions are preserved. Replacing an illustration does not change its frame or angle."
+        },
+        "background": {
+          "title": "Background settings",
+          "solid": "Solid colour",
+          "linear": "Linear gradient",
+          "radial": "Radial gradient",
+          "type": "Background type",
+          "color": "Paper colour",
+          "stopColor": "Colour {position}",
+          "removeColor": "Remove colour",
+          "thirdColor": "Third colour",
+          "angle": "Gradient direction",
+          "centerX": "Horizontal centre",
+          "centerY": "Vertical centre",
+          "presets": "Gradient presets",
+          "winterMorning": "Winter morning",
+          "pineForest": "Evergreen forest",
+          "candlelight": "Candlelight"
+        },
+        "decoration": {
+          "heading": "Background decorations <span>{count}/{maxDecorations}</span>",
+          "addCircle": "Circle",
+          "addStar": "Star",
+          "addAllHint": "Add to all tags. Tags at the limit will be skipped and you will be notified.",
+          "star": "Star",
+          "fill": "Fill",
+          "stroke": "Outline",
+          "strokeWidth": "Outline width",
+          "starPoints": "Star points",
+          "applyAllHint": "Only the appearance changes. Individual sizes and positions stay the same.",
+          "removeCircle": "Delete circle {position}",
+          "removeStar": "Delete star {position}",
+          "circleSettings": "Circle settings",
+          "starSettings": "Star settings",
+          "applyCircles": "Apply to all circles",
+          "applyStars": "Apply to all stars",
+          "removeCircles": "Delete all circles",
+          "removeStars": "Delete all stars"
+        },
+        "card": {
+          "title": "Tag settings",
+          "geometry": "Shape & size",
+          "diameter": "Diameter",
+          "side": "Side length",
+          "width": "Tag width",
+          "height": "Tag height",
+          "printHint": "Dimensions are preserved in the PDF without automatic scaling."
+        },
+        "hole": {
+          "title": "Ribbon hole",
+          "currentOnly": "On this tag only",
+          "current": "Hole on the current tag",
+          "x": "Hole centre X",
+          "y": "Hole centre Y",
+          "diameter": "Diameter: {diameter} mm — calculated automatically.",
+          "wholeSet": "Holes throughout the set",
+          "toggleAll": "Add or remove on all tags"
+        },
+        "resize": {
+          "wholeSet": "{shape}, {width} × {height} cm. This change will apply to the entire set.",
+          "currentCard": "{shape}, {width} × {height} cm. This change will apply to the current tag.",
+          "warning": "Elements will be scaled proportionally. Some may extend beyond the edges or have overflowing text; the layout will be checked again afterwards.",
+          "title": "Change shape or size?",
+          "apply": "Apply"
+        },
+        "removeDecorations": {
+          "action": "Delete ({count})",
+          "circlesTitle": "Delete all circles?",
+          "starsTitle": "Delete all stars?",
+          "circlesAll": {
+            "one": "{count} circle will be deleted across the set. You can undo this entire action.",
+            "other": "{count} circles will be deleted across the set. You can undo this entire action."
+          },
+          "circlesCurrent": {
+            "one": "{count} circle will be deleted from the current tag. You can undo this entire action.",
+            "other": "{count} circles will be deleted from the current tag. You can undo this entire action."
+          },
+          "starsAll": {
+            "one": "{count} star will be deleted across the set. You can undo this entire action.",
+            "other": "{count} stars will be deleted across the set. You can undo this entire action."
+          },
+          "starsCurrent": {
+            "one": "{count} star will be deleted from the current tag. You can undo this entire action.",
+            "other": "{count} stars will be deleted from the current tag. You can undo this entire action."
+          }
+        }
+      },
+      "settings": {
+        "name": "Project name",
+        "count": {
+          "one": "<strong>Set of {count} tag</strong>",
+          "other": "<strong>Set of {count} tags</strong>"
+        },
+        "creationHint": "The count and template were chosen when the project was created",
+        "shapes": {
+          "tag": "Advent tag",
+          "rectangle": "Rectangle",
+          "square": "Square",
+          "circle": "Circle",
+          "oval": "Oval"
+        },
+        "shape": "Tag shape",
+        "diameter": "Diameter",
+        "side": "Side length",
+        "width": "Tag width",
+        "centimeters": "cm",
+        "height": "Tag height",
+        "resizeHint": "The shape and dimensions will change for the entire set ({count}). Elements will be scaled proportionally — review your designs afterwards. You can undo this change.",
+        "applyAll": "Apply to entire set",
+        "updated": "Shape and dimensions updated for the entire set.",
+        "hole": {
+          "title": "Ribbon holes",
+          "toggleAll": "Add or remove throughout the set",
+          "label": "Ribbon holes throughout the project"
+        },
+        "individualHint": "Adjust an individual tag’s shape, size and hole in the Shape & size tab.",
+        "reset": "Reset project design",
+        "title": "Project settings"
+      },
+      "tabs": {
+        "text": "Text",
+        "image": "Image",
+        "background": "Background",
+        "shape": "Shape & size",
+        "cards": "Tags",
+        "export": "Export"
+      },
+      "cardError": "This tag has errors",
+      "cardWarning": "This tag has warnings",
+      "cardPosition": "Tag {number} of {count}",
+      "cardsLabel": "Project tags",
+      "homeLink": "Christmas Studio — home",
+      "openMenu": "Open menu",
+      "resetAction": "Reset project",
+      "cardSummary": "<span>Tag <strong>{number}</strong> of {total}</span><span2>{width} × {height} cm</span2>",
+      "canvasLabel": "Canvas, tag {number}",
+      "tools": "Tools",
+      "previewAction": "Preview & PDF",
+      "printSize": "<span>A4 · Actual size</span>",
+      "inspectorTitle": "Tag settings",
+      "scrollLeft": "Scroll tags left",
+      "scrollRight": "Scroll tags right",
+      "dayCount": {
+        "one": "<span>{count}<lineBreak/><small>day</small></span>",
+        "other": "<span>{count}<lineBreak/><small>days</small></span>"
+      },
+      "toolsLabel": "Tag tools",
+      "templatesAction": "Templates",
+      "settingsAction": "Project settings",
+      "helpAction": "Help & support",
+      "issueCard": "Tag {cardNumber}",
+      "printLayout": "Print layout",
+      "noErrors": "<strong>No errors</strong>",
+      "validated": "The entire set has been checked. You can open the preview.",
+      "validationTitle": "Check entire project",
+      "resetDescription": "Text, dimensions, background and decorations will return to the selected set’s original settings. Illustrations and the project name will stay the same. You can undo this change.",
+      "resetTitle": "Reset the project design?",
+      "resetConfirm": "Reset design"
+    },
+    "common": {
+      "cornerRadius": "Corner radius",
+      "millimeters": "mm",
+      "tagCanvas": "Tag editor. Select an element to move or resize it",
+      "postcardCanvas": "Card editor. Select an element to move or resize it",
+      "zoom": {
+        "current": "Current zoom",
+        "in": "Zoom in",
+        "out": "Zoom out",
+        "actual": "100% scale",
+        "actualLabel": "Show at 100% scale",
+        "fit": "Fit to view",
+        "label": "Zoom controls"
+      },
+      "deleteDecoration": "Delete decoration",
+      "canvasText": "Canvas text",
+      "postcardLabel": "Card",
+      "cardLabel": "Tag {number}",
+      "issues": {
+        "errors": "Errors: {errors}",
+        "warnings": "Warnings: {warnings}",
+        "none": "Everything looks good",
+        "errorBadge": "<span>Errors: {errors}</span>",
+        "warningBadge": "<span>Warnings: {warnings}</span>",
+        "successBadge": "<span>Everything looks good</span>",
+        "label": "Check entire project"
+      },
+      "loading": "Loading…",
+      "saving": "Saving…",
+      "saved": "Saved",
+      "unsaved": "Not saved",
+      "templatesAction": "<span>Templates</span>",
+      "settingsAction": "<span>Settings</span>",
+      "helpAction": "<span>Help</span>",
+      "navigationLabel": "Navigation",
+      "undo": "Undo (Ctrl+Z)",
+      "redo": "Redo (Ctrl+Shift+Z)",
+      "colorLabel": "Colour {color}",
+      "customColor": "Custom colour",
+      "chooseColor": "Choose a custom colour"
+    }
+  },
+  "pages": {
+    "tags": {
+      "title": "Advent tags",
+      "description": "Beautiful tag sets<lineBreak/>for your <span>Advent calendar</span>",
+      "catalogTitle": "Find your festive mood",
+      "previousExample": "Previous example",
+      "nextExample": "Next example",
+      "exampleLabel": "Example {position}",
+      "editableHint": "You can change the font, illustrations and colours in the editor.",
+      "countQuestion": "How many tags would you like to create?",
+      "create": "Create project",
+      "selectTemplate": "Choose template",
+      "cardCount": {
+        "one": "<strong>{count}</strong><span>tag</span>",
+        "other": "<strong>{count}</strong><span>tags</span>"
+      }
+    },
+    "about": {
+      "products": {
+        "tags": "Advent tags",
+        "postcards": "Cards",
+        "stickers": "Stickers"
+      },
+      "title": "About the project",
+      "intro": "Christmas Studio is a space for creativity and festive preparations. Create Advent tags and cards, choose illustrations and backgrounds, combine colours and add your own words.",
+      "free": "<strong>The project is completely free and requires no registration.</strong> No accounts, subscriptions or hidden fees — design right in your browser, then download and print.",
+      "privacy": "You do not need to provide personal information to use the editor. Your designs are saved in your browser.",
+      "invitation": "Make something of your own, share a little warmth and bring a touch of festive magic to everyday things!",
+      "productsTitle": "What you can create",
+      "comingSoon": "Coming soon",
+      "feedback": {
+        "title": "Your ideas and feedback are welcome!",
+        "description": "Found a bug, have a suggestion or just want to share your thoughts? Get in touch.",
+        "action": "Leave feedback",
+        "email": "Email the creator",
+        "unconfigured": "A feedback link will be available later. For now, you can share an idea or your thoughts by email.",
+        "dialogTitle": "Studio feedback",
+        "dismiss": "Got it"
+      }
+    },
+    "home": {
+      "title": "Create<lineBreak/>Advent tags<lineBreak2/> and cards",
+      "description": "A simple online studio for<lineBreak/>your festive designs",
+      "benefits": {
+        "customization": {
+          "title": "Make it your own",
+          "description": "Text, images,<lineBreak/>backgrounds and details"
+        },
+        "materials": {
+          "title": "Ready-made artwork",
+          "description": "Over {illustrationThreshold} illustrations.<lineBreak/>Lettering and backgrounds for cards."
+        },
+        "print": {
+          "title": "Print at home",
+          "description": "Download a PDF, PNG or JPG<lineBreak/>and print at home"
+        }
+      },
+      "productsTitle": "Choose what to create",
+      "products": {
+        "tags": "Advent tags",
+        "postcards": "Cards",
+        "stickers": "Stickers"
+      },
+      "comingSoon": "<span>Coming soon</span>",
+      "ideas": "Ideas"
+    },
+    "comingSoon": {
+      "homeLink": "Back to home",
+      "badge": "<span>{title} · Coming soon</span>",
+      "title": "Something special<lineBreak/>is on its way",
+      "description": "We are working on this section<lineBreak/>and will bring you new features soon.",
+      "hint": "In the meantime, you can create your own set of Advent tags.",
+      "tagsLink": "Explore Advent tags"
+    },
+    "ideas": {
+      "tags": {
+        "title": "Ways to attach Advent tags",
+        "description": "Simple, beautiful ways to attach a tag to a gift: ribbons, mini pegs and more."
+      },
+      "postcards": {
+        "title": "More than cards",
+        "description": "Use your cards for more than greetings: decorations, bookmarks and more."
+      },
+      "title": "Ideas",
+      "description": "Inspiration for your Advent calendars and gifts: simple solutions, beautiful details and unexpected ways to use your designs.",
+      "topicsLabel": "Ideas for tags and cards"
+    },
+    "postcardIdeas": {
+      "items": {
+        "framed": {
+          "title": "A card in a frame",
+          "description": "Turn your favourite festive illustration into a little art print! Choose a matching frame and add a seasonal touch to a shelf, chest of drawers or wall.",
+          "imageAlt": "A winter card in a wooden frame with a mount, above a shelf."
+        },
+        "garland": {
+          "title": "A garland of cards",
+          "description": "Turn a few favourite cards into a festive garland. Simply attach them to twine or ribbon with mini pegs and decorate a wall, shelf or the space above your fireplace.",
+          "imageAlt": "Four cards attached to twine on a wall with wooden pegs."
+        },
+        "ornaments": {
+          "title": "Christmas tree ornaments",
+          "description": "Add a little paper decoration to your Christmas tree! Choose small cards with winter illustrations, make a hole and hang them with thin ribbon or cord. You can also use pegs or clips.",
+          "imageAlt": "Winter cards hanging from fir branches with gold-coloured clips."
+        },
+        "placeCard": {
+          "title": "Place cards for guests",
+          "description": "Create personalised place cards for your festive table. Add a guest’s name and a beautiful illustration — a small detail that makes the setting even more welcoming.",
+          "imageAlt": "A place card with a robin on a plate in a festive table setting."
+        },
+        "menu": {
+          "title": "A festive menu",
+          "description": "Turn a card into a beautiful menu for your festive dinner. List the dishes, add a few small illustrations and place a card at each setting or in the centre of the table.",
+          "imageAlt": "A dinner menu with winter illustrations on a plate."
+        },
+        "bookmark": {
+          "title": "A bookmark",
+          "description": "Your favourite winter illustration can become a bookmark! Choose a tall, narrow format, add a short message or leave just the picture. A lovely little extra to tuck into a book gift.",
+          "imageAlt": "A narrow bookmark with a snowy house and a robin inside an open book."
+        }
+      },
+      "back": "All ideas",
+      "title": "More than cards",
+      "description": "Cards can do more than carry warm wishes! With a little imagination, they can become home decorations, festive table details or useful accessories. Simply choose a suitable size in the editor, then add text or use just an illustration.",
+      "createAction": "Create a card",
+      "sectionTitle": "Ideas to inspire you"
+    },
+    "tagIdeas": {
+      "items": {
+        "ribbon": {
+          "title": "Ribbon",
+          "description": "Thread the ribbon around your gift through the hole in the Advent tag. If the tag has no hole, simply tuck it under the ribbon.",
+          "imageAlt": "Advent tags attached to gifts with green and red ribbons."
+        },
+        "twine": {
+          "title": "Twine",
+          "description": "Use natural or decorative twine instead of ribbon. This looks especially lovely with kraft paper and nature-inspired wrapping.",
+          "imageAlt": "Tags tied with twine to a gift box and a bag handle."
+        },
+        "tape": {
+          "title": "Decorative tape",
+          "description": "Attach the Advent tag with decorative tape. Choose colours and patterns that match the illustration for a coordinated look.",
+          "imageAlt": "A snowman tag attached to a box with green tape patterned with Christmas trees."
+        },
+        "waxSeal": {
+          "title": "A wax seal",
+          "description": "A wax seal holds the Advent tag in place and gives your gift a touch of vintage charm.",
+          "imageAlt": "A tag with a winter house secured with a red snowflake wax seal."
+        },
+        "clothespin": {
+          "title": "A mini peg",
+          "description": "Attach an Advent tag without a hole to a ribbon using a small decorative peg.",
+          "imageAlt": "A round tag attached to velvet ribbon with a mini wooden peg."
+        },
+        "clip": {
+          "title": "A clip",
+          "description": "Secure the Advent tag to the edge of a gift bag with a metal clip. A stylish detail that needs no extra holes or glue.",
+          "imageAlt": "A bullfinch tag attached to a gift bag with a gold-coloured clip."
+        },
+        "corners": {
+          "title": "Decorative photo corners",
+          "description": "Stick small paper corners onto the box and slide the Advent tag into them. The neat result looks like a tiny picture frame.",
+          "imageAlt": "A fawn tag held in four gold-coloured photo corners on a gift box."
+        },
+        "glue": {
+          "title": "Straight onto the wrapping",
+          "description": "Simply glue the Advent tag to the wrapping paper. Double-sided tape works too.",
+          "imageAlt": "A robin tag glued to kraft wrapping paper beside an evergreen sprig."
+        },
+        "ring": {
+          "title": "A metal ring",
+          "description": "Thread a metal ring through the Advent tag’s hole and the gift bag’s handle to attach it like a keyring.",
+          "imageAlt": "A lantern tag hanging from a gift bag handle on a metal ring."
+        },
+        "elastic": {
+          "title": "An elastic band",
+          "description": "Stretch an elastic band around the gift and tuck the Advent tag underneath. This works especially well for bottles and other unusually shaped gifts.",
+          "imageAlt": "An Advent tag held against a gift bottle by a red elastic band."
+        }
+      },
+      "back": "All ideas",
+      "title": "Ways to attach Advent tags",
+      "description": "Advent tags do more than number your gifts — they are a lovely part of the festive wrapping. Attach them in different ways, combining ribbons, twine and other decorative details.",
+      "createAction": "Create Advent tags",
+      "sectionTitle": "Ideas to inspire you"
+    },
+    "postcards": {
+      "formats": {
+        "portrait": "A6 · portrait · 105 × 148 mm",
+        "landscape": "A6 · landscape · 148 × 105 mm",
+        "square": "Square · 105 × 105 mm"
+      },
+      "dimensions": "{width} × {height} mm",
+      "startTemplate": "Start with template: {templateName}",
+      "selectTemplate": "Choose template: {templateName}",
+      "title": "Cards",
+      "description": "Warm wishes and winter stories<lineBreak/>you will want to share",
+      "blankTitle": "Start with a blank card",
+      "blankDescription": "Choose a format, add text, illustrations and festive details. <lineBreak/>Each project can hold between 1 and 20 cards.",
+      "artisticTitle": "Choose a ready-made design",
+      "artisticDescription": "Add your own wishes to a ready-made design.<lineBreak/>You can change the lettering, illustrations and background in the editor.",
+      "emptyCollection": "The collection is empty for now. You can create your own design in the editor.",
+      "mode": {
+        "label": "Action",
+        "new": "New project",
+        "replace": "Replace current card",
+        "add": "Add to project"
+      },
+      "nameLabel": "Card project name",
+      "namePlaceholder": "Project name",
+      "countLabel": "Number of cards",
+      "countHint": "Between 1 and 20. You can add, duplicate and delete cards later.",
+      "recommended": "{format} (Recommended)",
+      "formatLabel": "Card format",
+      "defaultFormat": "Default format",
+      "applyFirst": "To the first card only",
+      "applyAll": "To all cards as independent copies",
+      "applyLabel": "Apply card template",
+      "applyDesign": "Apply the starting design",
+      "replaceWarning": "The current card’s design will be replaced. You can undo this in the editor.",
+      "fullProject": "This project already has 20 cards. Delete one to add another.",
+      "newProjectHint": "Each card is edited separately. The default format is used for new cards.",
+      "create": "Create project",
+      "replace": "Replace design",
+      "add": "Add card"
+    }
+  },
+  "help": {
+    "common": {
+      "reportDescription": "Problem description:\n{description}\n\n{report}",
+      "unsavedDescription": "Your description has not been copied yet and will be lost when you close this window. You can go back and copy it with the report.",
+      "closeDescriptionTitle": "Close the problem description?",
+      "continueDescription": "Keep writing",
+      "closeWithoutCopy": "Close without copying",
+      "tabs": {
+        "start": "Getting started",
+        "faq": "FAQ",
+        "support": "Support",
+        "label": "Help sections"
+      },
+      "shortcuts": {
+        "title": "Useful shortcuts:",
+        "undo": "<span>Undo</span>",
+        "redo": "<span>Redo</span>",
+        "editText": "<span>Edit text</span>",
+        "doubleClick": "Double-click"
+      },
+      "support": {
+        "intro": "Tell us what happened. You can copy your description with the technical report and include it in your enquiry.",
+        "description": "Problem description",
+        "placeholder": "What were you doing, what did you expect, and what happened?",
+        "report": "Technical report",
+        "copied": "Copied",
+        "copy": "Copy description & report",
+        "openIssues": "Open GitHub Issues",
+        "issuesUnavailable": "GitHub Issues unavailable",
+        "unconfigured": "A support address has not been set up for this studio yet. You can still copy the technical report.",
+        "manualCopy": "Select and copy the text manually",
+        "privacy": "Nothing is sent automatically. You decide what information to share.",
+        "title": "Need help?"
+      },
+      "guideTitle": "How to use the editor",
+      "backToHelp": "Back to help",
+      "returnToEditor": "Back to creating",
+      "startTour": "Take the tour",
+      "faq": {
+        "upload": {
+          "question": "Can I upload my own image?",
+          "answer": "Not in this version — only the built-in library is available. Image uploads may be added later."
+        },
+        "storage": {
+          "question": "Where is my project stored?"
+        },
+        "printSize": {
+          "question": "How do I keep the correct print size?"
+        },
+        "textOverflow": {
+          "question": "What if my text does not fit?"
+        },
+        "save": {
+          "question": "Saving is not working. What should I do?"
+        }
+      },
+      "steps": {
+        "check": {
+          "title": "Review your design"
+        },
+        "download": {
+          "title": "Download and print"
+        }
+      }
+    },
+    "tags": {
+      "title": "Create your Advent tag set in four steps",
+      "reportPrivacy": "Tag content not included",
+      "steps": {
+        "choose": {
+          "title": "Choose a template",
+          "description": "Choose one of the ready-made sets."
+        },
+        "edit": {
+          "title": "Personalise your Advent tags",
+          "description": "Change text, fonts, colours and illustrations. Move and resize elements."
+        },
+        "check": {
+          "description": "Browse the tags in your set and fix any errors. Red indicators mark empty or invalid fields."
+        },
+        "download": {
+          "description": "Open the preview, download a PDF and print on A4 paper at 100% scale."
+        }
+      },
+      "faq": {
+        "storage": {
+          "answer": "In this browser on this device. Clearing site data deletes the project; undo and redo history resets when you reload."
+        },
+        "printSize": {
+          "answer": "Print the PDF on A4 at 100% scale with “Fit to page” turned off."
+        },
+        "download": {
+          "question": "Why can’t I download the PDF?",
+          "answer": "Red errors block downloads. Open the preview and select Fix next to the issue."
+        },
+        "textOverflow": {
+          "answer": "Shorten the text, reduce the font size or widen the box. Text is not shrunk automatically."
+        },
+        "cardCount": {
+          "question": "Can I change the number of tags?",
+          "answer": "Choose 24 or 31 tags when creating a set. To change the count later, create a new set."
+        },
+        "import": {
+          "question": "Can I restore an editable project from a PDF?",
+          "answer": "Import is not supported in this version. A PDF preserves the finished design for printing."
+        },
+        "applyAll": {
+          "question": "How do I style all tags at once?",
+          "answer": "Select Entire set in the right panel, then change a setting. Afterwards, the editor switches back to the current tag."
+        },
+        "save": {
+          "answer": "Check your browser’s site storage permissions and available space. Download a PDF before closing the page."
+        }
+      }
+    },
+    "postcards": {
+      "title": "Create your cards in four steps",
+      "reportPrivacy": "Card content not included",
+      "steps": {
+        "choose": {
+          "title": "Choose a format",
+          "description": "Start with a blank A6 or 105 × 105 mm square card. A project can contain 1–20 cards in different formats."
+        },
+        "edit": {
+          "title": "Design your card",
+          "description": "In Text, enter your own words or choose ready-made lettering. Add illustrations and decorations, then adjust Format & background. Use Layers to change element order and locks."
+        },
+        "check": {
+          "description": "Browse your cards and fix any errors. Before exporting, review the warnings: they do not block export, but highlight details that may affect print quality."
+        },
+        "download": {
+          "description": "Save the current card as a PDF, JPG or PNG. Print at 100% scale."
+        }
+      },
+      "faq": {
+        "storage": {
+          "answer": "In this browser on this device, separately from tags. Clearing site data deletes projects; they do not sync to other devices."
+        },
+        "printSize": {
+          "answer": "A single-card PDF keeps its size; a project PDF arranges cards on A4. Print at 100% with “Fit to page” off."
+        },
+        "download": {
+          "question": "Why can’t I download the file?",
+          "answer": "Use Fix to resolve red errors. If only warnings remain, review them and confirm that you want to continue."
+        },
+        "textOverflow": {
+          "answer": "Shorten the text, reduce the font size or widen the box. Fit box to text resizes the box without changing the font size."
+        },
+        "lettering": {
+          "question": "How do I add ready-made lettering?",
+          "answer": "Open Text → Ready-made lettering. Its wording cannot be edited; choose Your text to write your own."
+        },
+        "format": {
+          "question": "Where do I change the format and background?",
+          "answer": "Open Format & background. After changing format, review the layout: element sizes and positions stay the same."
+        },
+        "layers": {
+          "question": "How do I manage layers?",
+          "answer": "In Layers, select, reorder, lock or delete elements. Unlock a locked element before editing it."
+        },
+        "cardCount": {
+          "question": "How do I change the number of cards?",
+          "answer": "Add, duplicate or delete cards in the strip or Cards panel. Projects hold 1–20 cards; deletion can be undone."
+        },
+        "import": {
+          "question": "Can I restore an editable project from a PDF or image?",
+          "answer": "Import is not supported in this version. PDF, PNG and JPG preserve the finished design; the editable project stays in your browser."
+        },
+        "applyAll": {
+          "question": "Can I apply a design to every card?",
+          "answer": "Cards are edited separately. Duplicate a card to reuse its design; editing the copy will not change the original."
+        },
+        "save": {
+          "answer": "Check your browser’s site storage permissions and available space. Download a PDF, JPG or PNG before closing the page."
+        }
+      }
+    }
+  },
+  "onboarding": {
+    "postcards": {
+      "offer": "Five quick tips will show you how to design cards, work with layers and save your creations for printing.",
+      "content": {
+        "title": "Create your card",
+        "edit": "In the Text tab, choose Your text or Ready-made lettering. Add illustrations and decorations from their own tabs. Illustration search works in English and Russian.",
+        "move": "Select an element on the canvas. Drag it with your mouse or finger, resize it using the handles and rotate it in 15° steps. Double-click to edit text."
+      },
+      "background": {
+        "title": "Choose a background and format",
+        "edit": "The Format & background tab offers ready-made images, solid colours and gradients. Background images fill the card and are cropped from the centre.",
+        "format": "Changing the format in this tab affects only the current card. Element positions and sizes stay the same — review the design afterwards."
+      },
+      "layers": {
+        "title": "Manage your layers",
+        "actions": "In Layers, select an element, move it up or down, lock it or delete it. Locked elements cannot be moved on the canvas.",
+        "undo": "You can undo each action. All cards in this project share one undo history."
+      },
+      "cards": {
+        "title": "Build your project",
+        "count": "A project can contain 1–20 independent cards in different formats. The plus button lets you add a blank card or a copy of the current one.",
+        "reorder": "Drag thumbnails to change their order. The Cards panel offers the same actions as buttons — handy on a phone or when using a keyboard."
+      },
+      "export": {
+        "title": "Review and save your designs",
+        "validation": "In the preview, choose the current card or entire project, then PDF, PNG or JPG. Red errors must be fixed. You can acknowledge all warnings in one step.",
+        "formats": "Your project is saved in this browser separately from Advent tags. PDF preserves physical dimensions; PNG and JPG images are prepared at 300 DPI. Multiple images download as a ZIP file."
+      }
+    },
+    "tags": {
+      "offer": "Five quick tips will show you how to edit tags, change the whole set and prepare a PDF for printing.",
+      "content": {
+        "title": "Add text and images",
+        "edit": "Choose Text or Image in the settings panel. You can change text content, font, size, colour and alignment. In Image, search by name or keyword in English or Russian and add an illustration to your tag.",
+        "move": "Drag an element with your mouse or finger to move it. You can adjust the selected element’s size and position directly on the tag. Double-click text to edit it."
+      },
+      "background": {
+        "title": "Style your background",
+        "edit": "In Background, choose a colour or gradient for your tag. You can also add small decorations, such as circles or stars, and adjust their appearance and position.",
+        "mobile": "On a phone, Text, Image and Background are in the bottom toolbar. Tap an icon to open its settings."
+      },
+      "cards": {
+        "title": "Work with all your tags",
+        "navigation": "On a computer, switch tags using the strip at the bottom. On a phone, tap Tags in the bottom toolbar to open the list.",
+        "applyAll": "Style each tag separately or apply shared settings to the whole set using Entire set. Individual text and its position stay the same."
+      },
+      "undo": {
+        "title": "Undo changes and try again",
+        "description": "If you do not like a change, use the undo and redo buttons in the top-right corner of the workspace. They let you undo or restore up to 15 recent actions.",
+        "shortcuts": "On a computer, use **Ctrl + Z** (**⌘ + Z** on Mac) to undo and **Ctrl + Shift + Z** (**⌘ + Shift + Z** on Mac) to redo. Changes are saved automatically in your browser. Your project remains after a reload, but the action history starts again."
+      },
+      "export": {
+        "title": "Download and print your tags",
+        "open": "When your designs are ready, click Export on a computer. On a tablet or phone, open the Export tab and go to the PDF preview. Review the arrangement of your tags on the A4 pages.",
+        "validation": "Fix red errors before printing. Orange warnings do not block downloads, but are worth reviewing.",
+        "print": "Print at **100%** scale and turn off “Fit to page” to preserve the correct tag dimensions. Then print the sheets and cut out the tags along the dotted lines."
+      }
+    },
+    "common": {
+      "availableLater": "You can start creating straight away. The tour is always available in Help.",
+      "offerTitle": "Take a look around the studio?",
+      "skip": "Skip",
+      "start": "Start the tour",
+      "stepPosition": "<span>Step {position} of {count}</span>",
+      "finish": "Let’s create",
+      "next": "Next"
+    }
+  },
+  "metadata": {
+    "title": "Christmas Studio — Advent Tags & Cards",
+    "description": "A cosy Christmas studio: create Advent tags and download a printable PDF."
+  },
+  "library": {
+    "postcards": {
+      "searchPlaceholder": "Search in English or Russian",
+      "allCategories": "All categories",
+      "category": "Material category",
+      "allMotifs": "All motifs",
+      "motif": "Illustration motif",
+      "resultCount": "Results: {count}",
+      "selectBackground": "Choose background: {assetName}",
+      "add": "Add: {assetName}",
+      "label": "Artwork library",
+      "empty": "No results. Try another word.",
+      "comingSoon": "These materials will be available when the collection is expanded.",
+      "searchIllustrations": "Search illustrations",
+      "searchLettering": "Search lettering",
+      "searchBackgrounds": "Search backgrounds",
+      "searchDecorations": "Search decorations"
+    }
+  }
+}

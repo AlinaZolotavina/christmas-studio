@@ -29,11 +29,11 @@ test('about products keep their destinations and feedback offers the real author
   await page.goto('/#about');
   await expect(page.getByRole('heading', { name: 'Что можно создать', exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Написать автору', exact: true })).toHaveAttribute('href', 'mailto:albekmerus@gmail.com');
-  await page.getByRole('button', { name: 'Оставить отзыв', exact: true }).click();
-  await expect(page.getByRole('dialog')).toContainText('Ссылка для отзывов появится чуть позже.');
-  await expect(page.getByRole('dialog').getByRole('link', { name: 'albekmerus@gmail.com' })).toHaveAttribute('href', 'mailto:albekmerus@gmail.com');
-  await page.getByRole('button', { name: 'Понятно', exact: true }).click();
-  await expect(page.getByRole('button', { name: 'Оставить отзыв', exact: true })).toBeFocused();
+  const feedback = page.getByRole('link', { name: 'Оставить отзыв', exact: true });
+  await expect(feedback).toHaveAttribute('href', 'https://docs.google.com/forms/d/e/1FAIpQLSeeRN6yms0m52bbCCVCDqKsZ4Wph94D6vg1DZ13Fxdy9lI7nQ/viewform');
+  await expect(feedback).toHaveAttribute('target', '_blank');
+  await expect(feedback).toHaveAttribute('rel', /noopener/);
+  await expect(page.getByRole('dialog')).toHaveCount(0);
   await page.locator('.about-products [data-product=postcards]').click();
   await expect(page).toHaveURL(/#postcards$/);
   await expect(page.locator('.postcard-gallery-main')).toBeVisible();
@@ -63,11 +63,22 @@ test('the two redesigned bodies load supplied covers and retain geometry for mis
           const grid = document.querySelector('.template-grid')!.getBoundingClientRect();
           const copy = document.querySelector('.template-hero__copy')!.getBoundingClientRect();
           const art = document.querySelector('.template-hero__art')!.getBoundingClientRect();
-          const overlaps = art.left < copy.right - 1 && art.right > copy.left + 1 && art.top < copy.bottom - 1 && art.bottom > copy.top + 1;
+          const titleElement = document.querySelector('.template-hero h1')!;
+          const title = titleElement.getBoundingClientRect();
+          const description = document.querySelector('.template-hero__copy > p')!.getBoundingClientRect();
+          const actions = document.querySelector('.template-hero__actions')!.getBoundingClientRect();
           const stacked = matchMedia('(max-width:760px), (max-width:1150px) and (orientation:portrait)').matches;
-          return { aligned: Math.abs(hero.left - grid.left) < 1 && Math.abs(hero.width - grid.width) < 1, overlaps, followsHomeLayout: stacked ? art.bottom <= copy.top + 1 : copy.right <= art.left + 1 };
+          const intersectsArt = (rect: DOMRect) => art.left < rect.right - 1 && art.right > rect.left + 1 && art.top < rect.bottom - 1 && art.bottom > rect.top + 1;
+          return {
+            aligned: Math.abs(hero.left - grid.left) < 1 && Math.abs(hero.width - grid.width) < 1,
+            overlaps: [title, description, actions].some(intersectsArt),
+            followsHomeLayout: stacked
+              ? title.bottom <= art.top + 1 && art.bottom <= description.top + 1 && description.bottom <= actions.top + 1
+              : copy.right <= art.left + 1,
+            headingCentered: !stacked || getComputedStyle(titleElement).textAlign === 'center' && Math.abs((title.left + title.right) / 2 - (hero.left + hero.right) / 2) < 1,
+          };
         });
-        expect(layout).toEqual({ aligned: true, overlaps: false, followsHomeLayout: true });
+        expect(layout).toEqual({ aligned: true, overlaps: false, followsHomeLayout: true, headingCentered: true });
         await expect(page.locator('.template-catalog img')).toHaveCount(6);
         for (const cover of await page.locator('.template-catalog img').all()) {
           await cover.scrollIntoViewIfNeeded();

@@ -49,7 +49,8 @@ export const productArtwork = [
 ] as const;
 
 export const ideasArtwork = {
-  tags: { id: 'ideas-advent-tag-attachment', source: 'original-assets/site/ideas/advent-tag-gift-attachment.jpg', src: 'site/advent-tag-gift-attachment.webp', width: 1536, height: 1024 },
+  gifts: { id: 'ideas-advent-gifts', source: 'original-assets/site/ideas/cosy-christmas-advent-gifts.png', src: 'site/cosy-christmas-advent-gifts.webp', width: 1536, height: 1024 },
+  tags: { id: 'ideas-advent-tag-attachment', source: 'original-assets/site/ideas/advent-tag-gift-attachment.png', src: 'site/advent-tag-gift-attachment.webp', width: 1535, height: 1024 },
   postcards: { id: 'ideas-postcard-garland', source: 'original-assets/site/ideas/christmas-postcard-garland.png', src: 'site/christmas-postcard-garland.webp', width: 1536, height: 1024 },
 } as const;
 

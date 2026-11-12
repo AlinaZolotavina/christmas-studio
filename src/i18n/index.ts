@@ -1,8 +1,8 @@
 import ru from '../locales/ru.json';
-import { interpolate, resolveMessage, type Catalog, type MessageParams } from './formatter';
+import { interpolate, resolveMessage, type Catalog, type IsPlural, type MessageParams } from './formatter';
 export type { Catalog, MessageParams } from './formatter';
-type Paths<T> = T extends string ? never : T extends { other: string } ? never : {
-  [K in keyof T & string]: T[K] extends string | { other: string } ? K : `${K}.${Paths<T[K]>}`
+type Paths<T> = T extends string ? never : IsPlural<T> extends true ? never : {
+  [K in keyof T & string]: T[K] extends string ? K : IsPlural<T[K]> extends true ? K : `${K}.${Paths<T[K]>}`
 }[keyof T & string];
 export type MessageKey = Paths<typeof ru>;
 

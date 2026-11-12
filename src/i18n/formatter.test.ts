@@ -15,6 +15,12 @@ const catalogs: Record<string, Catalog> = {
 const translate = (key: string, count: number, language: string) => interpolate(resolveMessage(catalogs, key, { count }, language), { count }, key);
 
 describe('localization messages', () => {
+  it('does not mistake a category named other for a plural message', () => {
+    const dictionaries = { en: { categories: { all: 'All types', 'toys-games': 'Toys & games', other: 'Other' } } };
+    expect(resolveMessage(dictionaries, 'categories.all', {}, 'en', 'en')).toBe('All types');
+    expect(resolveMessage(dictionaries, 'categories.other', {}, 'en', 'en')).toBe('Other');
+    expect(() => resolveMessage(dictionaries, 'categories', { count: 2 }, 'en', 'en')).toThrow('Unknown translation');
+  });
   it.each([[0, '0 открыток'], [1, '1 открытка'], [2, '2 открытки'], [5, '5 открыток'], [11, '11 открыток'], [21, '21 открытка'], [24, '24 открытки'], [31, '31 открытка'], [1.5, '1.5 открытки']] as const)('chooses the Russian form for %s', (count, expected) => {
     expect(translate('cards', count, 'ru')).toBe(expected);
   });

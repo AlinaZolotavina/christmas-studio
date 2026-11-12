@@ -1,5 +1,13 @@
 export type Catalog = { [key: string]: string | Catalog };
 export type MessageParams = Record<string, unknown>;
+const pluralForms = ['zero', 'one', 'two', 'few', 'many', 'other'] as const;
+export type PluralForm = typeof pluralForms[number];
+export type IsPlural<T> = T extends { other: string } ? Exclude<keyof T, PluralForm> extends never ? true : false : false;
+
+function isPlural(value: Catalog): boolean {
+  return typeof value.other === 'string' && Object.entries(value).every(([key, form]) =>
+    pluralForms.some(category => category === key) && typeof form === 'string');
+}
 
 function lookup(catalog: Catalog, key: string): string | Catalog | undefined {
   let value: string | Catalog | undefined = catalog;
@@ -15,7 +23,7 @@ export function resolveMessage(catalogs: Record<string, Catalog>, key: string, p
   let sourceLocale = catalogs[language] ? language : fallback;
   let value = lookup(catalogs[sourceLocale], key);
   if (value === undefined) { value = lookup(catalogs[fallback], key); sourceLocale = fallback; }
-  if (value && typeof value === 'object' && typeof value.other === 'string') {
+  if (value && typeof value === 'object' && isPlural(value)) {
     if (typeof params.count !== 'number' || !Number.isFinite(params.count)) throw new Error(`Translation ${key} requires a numeric count`);
     const form = new Intl.PluralRules(sourceLocale).select(params.count);
     const selected = value[form] ?? value.other;

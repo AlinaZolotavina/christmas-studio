@@ -8,6 +8,13 @@ import "./ideas-page.css";
 const heroArtwork = getAsset("elf-pair-decorating-christmas-gift");
 const topics = [
     {
+        id: "gifts",
+        href: "#ideas/gifts",
+        artwork: ideasArtwork.gifts,
+        title: <>{t("pages.giftIdeas.title")}</>,
+        description: t("pages.giftIdeas.cardDescription"),
+    },
+    {
         id: "advent-tags",
         href: "#ideas/tags",
         artwork: ideasArtwork.tags,

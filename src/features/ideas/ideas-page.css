@@ -87,12 +87,6 @@
 }
 
 @media (max-width: 1050px) {
-  .ideas-page { padding-bottom: 64px; }
-  .ideas-hero { min-height: 440px; gap: 28px; padding-top: 40px; }
-}
-
-@media (max-width: 900px) {
-  .ideas-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 760px) {

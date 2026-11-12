@@ -1193,6 +1193,75 @@
       "create": "Create project",
       "replace": "Replace design",
       "add": "Add card"
+    },
+    "giftIdeas": {
+      "title": "Gift ideas",
+      "cardDescription": "Not sure what to give? Explore our catalogue of Advent calendar gift ideas.",
+      "heroTitle": "Gift ideas for your Advent calendar",
+      "back": "All ideas",
+      "sectionTitle": "Gift suggestions",
+      "description": "Small gift ideas for your Advent calendar. Browse by recipient and interests, build your own list and download it to keep handy.",
+      "filters": {
+        "title": "Filters",
+        "recipient": "Recipient",
+        "type": "Gift type",
+        "reset": "Reset filters"
+      },
+      "recipients": {
+        "all": "Everyone",
+        "toddlers": "Little ones aged 3–6",
+        "children": "Children aged 7–12",
+        "teenagers": "Teenagers aged 13–17",
+        "girls": "Young women",
+        "boys": "Young men",
+        "mom": "Women",
+        "dad": "Men"
+      },
+      "categories": {
+        "all": "All types",
+        "toys-games": "Toys & games",
+        "creativity": "Arts, crafts & hobbies",
+        "stationery": "Stationery",
+        "accessories": "Accessories",
+        "beauty-care": "Beauty & care",
+        "home": "For the home",
+        "sweets-drinks": "Sweets & drinks",
+        "other": "Other"
+      },
+      "catalog": {
+        "title": "Gift catalogue",
+        "results": "Showing {count} of {total}",
+        "more": "Show {count} more",
+        "empty": "No matching ideas. Try changing the filters."
+      },
+      "list": {
+        "title": "My gift list",
+        "empty": "Your selected gifts will appear here",
+        "open": "My list ({count})",
+        "add": "Add: {giftName}",
+        "remove": "Remove: {giftName}",
+        "count": {
+          "one": "{count} gift",
+          "other": "{count} gifts"
+        }
+      },
+      "custom": {
+        "label": "Add your own idea",
+        "placeholder": "For example: a drawing set",
+        "add": "Add",
+        "empty": "Enter an idea name.",
+        "duplicate": "This idea is already in your list."
+      },
+      "storage": {
+        "readError": "Could not load your list from this browser. The original data has been kept; your new list is available on this page only. Download a PDF before leaving.",
+        "writeError": "Could not save your list in this browser. Download a PDF before leaving the page."
+      },
+      "pdf": {
+        "download": "Download PDF",
+        "preparing": "Preparing PDF…",
+        "count": "Number of gifts: {count}",
+        "error": "Could not create the PDF. Please try again."
+      }
     }
   },
   "help": {

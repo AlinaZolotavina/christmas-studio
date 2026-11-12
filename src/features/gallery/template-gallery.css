@@ -3,8 +3,8 @@
 .template-hero{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);align-items:center;gap:32px;position:relative;isolation:isolate;min-height:520px;padding:60px 0 20px}
 .template-hero__copy{position:relative;z-index:1;width:100%;min-width:0;text-align:left;padding:5px 0 10px}
 .template-hero h1{color:#151f18;margin:0}
-.template-hero__copy>p{color:#3d443b;margin:26px 0 28px;max-width:470px;text-wrap:balance}
-.template-hero__occasion{white-space:nowrap}
+.template-hero__copy>p{color:#3d443b;margin:26px 0 28px;max-width:470px;text-wrap:wrap}
+.template-hero__occasion{white-space:normal}
 .template-hero__actions{height:8.25rem;display:flex;align-items:flex-start}
 .template-hero__actions>.saved-project--compact{height:100%}
 .template-hero__create{margin-top:0}

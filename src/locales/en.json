@@ -972,7 +972,7 @@
   "pages": {
     "tags": {
       "title": "Advent tags",
-      "description": "Beautiful tag sets<lineBreak/>for your <span>Advent calendar</span>",
+      "description": "Beautiful tag sets for your <span>Advent calendar</span>",
       "catalogTitle": "Find your festive mood",
       "previousExample": "Previous example",
       "nextExample": "Next example",
@@ -1011,7 +1011,7 @@
     },
     "home": {
       "title": "Create<lineBreak/>Advent tags<lineBreak2/> and cards",
-      "description": "A simple online studio for<lineBreak/>your festive designs",
+      "description": "A simple online studio for your festive designs",
       "benefits": {
         "customization": {
           "title": "Make it your own",
@@ -1164,7 +1164,7 @@
       "startTemplate": "Start with template: {templateName}",
       "selectTemplate": "Choose template: {templateName}",
       "title": "Cards",
-      "description": "Warm wishes and winter stories<lineBreak/>you will want to share",
+      "description": "Warm wishes and winter stories you will want to share",
       "blankTitle": "Start with a blank card",
       "blankDescription": "Choose a format, add text, illustrations and festive details. <lineBreak/>Each project can hold between 1 and 20 cards.",
       "artisticTitle": "Choose a ready-made design",

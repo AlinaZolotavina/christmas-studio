@@ -56,6 +56,7 @@
 
 /* Flatten only presentational copy wrappers so all heroes share the same order. */
 @media (max-width: 760px), (max-width: 1150px) and (orientation: portrait) {
+  .postcard-intro-desktop-break { display: none; }
   .public-site :is(.home-hero, .template-hero, .ideas-hero) {
     display: grid;
     grid-template-columns: minmax(0, 1fr);

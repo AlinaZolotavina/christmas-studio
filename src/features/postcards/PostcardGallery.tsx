@@ -127,7 +127,7 @@ export function PostcardGallery({ hasProject, project, onContinue, onCreate, onA
         <section className="template-hero" aria-labelledby="postcards-title">
           <div className="template-hero__copy">
             <h1 id="postcards-title">{t("pages.postcards.title")}</h1>
-            <p>{rich("pages.postcards.description", {}, { lineBreak: <br /> })}</p>
+            <p>{t("pages.postcards.description")}</p>
             <div className="template-hero__actions">
             {project ? (<SavedProjectNotice compact className="postcard-saved-project" label={t("projects.saved.postcards.label")} name={project.name} status={t("projects.saved.postcards.status")} description={t("projects.saved.postcards.count", { count: project.postcards.length })} onContinue={onContinue} onNew={() => choose(blankPostcardTemplates[0], "new")}/>) : (<CreateProjectLink className="template-hero__create" direction="postcards" onClick={event => { event.preventDefault(); scrollToCatalog(); }}/>)}
             </div>
@@ -139,7 +139,7 @@ export function PostcardGallery({ hasProject, project, onContinue, onCreate, onA
         <div className="template-intro" ref={catalog} tabIndex={-1}>
           <BowDivider className="template-intro__divider"/>
           <h2 id="postcard-starts-title">{t("pages.postcards.blankTitle")}</h2>
-          <p className="postcard-gallery-intro">{rich("pages.postcards.blankDescription", {}, { lineBreak: <br /> })}</p>
+          <p className="postcard-gallery-intro">{rich("pages.postcards.blankDescription", {}, { lineBreak: <br className="postcard-intro-desktop-break" /> })}</p>
         </div>
         <section className="template-catalog" aria-labelledby="postcard-starts-title">
           <div className="template-grid">

@@ -41,7 +41,7 @@ export function TemplateGallery({ onCreate, hasProject = false, project, onConti
         <section className="template-hero" aria-labelledby="templates-title">
           <div className="template-hero__copy">
             <h1 id="templates-title">{t("pages.tags.title")}</h1>
-            <p>{rich("pages.tags.description", {}, { lineBreak: <br />, span: <span className="template-hero__occasion"/> })}</p>
+            <p>{rich("pages.tags.description", {}, { span: <span className="template-hero__occasion"/> })}</p>
             <div className="template-hero__actions">
             {project ? (<SavedProjectNotice compact className="tag-saved-project" label={t("projects.saved.tags.label")} name={project.name} status={t("projects.saved.tags.status")} description={t("projects.saved.tags.count", { count: project.cardCount })} onContinue={onContinue} onNew={scrollToCatalog}/>) : (<CreateProjectLink className="template-hero__create" direction="tags" onClick={event => { event.preventDefault(); scrollToCatalog(); }}/>)}
             </div>

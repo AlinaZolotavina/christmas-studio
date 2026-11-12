@@ -23,7 +23,7 @@
 .public-footer nav a{font-size:14px;line-height:1.5;text-decoration:none;color:#415342;overflow-wrap:anywhere}
 .public-footer nav a:hover{text-decoration:underline}
 @media(max-width:1050px){
-  .public-header__inner{gap:12px;padding:0 25px}.public-brand{font-size:15px}.public-navigation{gap:16px}.public-header__actions{gap:15px}.public-locale{display:none}
+  .public-header__inner{gap:12px;padding:0 25px}.public-brand{font-size:15px}.public-navigation{gap:16px}.public-header__actions{gap:15px}
   .public-footer__inner{padding:32px 26px;gap:24px;grid-template-columns:1.15fr .75fr 1.15fr}.public-footer .public-brand{font-size:14px}.public-footer nav{padding-left:20px}
 }
 @media(max-width:900px){

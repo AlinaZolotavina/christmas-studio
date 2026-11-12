@@ -1,11 +1,8 @@
 import { t } from '../../i18n';
 import { rich } from '../../i18n/rich';
-import { useState } from "react";
-import { ArrowRight, Mail, MessageCircle } from "lucide-react";
-import { siteContacts } from "../../content/siteContacts";
+import { ArrowRight } from "lucide-react";
+import { FeedbackBanner } from './FeedbackBanner';
 import { ArtworkPlaceholder } from "../../shared/ui/ArtworkPlaceholder";
-import { Button } from "../../shared/ui/Controls";
-import { Modal } from "../../shared/ui/Modal";
 import { BowDivider } from "../../shared/ui/BowDivider";
 import "./about-content.css";
 const products = [
@@ -32,8 +29,6 @@ const products = [
     },
 ] as const;
 export function AboutContent() {
-    const [feedbackNotice, setFeedbackNotice] = useState(false);
-    const email = `mailto:${siteContacts.authorEmail}`;
     return (<article className="about-project about-overview">
       <section className="about-hero" aria-labelledby="about-title">
         <div className="about-heading">
@@ -68,27 +63,6 @@ export function AboutContent() {
             </a>))}
         </div>
       </section>
-      <section className="about-feedback" aria-labelledby="about-feedback-title">
-        <ArtworkPlaceholder kind="envelope" slot="about-feedback-envelope" className="about-feedback__art"/>
-        <div className="about-feedback__copy">
-          <h2 id="about-feedback-title">{t("pages.about.feedback.title")}</h2>
-          <p>{t("pages.about.feedback.description")}</p>
-          <div className="about-feedback__actions">
-            {siteContacts.feedbackUrl ? (<a className="public-button" href={siteContacts.feedbackUrl} target="_blank" rel="noopener noreferrer">
-                <MessageCircle size={19}/>{t("pages.about.feedback.action")}</a>) : (<button type="button" className="public-button" onClick={() => setFeedbackNotice(true)}>
-                <MessageCircle size={19}/>{t("pages.about.feedback.action")}</button>)}
-            <a className="public-button about-feedback__email" href={email}>
-              <Mail size={19}/>{t("pages.about.feedback.email")}</a>
-          </div>
-        </div>
-      </section>
-      {feedbackNotice && (<Modal title={t("pages.about.feedback.dialogTitle")} onClose={() => setFeedbackNotice(false)} footer={<Button onClick={() => setFeedbackNotice(false)}>{t("pages.about.feedback.dismiss")}</Button>}>
-          <div className="about-feedback-notice">
-            <p>{t("pages.about.feedback.unconfigured")}</p>
-            <a href={email}>
-              <Mail size={18}/> {siteContacts.authorEmail}
-            </a>
-          </div>
-        </Modal>)}
+      <FeedbackBanner />
     </article>);
 }

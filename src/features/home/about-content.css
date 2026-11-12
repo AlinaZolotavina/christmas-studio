@@ -9,6 +9,7 @@
 .about-story__art{grid-area:art;width:100%;height:310px}
 .about-story__copy{grid-area:copy;min-width:0;padding:10px 0}
 .about-story__copy p+p{margin-top:19px}
+.about-feedback__copy>p{margin:0;color:#26392d}
 .about-divider{margin:8px 12px 22px}
 .about-products>h2{text-align:center;color:#172c20;margin:0 0 31px}
 .about-product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:25px}

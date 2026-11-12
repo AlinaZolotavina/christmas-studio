@@ -1,0 +1,110 @@
+/* Shared action shape, including editor export, dialogs and saved projects. */
+:root { --action-button-radius: 32px; }
+.home-feedback { max-width: 1240px; margin: 0 auto; padding: 0 36px 68px; }
+.home-feedback .about-feedback { margin-top: 0; }
+@media (max-width: 760px) { .home-feedback { padding: 0 22px 42px; } }
+.button.button--primary,
+.button.button--secondary,
+.public-site .public-button {
+  border-radius: var(--action-button-radius);
+}
+
+/* Outlined actions need a solid surface on tinted panels. */
+.saved-project .button--secondary,
+.gift-ideas-list-panel .button--secondary,
+.about-feedback .about-feedback__actions .about-feedback__email {
+  background: #fff;
+}
+
+/* Keep language selection next to the menu when navigation collapses. */
+@media (max-width: 900px) {
+  .public-header .public-locale {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+  .public-header .public-locale__icon { width: 22px; height: 22px; }
+  .public-header .public-locale > select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .public-header .public-locale:focus-within {
+    outline: 2px solid var(--public-green);
+    outline-offset: 1px;
+    border-radius: 6px;
+  }
+  .public-header .public-brand-link { flex-shrink: 1; min-width: 0; }
+  .public-header .public-brand { min-width: 0; }
+  .public-header .brand-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .public-header .brand-mark { flex-shrink: 0; }
+}
+@media (max-width: 600px) {
+  .public-header .public-header__inner { gap: 8px; padding-inline: 16px; }
+  .public-header .public-header__actions { gap: 0; }
+  .public-header .public-brand { gap: 6px; }
+  .public-header .brand-mark { width: 28px; height: 28px; }
+  .public-header .brand-name { font-size: 17px; }
+}
+
+/* Flatten only presentational copy wrappers so all heroes share the same order. */
+@media (max-width: 760px), (max-width: 1150px) and (orientation: portrait) {
+  .public-site :is(.home-hero, .template-hero, .ideas-hero) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-flow: row;
+    min-height: 0;
+    gap: 20px;
+    align-items: start;
+  }
+  .public-site :is(.home-hero__copy, .template-hero__copy, .ideas-hero__copy) { display: contents; }
+  .public-site :is(.home-hero, .template-hero, .ideas-hero) :is(h1, h1.ideas-hero__title) {
+    order: 0;
+    width: 100%;
+    margin: 0;
+    text-align: center;
+  }
+  .public-site :is(.home-hero__art, .template-hero__art, .ideas-hero__art) {
+    order: 1;
+    width: min(100%, 520px);
+    max-width: 100%;
+    margin: 0;
+    justify-self: center;
+  }
+  .public-site :is(.home-hero__copy, .template-hero__copy, .ideas-hero__copy) > :is(p, p.ideas-hero__description) {
+    order: 2;
+    width: 100%;
+    max-width: 520px;
+    margin: 0;
+    justify-self: center;
+  }
+  .public-site :is(.template-hero__actions, .ideas-hero__actions) {
+    order: 3;
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    margin: 0;
+    justify-self: center;
+    justify-content: center;
+  }
+  .public-site :is(.template-hero__actions, .ideas-hero__actions) > .saved-project--compact { height: auto; }
+  .public-site .home-hero__copy > .public-button { order: 3; justify-self: center; margin: 0; }
+  .public-site .about-hero {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "heading" "art" "copy";
+  }
+  .public-site .about-heading__copy { text-align: center; }
+  .public-site .coming-soon { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+  .public-site .coming-soon h1 { order: 0; margin: 0; text-align: center; }
+  .public-site .coming-soon__art { order: 1; margin: 0; }
+  .public-site .coming-soon > p { order: 2; margin: 0; }
+  .public-site .coming-soon__section { order: 3; }
+  .public-site .coming-soon > .public-button { order: 4; margin: 0; }
+}

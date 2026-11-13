@@ -1,4 +1,5 @@
 import { t } from '../../i18n';
+import { trackPdfDownload } from '../../analytics';
 import { rich } from '../../i18n/rich';
 import { useEffect, useRef, useState } from 'react';
 import { AlertCircle, AlertTriangle, CheckCircle2, ChevronLeft, ChevronRight, Download, LoaderCircle, Minus, Plus, RotateCcw, Scan } from 'lucide-react';
@@ -112,7 +113,7 @@ export function PrintPreview({ project, revision, onClose, onFix }: PrintPreview
             const link = document.createElement('a');
             link.href = url;
             link.download = 'Advent-Tags.pdf';
-            link.click();
+            await trackPdfDownload('tag_pdf_export', () => link.click());
             window.setTimeout(() => URL.revokeObjectURL(url), 1000);
         }
         catch (reason) {

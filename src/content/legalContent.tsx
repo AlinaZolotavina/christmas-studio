@@ -3,6 +3,8 @@ import { rich } from '../i18n/rich';
 import { siteContacts } from './siteContacts';
 import { legalMetadata } from './legalMetadata';
 const githubPrivacy = 'https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement';
+const posthogPrivacy = 'https://posthog.com/privacy';
+const posthogPrivacyDocs = 'https://posthog.com/docs/privacy';
 function Email() { return <a href={`mailto:${siteContacts.authorEmail}`}>{siteContacts.authorEmail}</a>; }
 export function PrivacyContent() {
     return <>
@@ -17,6 +19,12 @@ export function PrivacyContent() {
       <p>{t("legal.privacy.localData.retention")}</p>
       <p>{t("legal.privacy.localData.noTracking")}</p>
     </section>
+    <section><h2>{t("legal.privacy.analytics.title")}</h2>
+      <p>{t("legal.privacy.analytics.purpose")}</p>
+      <p>{t("legal.privacy.analytics.data")}</p>
+      <p>{t("legal.privacy.analytics.excluded")}</p>
+      <p>{rich("legal.privacy.analytics.provider", { analyticsRetentionMonths: legalMetadata.analyticsRetentionMonths }, { privacyLink: <a href={posthogPrivacy} target="_blank" rel="noopener noreferrer"/>, docsLink: <a href={posthogPrivacyDocs} target="_blank" rel="noopener noreferrer"/> })}</p>
+    </section>
     <section><h2>{t("legal.privacy.hosting.title")}</h2>
       <p>{rich("legal.privacy.hosting.github", {}, { link: <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection" target="_blank" rel="noopener noreferrer"/> })}</p>
       <p>{rich("legal.privacy.hosting.githubPolicy", {}, { link: <a href={githubPrivacy} target="_blank" rel="noopener noreferrer"/> })}</p>
@@ -24,6 +32,7 @@ export function PrivacyContent() {
     </section>
     <section><h2>{t("legal.privacy.contact.title")}</h2>
       <p>{rich("legal.privacy.contact.email", {}, { link: <a href={`https://policies.google.com/privacy?hl=${getLocale()}`} target="_blank" rel="noopener noreferrer"/> })}</p>
+      <p>{rich("legal.privacy.contact.feedback", {}, { link: <a href={`https://policies.google.com/privacy?hl=${getLocale()}`} target="_blank" rel="noopener noreferrer"/> })}</p>
       <p>{t("legal.privacy.contact.retention", { correspondenceRetentionMonths: legalMetadata.correspondenceRetentionMonths })}</p>
       <p>{t("legal.privacy.contact.report")}</p>
       <p>{t("legal.privacy.contact.issues")}</p>

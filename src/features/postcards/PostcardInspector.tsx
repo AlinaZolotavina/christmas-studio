@@ -1,6 +1,6 @@
 import { localized, t } from '../../i18n';
-import { useEffect, useMemo, useState } from 'react';
-import { ArrowDown, ArrowUp, Copy, Lock, Plus, Search, Trash2, Unlock } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { ArrowDown, ArrowUp, Check, Copy, Lock, Plus, Search, Trash2, Unlock } from 'lucide-react';
 import type { OperationResult } from '../../domain/commands';
 import type { PostcardCommand } from '../../domain/postcards/commands';
 import type { Postcard, PostcardBackground, PostcardElement, PostcardElementPatch, PostcardFormat } from '../../domain/postcards/types';
@@ -53,25 +53,23 @@ export function PostcardInspector({ postcard, tab, selection, onSelect, onComman
     postcard: Postcard;
     tab: PostcardTab;
     selection: string | null;
-    onSelect: (id: string | null) => void;
+    onSelect: (id: string | null, type?: PostcardElement['type']) => void;
     onCommand: (command: PostcardCommand) => OperationResult;
 }) {
+    const [picker, setPicker] = useState<'image' | 'lettering' | 'decoration' | null>(null);
+    const [chosen, setChosen] = useState<Record<string, number>>({});
+    const chosenCount = Object.values(chosen).reduce((sum, count) => sum + count, 0);
     const [query, setQuery] = useState(''), [category, setCategory] = useState(''), [motif, setMotif] = useState('');
-    const [textMode, setTextMode] = useState<'custom' | 'lettering'>(() => postcard.elements.find(item => item.id === selection)?.type === 'lettering' ? 'lettering' : 'custom');
     const [format, setFormat] = useState<PostcardFormat | null>(null);
     const element = postcard.elements.find(item => item.id === selection);
-    const resourceTab = tab === 'text' && textMode === 'lettering' ? 'lettering' : tab;
-    useEffect(() => { if (element?.type === 'text')
-        setTextMode('custom');
-    else if (element?.type === 'lettering')
-        setTextMode('lettering'); }, [selection, postcard.id]);
+    const resourceTab = picker ?? tab;
     const size = getPostcardSize(postcard), full = postcard.elements.length >= MAX_POSTCARD_ELEMENTS;
     const send = (command: PostcardCommand) => onCommand(command);
     const patch = (value: PostcardElementPatch) => element && send({ type: 'update-element', postcardId: postcard.id, elementId: element.id, patch: value });
     const add = (item: PostcardElement) => {
         const centered = { ...item, x: Math.max(0, (size.width - item.width) / 2), y: Math.max(0, (size.height - item.height) / 2) };
         if (!send({ type: 'add-element', postcardId: postcard.id, element: centered }).error)
-            onSelect(item.id);
+            onSelect(item.id, item.type);
     };
     const changeBackground = (background: PostcardBackground) => send({ type: 'update-background', postcardId: postcard.id, background });
     const records = useMemo(() => {
@@ -89,21 +87,35 @@ export function PostcardInspector({ postcard, tab, selection, onSelect, onComman
             const resource = getPostcardResource(kind, entry.id);
             if (!resource)
                 return null;
-            return <button type="button" key={entry.id} title={localized(entry.name)} aria-label={t(kind === 'background' ? "library.postcards.selectBackground" : "library.postcards.add", { assetName: localized(entry.name) })} disabled={kind !== 'background' && full} onClick={() => { if (kind === 'background')
-                changeBackground({ kind: 'image', assetId: entry.id, color: '#FFFFFF' });
-            else if (kind === 'image')
-                add(createImageElement(entry.id));
-            else if (kind === 'lettering')
-                add(createLetteringElement(entry.id));
-            else
-                add(createDecorationElement({ assetId: entry.id, width: 40, height: 40 * resource.height / resource.width })); }}><img src={assetUrl(resource.preview)} alt="" loading="lazy" draggable={false}/></button>;
+            const quantity = chosen[entry.id] ?? 0;
+            const isSelected = kind === 'background'
+                ? postcard.background.kind === 'image' && postcard.background.assetId === entry.id
+                : quantity > 0;
+            return <button type="button" key={entry.id} className={isSelected ? 'is-selected' : ''} aria-pressed={isSelected} title={localized(entry.name)} aria-label={t(kind === 'background' ? "library.postcards.selectBackground" : "library.postcards.add", { assetName: localized(entry.name) })} disabled={kind !== 'background' && postcard.elements.length + chosenCount >= MAX_POSTCARD_ELEMENTS} onClick={() => { if (kind === 'background') changeBackground({ kind: 'image', assetId: entry.id, color: '#FFFFFF' }); else setChosen(previous => ({ ...previous, [entry.id]: (previous[entry.id] ?? 0) + 1 })); }}><img src={assetUrl(resource.preview)} alt="" loading="lazy" draggable={false}/>{isSelected && <span className="library-selected-check">{quantity > 1 ? quantity : <Check size={12} aria-hidden="true" />}</span>}</button>;
         })}</div>{!records.length && <p className="library-empty">{query ? t("library.postcards.empty") : t("library.postcards.comingSoon")}</p>}
   </>;
-    const compatible = element && ((tab === 'text' && (textMode === 'custom' ? element.type === 'text' : element.type === 'lettering')) || (tab === 'image' && element.type === 'image') || (tab === 'decoration' && element.type === 'decoration'));
+    const compatible = element && ((tab === 'text' && element.type === 'text') || (tab === 'image' && (element.type === 'image' || element.type === 'lettering')) || (tab === 'decoration' && element.type === 'decoration'));
     return <>
-    {tab === 'text' && <><div className="panel-heading"><h2>{t("editor.postcards.text.title")}</h2><p>{t("editor.postcards.text.hint")}</p></div><div className="postcard-text-modes" role="group" aria-label={t("editor.postcards.text.mode")}><Button variant={textMode === 'custom' ? 'primary' : 'secondary'} aria-pressed={textMode === 'custom'} onClick={() => { setTextMode('custom'); onSelect(null); setQuery(''); setCategory(''); setMotif(''); }}>{t("editor.postcards.text.custom")}</Button><Button variant={textMode === 'lettering' ? 'primary' : 'secondary'} aria-pressed={textMode === 'lettering'} onClick={() => { setTextMode('lettering'); onSelect(null); setQuery(''); setCategory(''); setMotif(''); }}>{t("editor.postcards.text.lettering")}</Button></div>{textMode === 'custom' ? <Button variant="secondary" disabled={full} onClick={() => add(createTextElement())}><Plus size={16}/>{t("editor.postcards.text.add")}</Button> : library('lettering')}</>}
-    {tab === 'image' && <><div className="panel-heading"><h2>{t("editor.postcards.illustrations.title")}</h2><p>{t("editor.postcards.illustrations.hint")}</p></div>{library('image')}</>}
-    {tab === 'decoration' && <><div className="panel-heading"><h2>{t("editor.postcards.elements.decoration")}</h2></div><div className="postcard-shapes">{(['circle', 'star', 'line'] as const).map(shape => <Button key={shape} variant="secondary" disabled={full} onClick={() => add(createDecorationElement({ shape, ...(shape === 'line' ? { width: 35, height: 1, fill: null, stroke: '#C2A26B', strokeWidth: 1 } : {}) }))}><Plus size={14}/>{{ circle: t("editor.postcards.shapes.circle"), star: t("editor.postcards.shapes.star"), line: t("editor.postcards.shapes.line") }[shape]}</Button>)}</div>{decorations.length ? library('decoration') : <p className="field__hint">{t("editor.postcards.decorations.empty")}</p>}</>}
+    {['text', 'image', 'decoration'].includes(tab) && <>
+      <div className="postcard-add-actions">
+      <Button variant="secondary" onClick={() => { setPicker(tab === 'text' ? 'lettering' : tab === 'decoration' ? 'decoration' : 'image'); setChosen({}); setCategory(''); setQuery(''); setMotif(''); }}><Plus size={16}/>{t('library.postcards.openPicker')}</Button>
+      {tab === 'text' && <Button variant="secondary" disabled={full} onClick={() => add(createTextElement())}><Plus size={16}/>{t('editor.postcards.text.add')}</Button>}
+      </div>
+      {!compatible && <p className="library-empty">{t('library.postcards.noElement')}</p>}
+    {tab === 'decoration' && <><h3>{t("editor.postcards.shapes.title")}</h3><div className="postcard-shapes">{(['circle', 'star', 'line'] as const).map(shape => <Button key={shape} variant="secondary" disabled={full} onClick={() => add(createDecorationElement({ shape, ...(shape === 'line' ? { width: 35, height: 1, fill: null, stroke: '#C2A26B', strokeWidth: 1 } : {}) }))}><Plus size={14}/>{{ circle: t('editor.postcards.shapes.circle'), star: t('editor.postcards.shapes.star'), line: t('editor.postcards.shapes.line') }[shape]}</Button>)}</div></>}</>}
+    {picker && <Modal className="postcard-library-picker" overlayClassName="postcard-library-overlay" title={t('library.postcards.openPicker')} onClose={() => setPicker(null)} footer={<div className="postcard-library-footer"><p role="status">{t('library.postcards.selectedCount', { count: chosenCount })}</p><div className="postcard-add-actions"><Button variant="secondary" onClick={() => setChosen({})}>{t('library.postcards.clearSelection')}</Button><Button disabled={!chosenCount} onClick={() => {
+      const elements: PostcardElement[] = [];
+      for (const [id, count] of Object.entries(chosen)) for (let index = 0; index < count; index++) {
+        const resource = getPostcardResource(picker, id);
+        if (!resource) continue;
+        const item = picker === 'image' ? createImageElement(id) : picker === 'lettering' ? createLetteringElement(id) : createDecorationElement({ assetId: id, width: 40, height: 40 * resource.height / resource.width });
+        elements.push({ ...item, x: (size.width - item.width) / 2, y: (size.height - item.height) / 2 });
+      }
+      if (!send({ type: 'add-elements', postcardId: postcard.id, elements }).error) { const selected = elements.at(-1); setPicker(null); onSelect(selected?.id ?? null, selected?.type); }
+    }}>{t('library.postcards.addSelection')}</Button></div></div>}>
+      <div className="postcard-text-modes">{(['image', 'decoration', 'lettering'] as const).map(kind => <Button key={kind} variant={picker === kind ? 'primary' : 'secondary'} onClick={() => { setPicker(kind); setChosen({}); setCategory(''); setMotif(''); setQuery(''); }}>{t(kind === 'image' ? 'editor.postcards.elements.illustration' : kind === 'lettering' ? 'editor.postcards.elements.lettering' : 'editor.postcards.elements.decoration')}</Button>)}</div>
+      {library(picker)}
+    </Modal>}
     {full && ['text', 'image', 'lettering', 'decoration'].includes(tab) && <p role="status" className="inline-note">{t("editor.postcards.elementLimit")}</p>}
     {compatible && element && <section className="panel-section postcard-element-properties"><h3>{postcardElementLabel(element)}</h3>{element.locked && <p className="inline-note"><Lock size={15}/>{t("editor.postcards.lockedElement")}</p>}
       {element.type === 'text' && <><p role="status" className="field__hint">{getPostcardFontState(element).status === 'loading' ? t("editor.postcards.fontLoading") : null}</p>{getPostcardFontState(element).message && <p role={getPostcardFontState(element).status === 'error' ? 'alert' : 'status'} className="inline-note">{getPostcardFontState(element).message}</p>}</>}
@@ -123,7 +135,8 @@ export function PostcardInspector({ postcard, tab, selection, onSelect, onComman
       <div className="postcard-element-actions"><Button variant="secondary" disabled={full} onClick={() => send({ type: 'duplicate-element', postcardId: postcard.id, elementId: element.id })}><Copy size={15}/>{t("editor.postcards.duplicate")}</Button><Button variant="quiet" disabled={element.locked} onClick={() => { if (!send({ type: 'remove-element', postcardId: postcard.id, elementId: element.id }).error)
             onSelect(null); }}><Trash2 size={15}/>{t("editor.postcards.delete")}</Button></div>
     </section>}
-    {tab === 'background' && <><div className="panel-heading"><h2>{t("editor.postcards.background.title")}</h2></div><section className="postcard-format-settings"><Field label={t("editor.postcards.background.format")}><select value={postcard.format} onChange={event => setFormat(event.target.value as PostcardFormat)}>{Object.entries(postcardFormatLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></Field><PostcardCornerRadiusField value={postcard.cornerRadius ?? 0} onChange={cornerRadius => send({ type: 'set-corner-radius', postcardId: postcard.id, cornerRadius })}/></section><Field label={t("editor.postcards.background.type")}><select value={postcard.background.kind} onChange={event => { const kind = event.target.value; if (kind === 'image') {
+    {tab === 'cards' && <section className="postcard-format-settings"><Field label={t("editor.postcards.background.format")}><select value={postcard.format} onChange={event => setFormat(event.target.value as PostcardFormat)}>{Object.entries(postcardFormatLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></Field><PostcardCornerRadiusField value={postcard.cornerRadius ?? 0} onChange={cornerRadius => send({ type: 'set-corner-radius', postcardId: postcard.id, cornerRadius })}/></section>}
+    {tab === 'background' && <><div className="panel-heading"><h2>{t("editor.postcards.background.title")}</h2></div><Field label={t("editor.postcards.background.type")}><select value={postcard.background.kind} onChange={event => { const kind = event.target.value; if (kind === 'image') {
         if (backgrounds[0])
             changeBackground({ kind, assetId: backgrounds[0].id, color: '#FFFFFF' });
     }

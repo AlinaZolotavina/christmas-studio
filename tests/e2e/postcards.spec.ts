@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import sharp from 'sharp';
 import type { PostcardFormat, PostcardProject } from '../../src/domain/postcards/types';
@@ -44,15 +44,25 @@ async function create(page: Page, count = 2, format: PostcardFormat = 'a6-portra
 async function tab(page: Page, label: string) {
   const desktop = page.getByRole('tab', { name: label, exact: true });
   if (await desktop.count() && await desktop.isVisible()) await desktop.click();
+  else if (label === 'Открытки' && await page.locator('.inspector-footer .text-link').isVisible()) await page.locator('.inspector-footer .text-link').click();
   else await page.getByRole('navigation', { name: 'Инструменты открытки', exact: true }).getByRole('button', { name: label, exact: true }).click();
 }
 async function number(page: Page, label: string, value: number) { const input = page.getByLabel(label, { exact: true }); await input.fill(String(value)); await input.press('Enter'); }
 async function text(page: Page, content: string) {
   await tab(page, 'Текст');
-  await page.getByRole('button', { name: 'Свой текст', exact: true }).click();
   await page.getByRole('button', { name: 'Добавить текст', exact: true }).click();
   await page.getByRole('textbox', { name: 'Текст на открытке', exact: true }).fill(content);
   await expect.poll(async () => (await activeCard(page)).elements.filter(element => element.type === 'text').map(element => element.content)).toContain(content);
+}
+async function openLibrary(page: Page, tabLabel: 'Текст' | 'Изображение' | 'Декор') {
+  await tab(page, tabLabel);
+  await page.getByRole('button', { name: 'Добавить из библиотеки', exact: true }).click();
+  const dialog = page.getByRole('dialog', { name: 'Добавить из библиотеки', exact: true });
+  await expect(dialog).toBeVisible();
+  return dialog;
+}
+async function addLibrarySelection(dialog: Locator) {
+  await dialog.getByRole('button', { name: 'Добавить', exact: true }).click();
 }
 async function selectCard(page: Page, id: string) { await page.locator(`.thumbnail-strip [data-postcard-id="${id}"]`).click(); await expect.poll(async () => (await saved(page)).activePostcardId).toBe(id); }
 
@@ -115,7 +125,7 @@ for (const [id, name, format, imageId, letteringId, coverName, pixels] of [
   }
   expect(new Set(project.postcards.flatMap(card => [card.id, ...card.elements.map(element => element.id)])).size).toBe(6);
   await tab(page, 'Слои'); await page.locator('.postcard-layer-choice').first().click();
-  await expect(page.getByRole('button', { name: 'Готовые надписи', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('tab', { name: 'Изображение', exact: true })).toHaveAttribute('aria-selected', 'true');
   await number(page, 'Непрозрачность', 80);
   await expect.poll(async () => (await activeCard(page)).elements[1]).toMatchObject({ opacity: 0.8 });
   expect((await saved(page)).postcards[1]).toEqual(second);
@@ -321,7 +331,6 @@ test('all custom text settings, frame fitting and effects survive undo, redo and
   expect((await activeCard(page)).elements[0]).toEqual(fitted);
   await page.getByRole('button', { name: 'Скрыть уведомление', exact: true }).click();
   await tab(page, 'Слои'); await page.locator('.postcard-layer-choice').click();
-  await expect(page.getByRole('button', { name: 'Свой текст', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByRole('checkbox', { name: 'Тень текста', exact: true })).toBeChecked();
   await expect(page.getByRole('textbox', { name: 'Текст на открытке', exact: true })).toHaveValue(expected.content);
 });
@@ -344,7 +353,7 @@ test('rounded corners survive creation, per-card edits, defaults, Undo, reload a
   await acceptTermsIfOffered(page); await expect(page.locator('.postcard-studio')).toBeVisible(); await dismissNotices(page);
   await expect.poll(async () => (await saved(page))?.postcards.map(card => card.cornerRadius)).toEqual([6, 6]);
   expect((await saved(page)).defaultCornerRadius).toBe(6);
-  await tab(page, 'Формат и фон'); await number(page, 'Скругление углов', 12);
+  await tab(page, 'Открытки'); await number(page, 'Скругление углов', 12);
   await expect.poll(async () => (await saved(page)).postcards.map(card => card.cornerRadius)).toEqual([12, 6]);
   await expect(page.locator('.canvas-artboard [data-element="card"]')).toHaveAttribute('d', /^M 12 0/);
   await page.getByRole('button', { name: 'Отменить (Ctrl+Z)', exact: true }).click();
@@ -363,14 +372,15 @@ test('rounded corners survive creation, per-card edits, defaults, Undo, reload a
   await page.getByRole('button', { name: 'Настройки', exact: true }).click();
   await settingsRadius.fill('15'); await settingsRadius.press('Enter');
   await settings.getByRole('button', { name: 'Отмена', exact: true }).click();
-  await page.getByRole('button', { name: 'Добавить открытку', exact: true }).click();
+  await page.locator('.thumbnail-strip').getByRole('button', { name: 'Добавить открытку', exact: true }).click();
   await page.getByRole('button', { name: 'Чистая открытка', exact: true }).click();
   await expect.poll(async () => (await saved(page)).postcards.map(card => card.cornerRadius)).toEqual([12, 9, 6]);
   await page.reload();
   await page.getByRole('dialog', { name: 'Продолжить работу над открытками?', exact: true }).getByRole('button', { name: 'Продолжить', exact: true }).click();
   await expect(page.locator('.postcard-studio')).toBeVisible();
-  await tab(page, 'Формат и фон');
+  await tab(page, 'Открытки');
   await expect(page.getByLabel('Скругление углов', { exact: true })).toHaveValue('9');
+  await tab(page, 'Фон');
   await page.locator('.postcard-color-setting').filter({ has: page.getByRole('heading', { name: 'Цвет бумаги', exact: true }) }).getByRole('button', { name: 'Цвет #315C4C', exact: true }).click();
   await page.getByRole('button', { name: 'Предпросмотр и экспорт', exact: true }).click();
   const print = page.getByRole('dialog', { name: 'Предпросмотр открыток', exact: true });
@@ -392,8 +402,7 @@ test('rounded corners survive creation, per-card edits, defaults, Undo, reload a
 test('background and shape contains every background mode and keeps card backgrounds independent', async ({ page }) => {
   await create(page);
   const original = await saved(page), first = original.postcards[0].id, second = original.postcards[1].id;
-  await tab(page, 'Формат и фон');
-  await expect(page.getByRole('combobox', { name: 'Формат открытки', exact: true })).toBeVisible();
+  await tab(page, 'Фон');
   const kind = page.getByRole('combobox', { name: 'Тип фона', exact: true });
   const color = async (heading: string, hex: string) => page.locator('.postcard-color-setting').filter({ has: page.getByRole('heading', { name: heading, exact: true }) }).getByRole('button', { name: `Цвет ${hex}`, exact: true }).click();
   await color('Цвет бумаги', '#E8D8BE');
@@ -435,9 +444,10 @@ test('touchscreen gestures commit one edit each, preserve graphic proportions an
     await page.routeWebSocket('**/*', () => {});
     await create(page);
     const project = await saved(page);
-    await tab(page, 'Иллюстрации');
-    await page.getByLabel('Поиск иллюстраций', { exact: true }).fill('rustic-wooden-star');
-    await page.getByRole('button', { name: 'Добавить: Деревянная звезда с хвоей', exact: true }).tap();
+    const library = await openLibrary(page, 'Изображение');
+    await library.getByLabel('Поиск иллюстраций', { exact: true }).fill('rustic-wooden-star');
+    await library.getByRole('button', { name: 'Добавить: Деревянная звезда с хвоей', exact: true }).tap();
+    await addLibrarySelection(library);
     await page.getByRole('button', { name: 'Закрыть панель', exact: true }).tap();
     await expect.poll(async () => (await activeCard(page)).elements.length).toBe(1);
     const original = (await activeCard(page)).elements[0];
@@ -515,21 +525,21 @@ test('touchscreen gestures commit one edit each, preserve graphic proportions an
 
 test('new bilingual SVG greetings and illustrations are searchable, editable and exported in PNG and PDF', async ({ page }) => {
   await create(page, 1);
-  await tab(page, 'Иллюстрации');
-  const illustration = page.getByRole('button', { name: 'Добавить: Рождественский штоллен с красной лентой и дольками апельсина', exact: true });
+  const illustrationLibrary = await openLibrary(page, 'Изображение');
+  const illustration = illustrationLibrary.getByRole('button', { name: 'Добавить: Рождественский штоллен с красной лентой и дольками апельсина', exact: true });
   for (const query of ['штоллен', 'stollen']) {
-    await page.getByLabel('Поиск иллюстраций', { exact: true }).fill(query);
+    await illustrationLibrary.getByLabel('Поиск иллюстраций', { exact: true }).fill(query);
     await expect(illustration).toBeVisible();
   }
-  await illustration.click(); await number(page, 'Ширина', 55); await number(page, 'По горизонтали', 25); await number(page, 'По вертикали', 96);
-  await tab(page, 'Текст');
-  await page.getByRole('button', { name: 'Готовые надписи', exact: true }).click();
+  await illustration.click(); await addLibrarySelection(illustrationLibrary);
+  await number(page, 'Ширина', 55); await number(page, 'По горизонтали', 25); await number(page, 'По вертикали', 96);
   const ids = ['merry-christmas-red-playful', 'new-year-miracles-russian-black-calligraphy'];
   for (const [index, id] of ids.entries()) {
     const resource = lettering.find(entry => entry.id === id)!;
-    await page.getByLabel('Поиск надписей', { exact: true }).fill(index ? 'Miracles in the New Year' : 'Merry Christmas');
-    const choice = page.getByRole('button', { name: `Добавить: ${resource.name.ru}`, exact: true });
-    await expect(choice).toBeVisible(); await choice.click();
+    const letteringLibrary = await openLibrary(page, 'Текст');
+    await letteringLibrary.getByLabel('Поиск надписей', { exact: true }).fill(index ? 'Miracles in the New Year' : 'Merry Christmas');
+    const choice = letteringLibrary.getByRole('button', { name: `Добавить: ${resource.name.ru}`, exact: true });
+    await expect(choice).toBeVisible(); await choice.click(); await addLibrarySelection(letteringLibrary);
     await number(page, 'Ширина', index ? 70 : 75); await number(page, 'По горизонтали', index ? 17.5 : 15); await number(page, 'По вертикали', index ? 48 : 5);
     const original = await page.request.get(`/${resource.src}`);
     expect(original.ok()).toBe(true); expect(await original.text()).toContain('<svg');
@@ -559,9 +569,10 @@ test('multiple texts, illustration and lettering keep their layer identity, aspe
   await text(page, 'Первая история'); await text(page, 'Вторая история');
   await page.getByRole('combobox', { name: 'Шрифт', exact: true }).selectOption('serif');
   await expect.poll(async () => { const element = (await activeCard(page)).elements[1]; return element.type === 'text' ? element.fontId : null; }).toBe('serif');
-  await tab(page, 'Иллюстрации');
-  await page.getByLabel('Поиск иллюстраций', { exact: true }).fill('rustic-wooden-star');
-  await page.locator('.image-library button').first().click();
+  const illustrationLibrary = await openLibrary(page, 'Изображение');
+  await illustrationLibrary.getByLabel('Поиск иллюстраций', { exact: true }).fill('rustic-wooden-star');
+  await illustrationLibrary.locator('.image-library button').first().click();
+  await addLibrarySelection(illustrationLibrary);
   await expect.poll(async () => (await activeCard(page)).elements.length).toBe(3);
   const illustration = (await activeCard(page)).elements[2];
   const ratio = illustration.width / illustration.height;
@@ -570,21 +581,19 @@ test('multiple texts, illustration and lettering keep their layer identity, aspe
   expect((await activeCard(page)).elements[2].width / (await activeCard(page)).elements[2].height).toBeCloseTo(ratio, 6);
   await number(page, 'Поворот', 22);
   await expect.poll(async () => (await activeCard(page)).elements[2].rotation).toBe(15);
-  await tab(page, 'Текст');
-  await page.getByRole('button', { name: 'Готовые надписи', exact: true }).click();
-  await page.getByLabel('Поиск надписей', { exact: true }).fill('golden-merry-christmas-calligraphy');
-  await page.locator('.image-library button').first().click();
+  const letteringLibrary = await openLibrary(page, 'Текст');
+  await letteringLibrary.getByLabel('Поиск надписей', { exact: true }).fill('golden-merry-christmas-calligraphy');
+  await letteringLibrary.locator('.image-library button').first().click();
+  await addLibrarySelection(letteringLibrary);
   await expect.poll(async () => (await activeCard(page)).elements.length).toBe(4);
   const lettering = (await activeCard(page)).elements[3];
   expect(lettering.type).toBe('lettering');
   await expect(page.getByRole('tab', { name: 'Надписи', exact: true })).toHaveCount(0);
-  await expect(page.getByRole('button', { name: 'Готовые надписи', exact: true })).toHaveAttribute('aria-pressed', 'true');
-  await page.getByRole('button', { name: 'Свой текст', exact: true }).click();
-  await expect(page.getByRole('button', { name: 'Добавить текст', exact: true })).toBeVisible();
+  await expect(page.getByRole('tab', { name: 'Изображение', exact: true })).toHaveAttribute('aria-selected', 'true');
   expect((await activeCard(page)).elements).toHaveLength(4);
   await tab(page, 'Слои');
   await page.locator('.postcard-layers > div').first().locator('.postcard-layer-choice').click();
-  await expect(page.getByRole('button', { name: 'Готовые надписи', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('tab', { name: 'Изображение', exact: true })).toHaveAttribute('aria-selected', 'true');
   await expect(page.getByRole('textbox', { name: 'Текст на открытке', exact: true })).toHaveCount(0);
   await tab(page, 'Слои');
   const row = page.locator('.postcard-layers > div').first();
@@ -619,8 +628,9 @@ test('canvas and large previews use full-resolution background and decor files w
   const canvasBackground = page.locator('.canvas-artboard image[href*="backgrounds/"]');
   await expect(canvasBackground).toHaveAttribute('href', /backgrounds\/delicate-golden-star-sparkle\.(?:png|webp)$/);
   expect(await canvasBackground.getAttribute('transform')).toBeNull();
-  await tab(page, 'Декор');
-  await page.getByRole('button', { name: 'Добавить: Бордовый бархатный бант с золотым кантом', exact: true }).click();
+  const library = await openLibrary(page, 'Декор');
+  await library.getByRole('button', { name: 'Добавить: Бордовый бархатный бант с золотым кантом', exact: true }).click();
+  await addLibrarySelection(library);
   const decor = page.locator('.canvas-artboard image[href*="decorations/burgundy-velvet-bow-with-gold-trim"]');
   await expect(decor).toHaveAttribute('href', /decorations\/burgundy-velvet-bow-with-gold-trim\.(?:png|webp)$/);
   expect(await decor.evaluate(async node => { const image = new Image(); image.src = node.getAttribute('href')!; await image.decode(); return image.naturalWidth; })).toBe(1312);
@@ -630,9 +640,10 @@ test('canvas and large previews use full-resolution background and decor files w
 
 test('decorative artwork keeps its original proportions and appears in opaque 300 DPI PNG and PDF', async ({ page }) => {
   await create(page, 1);
-  await tab(page, 'Декор');
-  await expect(page.locator('.image-library button')).toHaveCount(decorations.length);
-  await page.getByRole('button', { name: 'Добавить: Бордовый бархатный бант с золотым кантом', exact: true }).click();
+  const library = await openLibrary(page, 'Декор');
+  await expect(library.locator('.image-library button')).toHaveCount(decorations.length);
+  await library.getByRole('button', { name: 'Добавить: Бордовый бархатный бант с золотым кантом', exact: true }).click();
+  await addLibrarySelection(library);
   await expect.poll(async () => (await activeCard(page)).elements.length).toBe(1);
   const artwork = (await activeCard(page)).elements[0];
   expect(artwork).toMatchObject({ type: 'decoration', assetId: 'burgundy-velvet-bow-with-gold-trim' });
@@ -667,7 +678,7 @@ test('format changes keep absolute geometry and independent postcard copies supp
   await create(page, 2, 'square');
   await text(page, 'Оригинальная история');
   const original = await activeCard(page), geometry = original.elements;
-  await tab(page, 'Формат и фон');
+  await tab(page, 'Открытки');
   await page.getByRole('combobox', { name: 'Формат открытки', exact: true }).selectOption('a6-landscape');
   const format = page.getByRole('dialog', { name: 'Изменить формат открытки?', exact: true });
   await expect(format).toContainText('Координаты, размеры и повороты элементов сохранятся');
@@ -763,22 +774,30 @@ test('preflight scopes errors to exported cards, confirms warnings once and targ
   await page.screenshot({ path: 'artifacts/postcards-scoped-preview-1440.png' });
 });
 
-test('all five mobile tools remain reachable and edits survive phone, tablet and landscape changes', async ({ page }) => {
+test('all seven mobile tools fit without scrolling and edits survive phone, tablet and landscape changes', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await create(page, 1, 'square');
   await text(page, 'Зима и тепло');
   await page.getByRole('button', { name: 'Закрыть панель', exact: true }).click();
   await page.screenshot({ path: 'artifacts/postcards-editor-390.png' });
   await page.setViewportSize({ width: 320, height: 800 });
-  for (const label of ['Текст', 'Иллюстрации', 'Декор', 'Формат и фон', 'Слои']) {
-    const control = page.getByRole('navigation', { name: 'Инструменты открытки', exact: true }).getByRole('button', { name: label, exact: true });
-    await control.scrollIntoViewIfNeeded();
+  const dock = page.getByRole('navigation', { name: 'Инструменты открытки', exact: true });
+  await expect(dock.getByRole('button')).toHaveCount(7);
+  expect(await dock.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
+  for (const label of ['Текст', 'Изображение', 'Декор', 'Фон', 'Слои', 'Открытки']) {
+    const control = dock.getByRole('button', { name: label, exact: true });
     const box = await control.boundingBox();
+    expect(box!.x).toBeGreaterThanOrEqual(0); expect(box!.x + box!.width).toBeLessThanOrEqual(320);
     expect(box!.width).toBeGreaterThanOrEqual(44); expect(box!.height).toBeGreaterThanOrEqual(44);
     await control.click();
-    await expect(page.getByRole('dialog', { name: label, exact: true })).toBeVisible();
-    if (label === 'Формат и фон') {
+    const panel = page.getByRole('dialog', { name: label, exact: true });
+    await expect(panel).toBeVisible();
+    const panelBox = (await panel.boundingBox())!, headingBox = (await panel.getByRole('heading', { name: label, exact: true }).boundingBox())!;
+    expect(Math.abs(headingBox.x + headingBox.width / 2 - (panelBox.x + panelBox.width / 2))).toBeLessThan(1);
+    if (label === 'Фон') {
       await expect(page.getByRole('combobox', { name: 'Тип фона', exact: true })).toBeVisible();
+    }
+    if (label === 'Открытки') {
       await expect(page.getByRole('combobox', { name: 'Формат открытки', exact: true })).toBeVisible();
       await number(page, 'Скругление углов', 4);
       await expect.poll(async () => (await activeCard(page)).cornerRadius).toBe(4);
@@ -787,12 +806,19 @@ test('all five mobile tools remain reachable and edits survive phone, tablet and
     await page.getByRole('button', { name: 'Закрыть панель', exact: true }).click();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   }
+  const exportControl = dock.getByRole('button', { name: 'Экспорт', exact: true });
+  const exportBox = await exportControl.boundingBox();
+  expect(exportBox!.x + exportBox!.width).toBeLessThanOrEqual(320);
+  await exportControl.click();
+  const mobilePreview = page.getByRole('dialog', { name: 'Предпросмотр открыток', exact: true });
+  await expect(mobilePreview).toBeVisible();
+  await mobilePreview.getByRole('button', { name: 'Закрыть окно', exact: true }).click();
   await page.screenshot({ path: 'artifacts/postcards-editor-320.png' });
   await page.setViewportSize({ width: 768, height: 1024 });
-  await tab(page, 'Текст');
-  await page.getByRole('button', { name: 'Готовые надписи', exact: true }).click();
-  await page.getByLabel('Поиск надписей', { exact: true }).fill('golden-merry-christmas-calligraphy');
-  await page.locator('.image-library button').first().click();
+  const library = await openLibrary(page, 'Текст');
+  await library.getByLabel('Поиск надписей', { exact: true }).fill('golden-merry-christmas-calligraphy');
+  await library.locator('.image-library button').first().click();
+  await addLibrarySelection(library);
   await expect.poll(async () => (await activeCard(page)).elements.length).toBe(2);
   await page.getByRole('button', { name: 'Закрыть панель', exact: true }).click();
   const design = (await activeCard(page)).elements;
@@ -839,11 +865,12 @@ test('direction menus support keyboard focus and generic creation opens the sele
 test('a failed requested font shows its local fallback and keeps export consent tied to the resolved layout', async ({ page }) => {
   await page.route('**/fonts/PTSerif-Regular.ttf', async route => { await new Promise(resolve => setTimeout(resolve, 500)); await route.fulfill({ status: 404, body: '' }); });
   await create(page, 1);
-  await tab(page, 'Иллюстрации');
-  await expect(page.getByRole('combobox', { name: 'Коллекция иллюстраций', exact: true })).toHaveCount(0);
-  await expect(page.locator('.image-library button')).toHaveCount(images.length);
-  await page.getByLabel('Поиск иллюстраций', { exact: true }).fill('rustic-wooden-star');
-  await expect(page.getByRole('button', { name: 'Добавить: Деревянная звезда с хвоей', exact: true })).toBeVisible();
+  const library = await openLibrary(page, 'Изображение');
+  await expect(library.getByRole('combobox', { name: 'Коллекция иллюстраций', exact: true })).toHaveCount(0);
+  await expect(library.locator('.image-library button')).toHaveCount(images.length);
+  await library.getByLabel('Поиск иллюстраций', { exact: true }).fill('rustic-wooden-star');
+  await expect(library.getByRole('button', { name: 'Добавить: Деревянная звезда с хвоей', exact: true })).toBeVisible();
+  await library.getByRole('button', { name: 'Закрыть окно', exact: true }).click();
   await text(page, 'С Новым годом!');
   await page.getByRole('combobox', { name: 'Шрифт', exact: true }).selectOption('serif');
   await expect(page.getByRole('status').filter({ hasText: 'Загружаем шрифт…' })).toBeVisible();

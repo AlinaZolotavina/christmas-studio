@@ -19,6 +19,7 @@
     "jspdf": "^4.2.1",
     "lucide-react": "^1.66.0",
     "opentype.js": "2.0.0",
+    "posthog-js": "^1.448.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },

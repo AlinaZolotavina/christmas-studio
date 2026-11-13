@@ -1,4 +1,6 @@
 import { t } from '../i18n';
+import { createSectionTracker } from '../analytics';
+import { SectionAnalytics } from './SectionAnalytics';
 import { rich } from '../i18n/rich';
 import { lazy, Suspense, useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { AlertCircle, Check, Download, X } from 'lucide-react';
@@ -48,6 +50,7 @@ export default function App() {
     const store = useProjectStore();
     const postcardStore = usePostcardStore();
     const [view, setView] = useState<WorkshopRoute>(() => routeFromHash(Boolean(store.project), Boolean(postcardStore.project)));
+    const [sectionTracker] = useState(() => createSectionTracker(view));
     const hasProject = Boolean(store.project);
     const hasPostcards = Boolean(postcardStore.project);
     const skipEditorResume = useRef(false);
@@ -55,13 +58,13 @@ export default function App() {
     const [scrollToTemplates, setScrollToTemplates] = useState<'tags' | 'postcards' | null>(null);
     const [postcardEntry, setPostcardEntry] = useState(() => Boolean(postcardStore.project) && routeFromHash(hasProject, hasPostcards) === 'editor/postcards');
     const [tagEntry, setTagEntry] = useState(() => Boolean(store.project) && routeFromHash(hasProject, hasPostcards) === 'editor');
-    const navigate = (next: WorkshopRoute, skipResume = false, toTemplates = false) => { store.flush(); postcardStore.flush(); skipEditorResume.current = skipResume; if (skipResume) {
+    const navigate = (next: WorkshopRoute, skipResume = false, toTemplates = false) => { sectionTracker.navigate(next); store.flush(); postcardStore.flush(); skipEditorResume.current = skipResume; if (skipResume) {
         setTagEntry(false);
         setPostcardEntry(false);
     } catalogTarget.current = toTemplates && (next === 'tags' || next === 'postcards') ? next : null; setScrollToTemplates(catalogTarget.current); setView(next); window.location.hash = next === 'editor' ? 'editor/tags' : next; if (!catalogTarget.current)
         window.scrollTo({ top: 0 }); };
     useEffect(() => {
-        const update = () => { store.flush(); postcardStore.flush(); const next = routeFromHash(hasProject, hasPostcards); if (next === 'editor/postcards' && !skipEditorResume.current)
+        const update = () => { store.flush(); postcardStore.flush(); const next = routeFromHash(hasProject, hasPostcards); sectionTracker.navigate(next); if (next === 'editor/postcards' && !skipEditorResume.current)
             setPostcardEntry(true); if (next === 'editor' && !skipEditorResume.current)
             setTagEntry(true); skipEditorResume.current = false; setView(next); if (catalogTarget.current !== next) {
             catalogTarget.current = null;
@@ -70,7 +73,7 @@ export default function App() {
         } };
         window.addEventListener('hashchange', update);
         return () => window.removeEventListener('hashchange', update);
-    }, [hasProject, hasPostcards, store.flush, postcardStore.flush]);
+    }, [hasProject, hasPostcards, store.flush, postcardStore.flush, sectionTracker]);
     const [preview, setPreview] = useState(false);
     const [tourOffer, setTourOffer] = useState(false);
     const [tourActive, setTourActive] = useState(false);
@@ -240,14 +243,14 @@ export default function App() {
     {postcardContext && postcardStore.recovery && !postcardRecoveryOpen && <div className="recovery-banner" role="status"><AlertCircle size={17}/>{rich("projects.recovery.postcardsBanner", {}, { span: <span /> })}<button onClick={() => setPostcardRecoveryOpen(true)}>{t("projects.recovery.open")}</button></div>}
     {discardPostcardRecovery && <Modal title={t("projects.recovery.discardPostcardsTitle")} onClose={() => setDiscardPostcardRecovery(false)} footer={<><Button variant="secondary" onClick={() => setDiscardPostcardRecovery(false)}>{t("common.cancel")}</Button><Button onClick={() => { postcardStore.discardRecovery(); setDiscardPostcardRecovery(false); setPostcardRecoveryOpen(true); navigate('postcards'); }}>{t("projects.recovery.discardAndStart")}</Button></>}><p className="muted">{t("projects.recovery.discardExplanation")}</p></Modal>}
     {postcardContext && postcardStore.saveStatus === 'error' && postcardStore.project && !postcardStore.recovery && <div className="storage-error" role="alert"><AlertCircle size={17}/>{rich("projects.notifications.postcardSaveFailed", {}, { span: <span /> })}<Button variant="quiet" onClick={() => setPostcardPreview(true)}>{t("export.open")}</Button></div>}
-    {view === 'editor' && store.project && <StudioShell key={store.project.id} project={store.project} onCommand={execute} onHome={() => navigate('home')} onTemplates={() => navigate('tags', false, true)} saveStatus={store.saveStatus} canUndo={store.canUndo} canRedo={store.canRedo} onUndo={store.undo} onRedo={store.redo} onExport={() => setPreview(true)} onStartTour={() => { setTourOffer(false); setTourActive(true); }} focusTarget={focusTarget} recentColors={store.recentColors} onRecentColor={store.addRecentColor} issues={issues} canvas={(card, selection, onSelectionChange) => <EditorCanvas card={card} selection={selection} onSelectionChange={onSelectionChange} onCommit={execute} fitKey={card.id}/>}/>}
+    {view === 'editor' && store.project && <><SectionAnalytics section="editor" tracker={sectionTracker}/><StudioShell key={store.project.id} project={store.project} onCommand={execute} onHome={() => navigate('home')} onTemplates={() => navigate('tags', false, true)} saveStatus={store.saveStatus} canUndo={store.canUndo} canRedo={store.canRedo} onUndo={store.undo} onRedo={store.redo} onExport={() => setPreview(true)} onStartTour={() => { setTourOffer(false); setTourActive(true); }} focusTarget={focusTarget} recentColors={store.recentColors} onRecentColor={store.addRecentColor} issues={issues} canvas={(card, selection, onSelectionChange) => <EditorCanvas card={card} selection={selection} onSelectionChange={onSelectionChange} onCommit={execute} fitKey={card.id}/>}/></>}
     {(view === 'home' || view === 'create') && <HomePage hasProject={hasProject}/>}
     {view === 'tags' && <TemplateGallery hasProject={hasProject} project={store.project} onContinue={() => navigate('editor', true)} scrollToTemplates={scrollToTemplates === 'tags'} onCreate={requestCreate}/>}
     {view === 'about' && <AboutPage hasProject={hasProject}/>}
     {view === 'postcards' && <Suspense fallback={<p className="public-loading" role="status">{t("export.loadingPostcards")}</p>}><PostcardGallery hasProject={hasProject} project={postcardStore.project} scrollToTemplates={scrollToTemplates === 'postcards'} onContinue={() => { setPostcardEntry(false); navigate('editor/postcards', true); }} onCreate={requestPostcardCreate} onApply={(template, format, cornerRadius) => applyPostcardTemplate(template, format, cornerRadius, false)} onAdd={(template, format, cornerRadius) => applyPostcardTemplate(template, format, cornerRadius, true)}/></Suspense>}
-    {view === 'editor/postcards' && postcardStore.project && <Suspense fallback={<p className="public-loading" role="status">{t("export.loadingPostcardEditor")}</p>}><PostcardShell key={postcardStore.project.id} project={postcardStore.project} saveStatus={postcardStore.saveStatus} canUndo={postcardStore.canUndo} canRedo={postcardStore.canRedo} onUndo={postcardStore.undo} onRedo={postcardStore.redo} onCommand={executePostcard} onSelectPostcard={postcardStore.selectPostcard} onHome={() => navigate('home')} onTemplates={() => navigate('postcards', false, true)} onExport={() => setPostcardPreview(true)} onStartTour={() => setPostcardTourActive(true)} focusTarget={postcardFocus}/></Suspense>}
+    {view === 'editor/postcards' && postcardStore.project && <Suspense fallback={<p className="public-loading" role="status">{t("export.loadingPostcardEditor")}</p>}><SectionAnalytics section="editor/postcards" tracker={sectionTracker}/><PostcardShell key={postcardStore.project.id} project={postcardStore.project} saveStatus={postcardStore.saveStatus} canUndo={postcardStore.canUndo} canRedo={postcardStore.canRedo} onUndo={postcardStore.undo} onRedo={postcardStore.redo} onCommand={executePostcard} onSelectPostcard={postcardStore.selectPostcard} onHome={() => navigate('home')} onTemplates={() => navigate('postcards', false, true)} onExport={() => setPostcardPreview(true)} onStartTour={() => setPostcardTourActive(true)} focusTarget={postcardFocus}/></Suspense>}
     {view === 'ideas' && <IdeasPage hasProject={hasProject}/>}
-    {view === 'ideas/gifts' && <GiftIdeasPage hasProject={hasProject}/>}
+    {view === 'ideas/gifts' && <><SectionAnalytics section="ideas/gifts" tracker={sectionTracker}/><GiftIdeasPage hasProject={hasProject}/></>}
     {view === 'ideas/tags' && <TagIdeasPage project={store.project} onOpenEditor={() => { if (store.project)
         navigate('editor', true);
     else
@@ -266,8 +269,8 @@ export default function App() {
         requestCreate(selection.templateId, selection.count);
     } }}/>}
     {view === 'create' && <Modal title={t("projects.create.chooseProduct")} onClose={() => navigate('home')}><div className="project-direction-options"><Button onClick={() => navigate('tags')}>{t("navigation.tags")}</Button><Button onClick={() => navigate('postcards')}>{t("navigation.postcards")}</Button></div></Modal>}
-    {tagEntry && view === 'editor' && store.project && <ResumeProjectDialog product="tags" name={store.project.name} onContinue={() => setTagEntry(false)} onNew={() => { setTagEntry(false); navigate('tags', false, true); }}/>}
-    {postcardEntry && view === 'editor/postcards' && postcardStore.project && <ResumeProjectDialog product="postcards" name={postcardStore.project.name} onContinue={() => setPostcardEntry(false)} onNew={() => { setPostcardEntry(false); navigate('postcards', false, true); }}/>}
+    {tagEntry && view === 'editor' && store.project && <ResumeProjectDialog product="tags" name={store.project.name} onContinue={() => { sectionTracker.continueEditor(); setTagEntry(false); }} onNew={() => { setTagEntry(false); navigate('tags', false, true); }}/>}
+    {postcardEntry && view === 'editor/postcards' && postcardStore.project && <ResumeProjectDialog product="postcards" name={postcardStore.project.name} onContinue={() => { sectionTracker.continueEditor(); setPostcardEntry(false); }} onNew={() => { setPostcardEntry(false); navigate('postcards', false, true); }}/>}
     {pendingPostcardCreate && <Modal title={t("projects.replace.postcardsTitle")} onClose={() => setPendingPostcardCreate(null)} footer={<><Button variant="secondary" onClick={() => setPendingPostcardCreate(null)}>{t("projects.replace.keepCurrent")}</Button><Button onClick={() => createPostcards(pendingPostcardCreate, true)}>{t("projects.create.newAction")}</Button></>}><p className="muted">{t("projects.replace.postcardsDescription", { projectName: pendingPostcardCreate.name ?? t("projects.create.postcardsDefaultName"), count: pendingPostcardCreate.count })}</p></Modal>}
     {postcardTourOffer && view === 'editor/postcards' && <TourOffer product="postcards" offerKey={POSTCARD_TOUR_KEY} onStart={() => { setPostcardTourOffer(false); setPostcardTourActive(true); }} onSkip={() => setPostcardTourOffer(false)}/>}
     {postcardTourActive && view === 'editor/postcards' && <TourDialog steps={postcardTourSteps} onClose={() => setPostcardTourActive(false)}/>}

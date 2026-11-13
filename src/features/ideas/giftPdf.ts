@@ -1,4 +1,5 @@
 import { jsPDF } from 'jspdf';
+import { trackPdfDownload } from '../../analytics';
 import { loadLocalResourceBytes, releaseLocalResourceBytes } from '../../infrastructure/resources';
 import { t } from '../../i18n';
 import { giftDisplayName, type SavedGiftItem } from './giftIdeas';
@@ -36,6 +37,6 @@ export async function downloadGiftPdf(items: readonly SavedGiftItem[]) {
       }
       y += 3;
     }
-    doc.save('my-gift-list.pdf');
+    await trackPdfDownload('gift_list_export', () => doc.save('my-gift-list.pdf', { returnPromise: true }));
   } finally { releaseLocalResourceBytes(fontPath); }
 }

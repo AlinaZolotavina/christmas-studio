@@ -17,7 +17,8 @@ export function PostcardCanvas({ postcard, selection, onSelectionChange, onCommi
     const adapter: CanvasAdapter<Postcard, PostcardSelection> = {
         id: value => value.id, size: getPostcardSize, key: value => value ?? '', backgroundSelection: null, cycleOnClick: false,
         label: t("editor.common.postcardCanvas"),
-        elements: value => value.elements.map(element => ({ key: element.id, selection: element.id, box: element, rotation: element.rotation, locked: element.locked, resize: element.type === 'text' ? 'free' : 'aspect', rotationStep: 15, text: element.type === 'text' ? getPostcardFontState(element).text : undefined })),
+        deleteLabel: t('editor.postcards.delete'),
+        elements: value => value.elements.map(element => ({ key: element.id, selection: element.id, box: element, rotation: element.rotation, locked: element.locked, deleteAction: true, resize: element.type === 'text' ? 'free' : 'aspect', rotationStep: 15, text: element.type === 'text' ? getPostcardFontState(element).text : undefined })),
         transform(value, elementId, patch) {
             const element = value.elements.find(item => item.id === elementId);
             if (!element || element.locked)

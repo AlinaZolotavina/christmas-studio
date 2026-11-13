@@ -1,4 +1,5 @@
 import { t } from '../../i18n';
+import { trackPdfDownload } from '../../analytics';
 import { rich } from '../../i18n/rich';
 import { useEffect, useRef, useState } from 'react';
 import { AlertCircle, AlertTriangle, CheckCircle2, ChevronLeft, ChevronRight, Download, LoaderCircle, Minus, Plus, RotateCcw, Scan } from 'lucide-react';
@@ -111,8 +112,10 @@ export function PostcardPrintPreview({ project, revision, onClose, onFix }: Post
             const options = { signal: controller.current.signal, onProgress: (completed: number, total: number) => { if (token === generation.current)
                     setProgress(t("export.postcards.progress", { completed: completed, total: total })); } };
             const result = format === 'pdf' ? { blob: await module.generatePostcardPdf(prepared, options), filename: scope === 'all' ? 'Postcards-A4.pdf' : 'Postcard.pdf' } : await module.generatePostcardImages(prepared, format, options);
-            if (token === generation.current && !controller.current.signal.aborted)
-                module.downloadPostcardFile(result);
+            if (token === generation.current && !controller.current.signal.aborted) {
+                if (format === 'pdf') await trackPdfDownload('card_pdf_export', () => module.downloadPostcardFile(result));
+                else module.downloadPostcardFile(result);
+            }
         }
         catch (reason) {
             if (token === generation.current && !(reason instanceof DOMException && reason.name === 'AbortError'))

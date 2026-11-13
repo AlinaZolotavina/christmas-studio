@@ -10,13 +10,28 @@ export function useEditorLayout() {
     return layout;
 }
 /** Both products use the same grid, header/status positions and compact breakpoints. */
-export function EditorFrame({ compact, showStrip, className = '', children }: {
+export function EditorFrame({ compact, showStrip, panelOpen = false, className = '', children }: {
     compact: boolean;
     showStrip: boolean;
+    panelOpen?: boolean;
     className?: string;
     children: ReactNode;
 }) {
-    return <div className={`studio ${compact ? 'studio--compact' : ''} ${!showStrip ? 'studio--without-strip' : ''} ${className}`}>{children}</div>;
+    useEffect(() => {
+        if (!compact || !panelOpen) return;
+        const preventBackgroundScroll = (event: TouchEvent | WheelEvent) => {
+            const target = event.target;
+            if (target instanceof Element && target.closest('.bottom-sheet, .modal, .mobile-dock')) return;
+            if (event.cancelable) event.preventDefault();
+        };
+        document.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
+        document.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+        return () => {
+            document.removeEventListener('touchmove', preventBackgroundScroll);
+            document.removeEventListener('wheel', preventBackgroundScroll);
+        };
+    }, [compact, panelOpen]);
+    return <div className={`studio ${compact ? 'studio--compact' : ''} ${compact && panelOpen ? 'studio--panel-open' : ''} ${!showStrip ? 'studio--without-strip' : ''} ${className}`}>{children}</div>;
 }
 export function EditorStatus({ errors, warnings, saveStatus = 'saved', onIssues }: {
     errors: number;

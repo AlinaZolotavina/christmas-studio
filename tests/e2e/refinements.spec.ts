@@ -12,7 +12,7 @@ async function project(page: Page) {
   await acceptTermsIfOffered(page);
   await expect(page.locator('.studio')).toBeVisible();
   const skip = page.getByRole('button', { name: 'Пропустить', exact: true });
-  if (await skip.count()) await skip.click();
+  if (await skip.count()) await skip.click({ force: true });
   const notice = page.getByRole('button', { name: 'Скрыть уведомление' });
   if (await notice.count()) await notice.click();
   await page.evaluate(() => document.fonts.ready.then(() => true));

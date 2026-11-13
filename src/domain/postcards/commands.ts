@@ -47,6 +47,9 @@ export type PostcardCommand = {
     type: 'update-background';
     background: PostcardBackground;
 } & CardTarget) | ({
+    type: 'add-elements';
+    elements: PostcardElement[];
+} & CardTarget) | ({
     type: 'add-element';
     element: PostcardElement;
 } & CardTarget) | ({
@@ -146,6 +149,10 @@ export function executePostcardCommand(project: PostcardProject, command: Postca
                     card = { ...createPostcard(command.format ?? card.format, command.template, command.cornerRadius ?? card.cornerRadius ?? 0), id: original.id };
                 else if (command.type === 'update-background')
                     card.background = structuredClone(command.background);
+                else if (command.type === 'add-elements') {
+                    assert(card.elements.length + command.elements.length <= MAX_POSTCARD_ELEMENTS, t('errors.postcards.elementLimit', { maxElements: MAX_POSTCARD_ELEMENTS }));
+                    card.elements.push(...structuredClone(command.elements));
+                }
                 else if (command.type === 'add-element') {
                     assert(card.elements.length < MAX_POSTCARD_ELEMENTS, t("errors.postcards.elementLimit", { maxElements: MAX_POSTCARD_ELEMENTS }));
                     card.elements.push(structuredClone(command.element));

@@ -199,9 +199,9 @@ for (const width of [1440, 390]) test(`postcard help at ${width} shares guide, F
   await page.screenshot({ path: `artifacts/postcard-help-${width}.png` });
   await help.getByRole('tab', { name: 'Частые вопросы', exact: true }).click();
   await help.locator('summary').filter({ hasText: 'Как добавить готовую надпись?' }).click();
-  await expect(help).toContainText('«Текст» и выберите «Готовые надписи»');
+  await expect(help).toContainText('«Добавить из библиотеки»');
   await help.locator('summary').filter({ hasText: 'Где изменить формат и фон?' }).click();
-  await expect(help).toContainText('«Формат и фон»');
+  await expect(help).toContainText('«Открытки»');
   await expect(help).not.toContainText('Количество 24 или 31');
   await help.getByRole('tab', { name: 'Помощь', exact: true }).click();
   await expect(help).toContainText('Без содержимого открыток');

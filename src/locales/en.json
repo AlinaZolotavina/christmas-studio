@@ -81,7 +81,8 @@
     "save": "Save",
     "brand": "Christmas Studio",
     "closeWindow": "Close window",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "resizePanel": "Drag up to expand or down to collapse"
   },
   "export": {
     "open": "Export",
@@ -168,7 +169,7 @@
   "legal": {
     "loading": "Loading document…",
     "privacy": {
-      "intro": "Christmas Studio does not require registration. This policy explains what data is stored in your browser and processed when you visit the site or contact its creator.",
+      "intro": "Christmas Studio does not require registration. This policy explains what data is stored in your browser and processed when you visit the site, when analytics is used, or when you contact its creator.",
       "controller": {
         "title": "1. Data controller",
         "description": "The data controller is {ownerName}. For privacy enquiries, contact <emailLink/>."
@@ -180,28 +181,36 @@
         "recovery": "A technical copy of a damaged project for recovery, and your recently selected colours.",
         "preferences": "Records of notifications and the guided tour being shown, and the version and time of your acceptance of the terms.",
         "retention": "These records preserve your work and settings. They have no automatic expiry date. After confirmation, a new project replaces the current project in the selected editor; the recovery copy and service preferences may remain separately. To delete all records, clear this site’s data in your browser settings. The creator cannot access these records. Undo and redo history is lost when the page reloads.",
-        "noTracking": "There are no analytics, advertisements or tracking. The app does not set its own cookies. Accepting the terms does not constitute consent to advertising or tracking."
+        "noTracking": "The app does not set its own cookies or use localStorage or sessionStorage for analytics. Accepting the terms does not constitute consent to analytics, advertising or tracking."
+      },
+      "analytics": {
+        "title": "3. Usage analytics",
+        "purpose": "To understand which features are useful and improve the studio, the creator uses PostHog Cloud EU in cookieless mode. The only events counted are opens of the Advent tag editor, card editor and gift catalogue, and successful PDF downloads of tags, cards or a gift list.",
+        "data": "An event contains its name, time, a random event identifier and the site host name. When receiving the request, PostHog technically uses the IP address and browser user agent to create an irreversible identifier that changes every day; the IP address is removed before the event is stored. This allows visits to be counted within one day without a persistent user identifier.",
+        "excluded": "Automatic pageview and click capture, user profiles, session recordings, heatmaps, surveys, error reports and performance metrics are disabled. Analytics events do not include the page path or query, referrer, the contents or settings of designs, text entered in a design, gifts, email addresses or other data entered in the studio.",
+        "provider": "PostHog, Inc. (United States) processes the data as the analytics provider. The PostHog EU region is used, with storage in Germany. PostHog allows processing outside the EEA, including in the United States, and identifies the EU–US Data Privacy Framework and EU Standard Contractual Clauses as safeguards. Events are retained for no more than {analyticsRetentionMonths} months and are then removed during scheduled deletion. See the <privacyLink>PostHog privacy policy</privacyLink> and <docsLink>privacy documentation</docsLink> for details."
       },
       "hosting": {
-        "title": "3. Hosting and file loading",
+        "title": "4. Hosting and file loading",
         "github": "The site is hosted on GitHub Pages. GitHub logs visitors’ IP addresses for security purposes, whether or not they have an account. See the <link>GitHub Pages documentation</link> for details.",
         "githubPolicy": "The processing of technical data, recipients, retention periods and international transfers, including to the United States, are described in <link>GitHub’s privacy statement</link>. The creator does not receive logs of visitors’ IP addresses.",
         "localAssets": "Fonts, images and libraries are loaded from this site. No external CDNs or Google Fonts are used. PDF, PNG, JPG and ZIP exports are created in your browser."
       },
       "contact": {
-        "title": "4. Contacting the creator",
+        "title": "5. Contacting the creator",
         "email": "You send emails yourself using your email app. The creator receives your email address, message and any name or attachments you provide. Gmail is used to reply; the processing and international transfer of emails are described in <link>Google’s privacy policy</link>.",
+        "feedback": "The “Leave feedback” button opens Google Forms in a new tab. The creator does not receive your answers until you submit the form. After submission, the creator receives the information you entered; Google may also process account information, an email address, an IP address, and browser or device information depending on the form settings and how you open it. Responses are used to review feedback and improve the studio, then deleted or anonymised once those purposes have been fulfilled, unless longer retention is required by law or to resolve a dispute. Google’s processing, including possible international transfers, is described in <link>Google’s privacy policy</link>.",
         "retention": "Correspondence is used to respond to your enquiry and is deleted within {correspondenceRetentionMonths} months after the enquiry is closed, unless retention is required by law or to resolve a dispute. No marketing emails are sent.",
         "report": "The technical report in Help contains the app version, browser information, save status and the number of errors and warnings. Project content is not automatically included. You add the problem description yourself; copying the report does not send anything to the creator.",
-        "issues": "If you open GitHub Issues and submit a report, it may be publicly accessible. GitHub’s privacy policy applies on that platform."
+        "issues": "GitHub Issues is used separately and only for technical reports from the Help section. If you open it and submit a report, it may be publicly accessible. GitHub’s privacy policy applies on that platform."
       },
       "processing": {
-        "title": "5. Purposes and legal bases",
-        "basis": "Personal data needed to provide the requested editor features and fulfil the terms is processed under Article 6(1)(b) GDPR. Replies to general enquiries and protection of the site are based on Article 6(1)(f) GDPR: the creator’s legitimate interest in maintaining the service and responding to enquiries.",
+        "title": "6. Purposes and legal bases",
+        "basis": "Personal data needed to provide the requested editor features and fulfil the terms is processed under Article 6(1)(b) GDPR. Replies to general enquiries, protection of the site and minimal usage analytics are based on Article 6(1)(f) GDPR. The creator’s legitimate interests are maintaining the service, responding to enquiries and understanding feature usage without creating persistent user profiles.",
         "optionalData": "You do not need to provide personal information to use the editor. Your email address is needed only to reply to your email. Data is not sold or used for profiling or automated decisions with legal effects."
       },
       "rights": {
-        "title": "6. Your rights",
+        "title": "7. Your rights",
         "requests": "Where provided for by the GDPR, you may request access to your data, rectification, erasure, restriction of processing and data portability, and object to processing based on legitimate interests. Contact <emailLink/> to exercise these rights.",
         "complaints": "You may also lodge a complaint with a competent data protection authority, including in the place where you live or work, or where an alleged infringement occurred. For data that GitHub and Google process for their own purposes, you may contact them directly."
       },
@@ -261,7 +270,7 @@
       "intro": "The editor is free and does not require registration. Your designs are saved locally in your browser.",
       "personalUse": "Materials may be used for personal, non-commercial purposes only.",
       "agreement": "<span>I have read and agree to the <link>terms of use</link>.</span>",
-      "privacy": "The <link>privacy policy</link> explains what data stays in your browser and how hosting works.",
+      "privacy": "The <link>privacy policy</link> explains what data stays in your browser and how hosting and cookieless analytics work.",
       "title": "Before you begin",
       "acceptAndCreate": "Accept and create project"
     }
@@ -566,6 +575,7 @@
         "decoration": "Decoration"
       },
       "shapes": {
+        "title": "Geometric shapes",
         "circle": "Circle",
         "star": "Star",
         "line": "Line"
@@ -636,7 +646,7 @@
       "duplicate": "Duplicate",
       "delete": "Delete",
       "background": {
-        "title": "Format & background",
+        "title": "Background",
         "format": "Card format",
         "image": "Background image",
         "solid": "Solid colour",
@@ -670,9 +680,9 @@
       "shell": {
         "tabs": {
           "text": "Text",
-          "illustrations": "Illustrations",
+          "illustrations": "Image",
           "decorations": "Decorations",
-          "background": "Format & background",
+          "background": "Background",
           "layers": "Layers",
           "cards": "Cards",
           "export": "Export"
@@ -1389,7 +1399,7 @@
         },
         "edit": {
           "title": "Design your card",
-          "description": "In Text, enter your own words or choose ready-made lettering. Add illustrations and decorations, then adjust Format & background. Use Layers to change element order and locks."
+          "description": "In Text, enter your own words or choose ready-made lettering. Add illustrations and decorations, then adjust Background. Use Layers to change element order and locks."
         },
         "check": {
           "description": "Browse your cards and fix any errors. Before exporting, review the warnings: they do not block export, but highlight details that may affect print quality."
@@ -1414,11 +1424,11 @@
         },
         "lettering": {
           "question": "How do I add ready-made lettering?",
-          "answer": "Open Text → Ready-made lettering. Its wording cannot be edited; choose Your text to write your own."
+          "answer": "Open Text, choose Add from library, then select Lettering. Its wording cannot be edited; choose Add text to write your own."
         },
         "format": {
           "question": "Where do I change the format and background?",
-          "answer": "Open Format & background. After changing format, review the layout: element sizes and positions stay the same."
+          "answer": "Change the selected card’s format in Cards and its background in Background. Review the layout after changing format."
         },
         "layers": {
           "question": "How do I manage layers?",
@@ -1452,7 +1462,7 @@
       },
       "background": {
         "title": "Choose a background and format",
-        "edit": "The Format & background tab offers ready-made images, solid colours and gradients. Background images fill the card and are cropped from the centre.",
+        "edit": "The Background tab offers ready-made images, solid colours and gradients. Background images fill the card and are cropped from the centre.",
         "format": "Changing the format in this tab affects only the current card. Element positions and sizes stay the same — review the design afterwards."
       },
       "layers": {
@@ -1530,7 +1540,12 @@
       "searchIllustrations": "Search illustrations",
       "searchLettering": "Search lettering",
       "searchBackgrounds": "Search backgrounds",
-      "searchDecorations": "Search decorations"
+      "searchDecorations": "Search decorations",
+      "openPicker": "Add from library",
+      "noElement": "No element selected. Select one on the card or in Layers to edit it.",
+      "clearSelection": "Clear selection",
+      "addSelection": "Add",
+      "selectedCount": "Images selected: {count}"
     }
   }
 }

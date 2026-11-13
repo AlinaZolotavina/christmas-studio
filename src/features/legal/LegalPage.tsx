@@ -10,7 +10,7 @@ export function LegalPage({ document, hasProject }: {
     const privacy = document === 'privacy';
     return <SiteLayout current={document} hasProject={hasProject}><main className="legal-page"><article aria-labelledby="legal-title">
     <h1 id="legal-title">{privacy ? t("legal.privacy.title") : t("legal.terms.title")}</h1>
-    <div className="legal-page__updated">{t("legal.updated", { updated: formatDate(legalMetadata.updated) })}</div>
+    <div className="legal-page__updated">{t("legal.updated", { updated: formatDate(privacy ? legalMetadata.privacyUpdated : legalMetadata.termsUpdated) })}</div>
     {privacy ? <PrivacyContent /> : <TermsContent />}
   </article></main></SiteLayout>;
 }

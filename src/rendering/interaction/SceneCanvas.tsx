@@ -35,6 +35,7 @@ export interface CanvasAdapter<D, S> {
     render(document: D): ReactNode;
     issues?(document: D): CanvasIssue[];
     label: string;
+    deleteLabel?: string;
 }
 interface Props<D, S> {
     document: D;
@@ -284,13 +285,14 @@ export function SceneCanvas<D, S>({ document: source, selection, onSelectionChan
         {guides.x !== undefined && <line x1={guides.x} x2={guides.x} y1={-4} y2={height + 4} className="snap-guide" strokeWidth={1 / scale}/>}
         {guides.y !== undefined && <line y1={guides.y} y2={guides.y} x1={-4} x2={width + 4} className="snap-guide" strokeWidth={1 / scale}/>}
         {box && !editing && <g transform={selected?.rotation ? `rotate(${selected.rotation} ${box.x + box.width / 2} ${box.y + box.height / 2})` : undefined}>
-          <rect x={box.x} y={box.y} width={box.width} height={box.height} fill="none" stroke="#315c4c" strokeWidth={1.2 / scale} strokeDasharray={selected?.locked ? `${3 / scale} ${2 / scale}` : undefined}/>
+          <rect x={box.x} y={box.y} width={box.width} height={box.height} fill="none" stroke="#fff" strokeWidth={3.5 / scale} strokeDasharray={selected?.locked ? `${3 / scale} ${2 / scale}` : undefined}/>
+          <rect className="selection-frame" x={box.x} y={box.y} width={box.width} height={box.height} fill="none" stroke="#315c4c" strokeWidth={1.5 / scale} strokeDasharray={selected?.locked ? `${3 / scale} ${2 / scale}` : undefined}/>
           {!selected?.locked && selected?.resize !== 'none' && handles.map(renderHandle)}
           {!selected?.locked && selected?.rotationStep !== undefined && <><line x1={box.x + box.width / 2} x2={box.x + box.width / 2} y1={box.y} y2={box.y - 22 / scale} stroke="#315c4c" strokeWidth={1 / scale}/><circle data-handle="rotate" className="rotation-handle" cx={box.x + box.width / 2} cy={box.y - 22 / scale} r={4 / scale} strokeWidth={1.2 / scale}/></>}
         </g>}
         {adapter.issues?.(displayed).map(issue => <g key={issue.key} data-element-issue={issue.kind} data-severity={issue.severity} transform={`translate(${issue.box.x} ${issue.box.y - 3})`}><title>{issue.message}</title><circle r={7 / scale} fill={issue.severity === 'error' ? '#c64343' : '#c59b43'}/><text textAnchor="middle" dy={3.5 / scale} fill="white" fontSize={11 / scale}>!</text></g>)}
       </svg>
-      {box && !editing && selected?.deleteAction && !selected.locked && <div className="element-actions" style={{ left: (box.x + box.width) * scale + 8, top: box.y * scale - 8 }} onPointerDown={event => event.stopPropagation()}><button aria-label={t("editor.common.deleteDecoration")} onClick={remove}><Trash2 size={15}/></button></div>}
+      {box && !editing && selected?.deleteAction && !selected.locked && <div className="element-actions" style={{ left: (box.x + box.width) * scale + 24, top: (box.y + box.height) * scale + 24 }} onPointerDown={event => event.stopPropagation()}><button type="button" aria-label={adapter.deleteLabel ?? t("editor.common.deleteDecoration")} onClick={remove}><Trash2 size={14}/></button></div>}
       {editing && edited?.text && <textarea ref={textarea} className="inline-text-editor" aria-label={t("editor.common.canvasText")} value={textValue} maxLength={MAX_TEXT_LENGTH} style={{ left: edited.box.x * scale, top: edited.box.y * scale, width: edited.box.width * scale, height: Math.max(edited.box.height * scale, 44), fontFamily: FONT_FAMILIES[edited.text.fontId], fontSize: ptToMm(edited.text.fontSize) * scale, fontWeight: edited.text.weight, fontStyle: edited.text.italic ? 'italic' : 'normal', textAlign: edited.text.align, color: edited.text.color, lineHeight: edited.text.lineHeight ?? 1.22, letterSpacing: ptToMm(edited.text.letterSpacing ?? 0) * scale, transform: edited.rotation ? `rotate(${edited.rotation}deg)` : undefined, transformOrigin: `${edited.box.width * scale / 2}px ${edited.box.height * scale / 2}px` } as CSSProperties} onChange={event => { setTextValue(event.target.value); adapter.updateText(editedSelection.current, event.target.value); }} onBlur={finishEditing} onKeyDown={event => {
                 event.stopPropagation();
                 if (event.key === 'Escape' || event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {

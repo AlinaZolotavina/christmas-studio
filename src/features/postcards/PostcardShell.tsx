@@ -2,7 +2,7 @@ import { SheetHandle } from '../../shared/ui/SheetHandle';
 import { t } from '../../i18n';
 import { rich } from '../../i18n/rich';
 import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
-import { AlertCircle, AlertTriangle, ArrowDown, ArrowUp, Check, Copy, Download, FileDown, Image, Layers, Layers2, LayoutTemplate, Menu, Palette, Plus, Settings2, Shapes, Trash2, Type, X } from 'lucide-react';
+import { AlertCircle, AlertTriangle, ArrowDown, ArrowUp, Check, Copy, Download, FileDown, Image, Layers, Layers2, LayoutTemplate, Menu, Palette, Plus, Settings2, Trash2, Type, X } from 'lucide-react';
 import type { PostcardElement, PostcardProject } from '../../domain/postcards/types';
 import { getPostcardSize, type PostcardFormat } from '../../domain/postcards/types';
 import type { PostcardCommand } from '../../domain/postcards/commands';
@@ -26,7 +26,7 @@ const tabs: {
     label: string;
     icon: typeof Type;
 }[] = [
-    { id: 'text', label: t("editor.postcards.shell.tabs.text"), icon: Type }, { id: 'image', label: t("editor.postcards.shell.tabs.illustrations"), icon: Image }, { id: 'decoration', label: t("editor.postcards.shell.tabs.decorations"), icon: Shapes }, { id: 'background', label: t("editor.postcards.shell.tabs.background"), icon: Palette }, { id: 'layers', label: t("editor.postcards.shell.tabs.layers"), icon: Layers },
+    { id: 'text', label: t("editor.postcards.shell.tabs.text"), icon: Type }, { id: 'image', label: t("editor.postcards.shell.tabs.illustrations"), icon: Image }, { id: 'background', label: t("editor.postcards.shell.tabs.background"), icon: Palette }, { id: 'layers', label: t("editor.postcards.shell.tabs.layers"), icon: Layers },
 ];
 const serviceTabs = [{ id: 'cards' as const, label: t("editor.postcards.shell.tabs.cards"), icon: Layers2 }, { id: 'export' as const, label: t("editor.postcards.shell.tabs.export"), icon: FileDown }];
 export interface PostcardShellProps {
@@ -77,7 +77,7 @@ export function PostcardShell({ project, saveStatus, canUndo, canRedo, onUndo, o
         setSelection(focusTarget.elementId ?? null);
         const item = project.postcards.find(card => card.id === focusTarget.postcardId)?.elements.find(element => element.id === focusTarget.elementId);
         if (item)
-            setTab(item.type === 'text' ? 'text' : item.type === 'decoration' ? 'decoration' : 'image');
+            setTab(item.type === 'text' ? 'text' : 'image');
         setSheet(false);
     }, [focusTarget]);
     useEffect(() => {
@@ -124,7 +124,7 @@ export function PostcardShell({ project, saveStatus, canUndo, canRedo, onUndo, o
             previous.focus(); };
     }, [sheet, compact]);
     const select = (id: string | null, addedType?: PostcardElement['type']) => { setSelection(id); const type = addedType ?? postcard.elements.find(item => item.id === id)?.type; if (type)
-        setTab(type === 'text' ? 'text' : type === 'decoration' ? 'decoration' : 'image'); };
+        setTab(type === 'text' ? 'text' : 'image'); };
     const chooseTab = (id: PostcardTab) => { if (id === 'export') {
         onExport();
         return;
@@ -134,7 +134,7 @@ export function PostcardShell({ project, saveStatus, canUndo, canRedo, onUndo, o
         pendingIssue.current = { postcardId: issue.postcardId, elementId: issue.elementId };
         onSelectPostcard(issue.postcardId);
     } setSelection(issue.elementId ?? null); const item = project.postcards.find(card => card.id === issue.postcardId)?.elements.find(element => element.id === issue.elementId); if (item)
-        setTab(item.type === 'text' ? 'text' : item.type === 'decoration' ? 'decoration' : 'image'); setProblems(false); setSheet(false); };
+        setTab(item.type === 'text' ? 'text' : 'image'); setProblems(false); setSheet(false); };
     const cards = (inPanel = false) => <div className={`thumbnail-list ${inPanel ? 'thumbnail-list--panel' : ''}`} ref={inPanel ? undefined : strip}>{project.postcards.map((card, number) => <button type="button" key={card.id} className={`thumbnail ${card.id === postcard.id ? 'is-selected' : ''}`} aria-label={t("editor.postcards.shell.cardPosition", { position: number + 1, total: project.postcards.length })} aria-pressed={card.id === postcard.id} data-postcard-id={card.id} draggable onDragStart={event => event.dataTransfer.setData('text/postcard-id', card.id)} onDragOver={event => event.preventDefault()} onDrop={event => { event.preventDefault(); const id = event.dataTransfer.getData('text/postcard-id'); if (id && id !== card.id)
         onCommand({ type: 'reorder-postcard', postcardId: id, index: number }); }} onClick={() => selectCard(card.id)}><span className="thumbnail__art"><PostcardSvg postcard={card} idPrefix={`postcard-thumb-${inPanel ? 'panel' : 'strip'}-${card.id}`}/></span><span className="thumbnail__number">{number + 1}</span><span className="thumbnail__indicators">{issues.some(issue => issue.postcardId === card.id && issue.severity === 'error') && <span className="error"/>}</span></button>)}<button type="button" className="thumbnail postcard-add-thumbnail" aria-label={t("editor.postcards.shell.addCard")} disabled={full} onClick={() => setAdding(true)}><Plus size={26}/>{rich("editor.postcards.shell.addLabel", {}, { span: <span /> })}</button></div>;
     const cardActions = <div className="postcard-card-actions"><Button variant="secondary" disabled={full} onClick={() => onCommand({ type: 'duplicate-postcard', postcardId: postcard.id })}><Copy size={15}/>{t("editor.postcards.shell.duplicateCard")}</Button><IconButton label={t("editor.postcards.shell.moveEarlier")} disabled={index === 0} onClick={() => onCommand({ type: 'reorder-postcard', postcardId: postcard.id, index: index - 1 })}><ArrowUp size={16}/></IconButton><IconButton label={t("editor.postcards.shell.moveLater")} disabled={index === project.postcards.length - 1} onClick={() => onCommand({ type: 'reorder-postcard', postcardId: postcard.id, index: index + 1 })}><ArrowDown size={16}/></IconButton><IconButton label={t("editor.postcards.shell.deleteCard")} disabled={project.postcards.length === 1} onClick={() => onCommand({ type: 'remove-postcard', postcardId: postcard.id })}><Trash2 size={16}/></IconButton></div>;
@@ -143,7 +143,7 @@ export function PostcardShell({ project, saveStatus, canUndo, canRedo, onUndo, o
     <header className="studio-header"><a className="studio-home" href="#home" onClick={onHome} aria-label={t("editor.postcards.shell.homeLink")}><BrandMark /></a><IconButton label={t("editor.postcards.shell.openMenu")} className="mobile-menu-button" onClick={() => setMenu(true)}><Menu size={22}/></IconButton><div className="studio-header__project"><div className="project-title-row"><span className="studio-wordmark" title={project.name}>{project.name}</span></div></div><EditorStatus errors={errorCount} warnings={issues.length - errorCount} saveStatus={saveStatus} onIssues={() => setProblems(true)}/></header>
     <EditorNavigation onTemplates={onTemplates} onSettings={openSettings} onHelp={() => setHelp(true)}/>
     <section className="workspace" inert={compact && sheet} aria-label={t("editor.postcards.shell.canvasLabel", { position: index + 1 })}><HistoryControls canUndo={canUndo} canRedo={canRedo} onUndo={onUndo} onRedo={onRedo}/><div className="workspace__canvas workspace__canvas--interactive"><PostcardCanvas postcard={postcard} selection={selection} onSelectionChange={select} onCommit={onCommand} fitKey={postcard.id}/></div><div className="workspace-card-info">{rich("editor.postcards.shell.cardSummary", { position: index + 1, count: project.postcards.length, width: size.width, height: size.height }, { span: <span />, strong: <strong />, span2: <span /> })}</div></section>
-    <aside className="inspector" aria-label={t("editor.postcards.shell.settingsTitle")}><div className="inspector-tabs postcard-tabs" role="tablist" aria-label={t("editor.postcards.shell.tools")}>{[...tabs, ...(!showStrip ? serviceTabs : [])].map(({ id, label, icon: Icon }) => <button type="button" key={id} role="tab" data-tab={id} aria-selected={tab === id} className={tab === id ? 'is-active' : ''} onClick={() => chooseTab(id)}><Icon size={20}/><span>{label}</span></button>)}</div><div className="inspector-content">{!compact && panelContent}</div>{showStrip && <footer className="inspector-footer"><Button onClick={onExport}><Download size={18}/>{t("editor.postcards.shell.previewAction")}</Button><span>PDF · PNG · JPG · 300 DPI</span><button className="text-link" onClick={() => chooseTab('cards')}>{t("editor.postcards.shell.manageCards")}</button></footer>}</aside>
+    <aside className="inspector" aria-label={t("editor.postcards.shell.settingsTitle")}><div className={`inspector-tabs postcard-tabs ${showStrip ? 'postcard-tabs--primary' : ''}`} role="tablist" aria-label={t("editor.postcards.shell.tools")}>{[...tabs, ...(!showStrip ? serviceTabs : [])].map(({ id, label, icon: Icon }) => <button type="button" key={id} role="tab" data-tab={id} aria-selected={tab === id} className={tab === id ? 'is-active' : ''} onClick={() => chooseTab(id)}><Icon size={18}/><span>{label}</span></button>)}</div><div className="inspector-content">{!compact && panelContent}</div>{showStrip && <footer className="inspector-footer"><Button onClick={onExport}><Download size={18}/>{t("editor.postcards.shell.previewAction")}</Button><span>PDF · PNG · JPG · 300 DPI</span><button className="text-link" onClick={() => chooseTab('cards')}>{t("editor.postcards.shell.manageCards")}</button></footer>}</aside>
     {showStrip && <section className="thumbnail-strip" aria-label={t("editor.postcards.shell.cardsLabel")}>{cards()}<div className="postcard-strip-actions">{cardActions}</div></section>}
     <nav className="mobile-dock postcard-dock" aria-label={t("editor.postcards.shell.tools")}>{[...tabs, ...serviceTabs].map(({ id, label, icon: Icon }) => <button type="button" key={id} data-tab={id} aria-label={label} aria-pressed={sheet && tab === id} className={sheet && tab === id ? 'is-active' : ''} onClick={() => chooseTab(id)}><Icon size={22}/><span>{label}</span></button>)}</nav>
     {compact && sheet && <div className="sheet-backdrop" onClick={event => { if (event.target === event.currentTarget)

@@ -54,11 +54,16 @@ async function text(page: Page, content: string) {
   await page.getByRole('textbox', { name: 'Текст на открытке', exact: true }).fill(content);
   await expect.poll(async () => (await activeCard(page)).elements.filter(element => element.type === 'text').map(element => element.content)).toContain(content);
 }
-async function openLibrary(page: Page, tabLabel: 'Текст' | 'Изображение' | 'Декор') {
+async function openLibrary(page: Page, tabLabel: 'Текст' | 'Изображение') {
   await tab(page, tabLabel);
   await page.getByRole('button', { name: 'Добавить из библиотеки', exact: true }).click();
   const dialog = page.getByRole('dialog', { name: 'Добавить из библиотеки', exact: true });
   await expect(dialog).toBeVisible();
+  return dialog;
+}
+async function openDecorationLibrary(page: Page) {
+  const dialog = await openLibrary(page, 'Изображение');
+  await dialog.getByRole('button', { name: 'Декор', exact: true }).click();
   return dialog;
 }
 async function addLibrarySelection(dialog: Locator) {
@@ -628,7 +633,7 @@ test('canvas and large previews use full-resolution background and decor files w
   const canvasBackground = page.locator('.canvas-artboard image[href*="backgrounds/"]');
   await expect(canvasBackground).toHaveAttribute('href', /backgrounds\/delicate-golden-star-sparkle\.(?:png|webp)$/);
   expect(await canvasBackground.getAttribute('transform')).toBeNull();
-  const library = await openLibrary(page, 'Декор');
+  const library = await openDecorationLibrary(page);
   await library.getByRole('button', { name: 'Добавить: Бордовый бархатный бант с золотым кантом', exact: true }).click();
   await addLibrarySelection(library);
   const decor = page.locator('.canvas-artboard image[href*="decorations/burgundy-velvet-bow-with-gold-trim"]');
@@ -640,7 +645,7 @@ test('canvas and large previews use full-resolution background and decor files w
 
 test('decorative artwork keeps its original proportions and appears in opaque 300 DPI PNG and PDF', async ({ page }) => {
   await create(page, 1);
-  const library = await openLibrary(page, 'Декор');
+  const library = await openDecorationLibrary(page);
   await expect(library.locator('.image-library button')).toHaveCount(decorations.length);
   await library.getByRole('button', { name: 'Добавить: Бордовый бархатный бант с золотым кантом', exact: true }).click();
   await addLibrarySelection(library);
@@ -774,7 +779,7 @@ test('preflight scopes errors to exported cards, confirms warnings once and targ
   await page.screenshot({ path: 'artifacts/postcards-scoped-preview-1440.png' });
 });
 
-test('all seven mobile tools fit without scrolling and edits survive phone, tablet and landscape changes', async ({ page }) => {
+test('all six mobile tools fit without scrolling and edits survive phone, tablet and landscape changes', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await create(page, 1, 'square');
   await text(page, 'Зима и тепло');
@@ -782,9 +787,9 @@ test('all seven mobile tools fit without scrolling and edits survive phone, tabl
   await page.screenshot({ path: 'artifacts/postcards-editor-390.png' });
   await page.setViewportSize({ width: 320, height: 800 });
   const dock = page.getByRole('navigation', { name: 'Инструменты открытки', exact: true });
-  await expect(dock.getByRole('button')).toHaveCount(7);
+  await expect(dock.getByRole('button')).toHaveCount(6);
   expect(await dock.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
-  for (const label of ['Текст', 'Изображение', 'Декор', 'Фон', 'Слои', 'Открытки']) {
+  for (const label of ['Текст', 'Изображение', 'Фон', 'Слои', 'Открытки']) {
     const control = dock.getByRole('button', { name: label, exact: true });
     const box = await control.boundingBox();
     expect(box!.x).toBeGreaterThanOrEqual(0); expect(box!.x + box!.width).toBeLessThanOrEqual(320);
@@ -796,6 +801,10 @@ test('all seven mobile tools fit without scrolling and edits survive phone, tabl
     expect(Math.abs(headingBox.x + headingBox.width / 2 - (panelBox.x + panelBox.width / 2))).toBeLessThan(1);
     if (label === 'Фон') {
       await expect(page.getByRole('combobox', { name: 'Тип фона', exact: true })).toBeVisible();
+    }
+    if (label === 'Изображение') {
+      await page.getByRole('button', { name: 'Круг', exact: true }).click();
+      await expect.poll(async () => (await activeCard(page)).elements.some(element => element.type === 'decoration' && element.shape === 'circle')).toBe(true);
     }
     if (label === 'Открытки') {
       await expect(page.getByRole('combobox', { name: 'Формат открытки', exact: true })).toBeVisible();
@@ -819,7 +828,7 @@ test('all seven mobile tools fit without scrolling and edits survive phone, tabl
   await library.getByLabel('Поиск надписей', { exact: true }).fill('golden-merry-christmas-calligraphy');
   await library.locator('.image-library button').first().click();
   await addLibrarySelection(library);
-  await expect.poll(async () => (await activeCard(page)).elements.length).toBe(2);
+  await expect.poll(async () => (await activeCard(page)).elements.length).toBe(3);
   await page.getByRole('button', { name: 'Закрыть панель', exact: true }).click();
   const design = (await activeCard(page)).elements;
   await page.screenshot({ path: 'artifacts/postcards-editor-768-portrait.png' });
@@ -827,7 +836,7 @@ test('all seven mobile tools fit without scrolling and edits survive phone, tabl
   await expect(page.locator('.bottom-sheet')).toHaveCount(0);
   await expect(page.locator('.inspector')).toBeVisible();
   await tab(page, 'Слои');
-  await expect(page.locator('.postcard-layers > div')).toHaveCount(2);
+  await expect(page.locator('.postcard-layers > div')).toHaveCount(3);
   expect((await activeCard(page)).elements).toEqual(design);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: 'artifacts/postcards-editor-1024-landscape.png' });
